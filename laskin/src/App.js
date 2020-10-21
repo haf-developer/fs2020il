@@ -39,11 +39,18 @@ function App() {
     const arvo1=parseInt(luku1, 10)
     const arvo2=parseInt(luku2, 10)
     if(arvo1 && arvo2){
-      setTulos(arvo1+arvo2)
+      setTulos(operaatiot[operaattori](arvo1,arvo2))
     }
   }
 
+  const operaatiot=[]
+  operaatiot['+']=((a,b)=>a+b)
+  operaatiot['-']=((a,b)=>a-b)
+  operaatiot['*']=((a,b)=>a*b)
+  operaatiot['/']=((a,b)=>a/b)
+
   const numerot=[...Array(10).keys()]
+
   return (
     <div className="App">
       <h1>Laskin</h1>
