@@ -43,11 +43,12 @@ function App() {
     }
   }
 
-  const operaatiot=[]
-  operaatiot['+']=((a,b)=>a+b)
-  operaatiot['-']=((a,b)=>a-b)
-  operaatiot['*']=((a,b)=>a*b)
-  operaatiot['/']=((a,b)=>a/b)
+  const operaatiot={
+    '+': ((a,b)=>a+b),
+    '-': ((a,b)=>a-b),
+    '*': ((a,b)=>a*b),
+    '/': ((a,b)=>a/b)
+  }
 
   const numerot=[...Array(10).keys()]
 
@@ -67,11 +68,16 @@ function App() {
     'Luku 1 '
     <input onChange={(event)=>luku1Muuttunut(event)} value={luku1}>
     </input><br/>
-    <button value="+" onClick={(event)=>valittuOperaattori(event)}>+</button>
-
-    <button onClick={()=>resetoiArvot()}>resetoi</button>
+      {Object.keys(operaatiot).map( (i)=>{
+        return(
+          <button key={i+"nappula"} value={i}
+            onClick={(event)=>valittuOperaattori(event)} >
+            {i}</button>
+        )
+        })
+      }
     <br/>
-    Operaattori typeof {typeof(operaattori)} arvo={operaattori}
+    <button onClick={()=>resetoiArvot()}>resetoi</button>
     <br/>
     'Luku 2 '
     <input type="text" onChange={(event)=>luku2Muuttunut(event)} value={luku2}>
