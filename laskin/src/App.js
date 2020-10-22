@@ -5,7 +5,14 @@ function App() {
   const [luku1, setLuku1]=useState('')
   const [luku2, setLuku2]=useState('')
   const [operaattori, setOperaattori]=useState()
+  const [historia, setHistoria]=useState([])
 
+  useEffect( (()=>{
+    if(parseInt(tulos, 10)){
+      setHistoria(historia.concat( [[luku1, operaattori, luku2, '=', tulos]] ))
+    }
+  }), [tulos] ) // React Hook useEffect has missing dependencies
+  
   const nappiaPainettu=(event)=>{
     if( operaattori ){
       setLuku2(luku2 + event.target.value)
@@ -77,7 +84,7 @@ function App() {
         })
       }
     <br/>
-    <button onClick={()=>resetoiArvot()}>resetoi</button>
+    <button onClick={resetoiArvot}>resetoi</button>
     <br/>
     'Luku 2 '
     <input type="text" onChange={(event)=>luku2Muuttunut(event)} value={luku2}>
@@ -85,6 +92,17 @@ function App() {
     <button onClick={()=>laskeVastaus()}>Laske</button>
     <br/>
     Tulos on {tulos}
+    <div style={{color:'#F87431', height:'7px' }}>
+    -------------------<br/>
+    Historia<br/>
+      {historia.map( (i)=>{
+        return(
+          <div key={i+"historla"}>
+            {i}</div>
+        )
+        })
+      }
+    </div>
     </div>
   );
 }
