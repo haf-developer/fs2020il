@@ -18,15 +18,29 @@ function App() {
     }
   }
 
+  // const kohtaLaudalla=(x,y)=>{
+  const kohtaLaudalla=(event)=>{
+    // return function(x,y){
+      const x=parseInt(event.target.value[0], 10)
+      const y=parseInt(event.target.value[2], 10)
+      if(pelaaja && x && y){
+        if(lauta[y][x]===0){
+          const uusilauta=lauta
+          uusilauta[y][x]=pelaaja
+          setLauta(uusilauta)
+        }
+      }
+    // }
+  }
 
   return (
-    <div className="App">
+    <div className="App" key="ristinolla">
       <h1>Ristinolla</h1>
       Valitse rasti tai nolla. Risti aloittaa
-      <button img={risti} className="Risti" alt="risti"
-      value="1" onClick={(event)=>valittuPelaaja(event)}>Risti</button>
-      <button img={nolla} className="Nolla" alt="nolla"
-      value="2" onClick={(event)=>valittuPelaaja(event)}>Nolla</button>
+      <input type="image" key="ristivalinta" src={risti} className="Risti" alt="risti"
+      value="1" onClick={(event)=>valittuPelaaja(event)} />
+      <input type="image" key="nollavalinta" src={nolla} className="Nolla" alt="nolla"
+      value="2" onClick={(event)=>valittuPelaaja(event)}/>
       <br/>
       Pelaaja {pelaaja}
       <br/>
@@ -36,7 +50,8 @@ function App() {
           {rivi.map((ruutu, x)=>{
           if(ruutu>1){
             return(
-              <img key={y+"siirto"+x} src={risti} className="Risti" alt="risti" />
+              <img key={y+"siirto"+x} src={risti} className="Risti" alt="risti"
+               />
             )
           }else if(ruutu>0){
             return(
@@ -44,7 +59,8 @@ function App() {
             )
           }
           return(
-            <img key={y+"siirto"+x} src={ruutukuva} className="Ruutu" alt="ruutu" />
+            <input type="image" key={y+"siirtokuva"+x} src={ruutukuva} className="Ruutu"
+              alt="ruutu" value={[x,y]} onClick={(event)=>kohtaLaudalla(event)} />
           )
           }
         )}
