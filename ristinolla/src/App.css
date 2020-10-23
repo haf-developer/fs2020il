@@ -1,0 +1,24 @@
+.App {
+display: flexbox;
+flex-direction: row;
+}
+
+.Ruutu {
+  border: 10px;
+  background-color: lightgray;
+  margin: 5px;
+height: 70px;
+width: 70px;
+}
+
+.Nolla {
+  margin: 5px;
+height: 70px;
+width: 70px;
+}
+
+.Risti {
+  margin: 5px;
+height: 70px;
+width: 70px;
+}
