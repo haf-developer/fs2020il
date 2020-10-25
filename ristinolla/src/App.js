@@ -21,11 +21,16 @@ function App() {
   // const kohtaLaudalla=(x,y)=>{
   const kohtaLaudalla=(event)=>{
     // return function(x,y){
-      const x=parseInt(event.target.value[0], 10)
-      const y=parseInt(event.target.value[2], 10)
-      if(pelaaja && x && y){
+      // const [x,y]=JSON.parse(event.target.value)
+      const [xs, , ys]=event.target.value
+      const x=parseInt(xs, 10)
+      const y=parseInt(ys, 10)
+
+      if(pelaaja && undefined!==x && undefined!==y){
         if(lauta[y][x]===0){
-          const uusilauta=lauta
+          // Viite uuden sijasta
+          // const uusilauta=lauta
+          const uusilauta=lauta.slice(0)
           uusilauta[y][x]=pelaaja
           setLauta(uusilauta)
         }
@@ -46,16 +51,16 @@ function App() {
       <br/>
       {lauta.map((rivi, y)=>{
         return(
-        <div>
+        <div key={"rivi_"+y}>
           {rivi.map((ruutu, x)=>{
           if(ruutu>1){
             return(
-              <img key={y+"siirto"+x} src={risti} className="Risti" alt="risti"
+              <img key={y+"siirto"+x} src={nolla} className="Nolla" alt="nolla"
                />
             )
           }else if(ruutu>0){
             return(
-              <img key={y+"siirto"+x} src={nolla} className="Nolla" alt="nolla" />
+              <img key={y+"siirto"+x} src={risti} className="Risti" alt="risti" />
             )
           }
           return(
