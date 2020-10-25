@@ -20,22 +20,20 @@ function App() {
 
   // const kohtaLaudalla=(x,y)=>{
   const kohtaLaudalla=(event)=>{
-    // return function(x,y){
-      // const [x,y]=JSON.parse(event.target.value)
-      const [xs, , ys]=event.target.value
-      const x=parseInt(xs, 10)
-      const y=parseInt(ys, 10)
+    // const [x,y]=JSON.parse(event.target.value)
+    const [xs,, ys]=event.target.value
+    const x=parseInt(xs, 10)
+    const y=parseInt(ys, 10)
 
-      if(pelaaja && undefined!==x && undefined!==y){
-        if(lauta[y][x]===0){
-          // Viite uuden sijasta
-          // const uusilauta=lauta
-          const uusilauta=lauta.slice(0)
-          uusilauta[y][x]=pelaaja
-          setLauta(uusilauta)
-        }
+    if(pelaaja && undefined!==x && undefined!==y){
+      if(lauta[y][x]===0){
+        // Viite uuden sijasta
+        // const uusilauta=lauta
+        const uusilauta=lauta.slice(0)
+        uusilauta[y][x]=pelaaja
+        setLauta(uusilauta)
       }
-    // }
+    }
   }
 
   return (
