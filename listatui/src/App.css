@@ -1,16 +1,17 @@
 .App {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  text-align: Left;
+  align-items: left;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.Harjotus1 {
+  background-color: aquamarine;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.Harjotus1b {
+  background-color: pink;
+  border: 1rem;
 }
 
 .App-header {
@@ -26,13 +27,4 @@
 
 .App-link {
   color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

@@ -63,7 +63,6 @@ function App() {
   }
 
   const tulikoVoitto=((x, y, nappula, pelilauta)=>{
-
     let voitto=pelilauta.every( (yruutu)=>yruutu[x]===nappula)
     voitto=voitto ? voitto :pelilauta[y].every( (xruutu)=>xruutu===nappula)
     /*
