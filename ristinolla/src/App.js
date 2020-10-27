@@ -64,8 +64,8 @@ function App() {
 
   const tulikoVoitto=((x, y, nappula, pelilauta)=>{
 
-    let voitto=pelilauta[y].every( (xruutu)=>xruutu===nappula)
-    // voitto=voitto===true ? voitto : pelilauta.event( (yruutu)=>yruutu[x]===nappula)
+    let voitto=pelilauta.every( (yruutu)=>yruutu[x]===nappula)
+    voitto=voitto ? voitto :pelilauta[y].every( (xruutu)=>xruutu===nappula)
     /*
     const suoranpituus=pelilauta.length-1
     const yalku=suoranpituus-y
