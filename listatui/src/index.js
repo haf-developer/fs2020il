@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './ListaUi';
+import ListaUi from './ListaUi';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ListaUi />
   </React.StrictMode>,
   document.getElementById('root')
 );

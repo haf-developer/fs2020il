@@ -1,6 +1,7 @@
 import './App.css';
 import { DataGrid, RowsProp, ColDef} from '@material-ui/data-grid';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 // import { Grid } from '@material-ui/core';
 
 function ListaUi() {
@@ -52,6 +53,14 @@ function ListaUi() {
   const [lista1kopio, setLista1kopio]=useState(ekalista.map( (esine, indeksi)=>esine+" "+indeksi))
   const [siirtolista, setSiirtolista]=useState([])
   
+  useEffect( (()=>{
+    // console.log('printing', ReactDOM.findDOMNode(document.getElementById('ekalistataulu')))
+    let lista1cb=ReactDOM.findDOMNode(document.getElementById('ekalistataulu')).getElementsByClassName('ekalistacb')
+    lista1cb=[...lista1cb]
+    // console.log("lista1cb=", lista1cb)
+    lista1cb.forEach( cb => cb.checked=false)
+  }), [lista1] )
+
   const siirtoOikealle=(()=>{
     const poistolista=lista1.filter((asia)=>siirtolista.includes(asia))
     const uusisiirtolista=siirtolista.filter((asia)=>!poistolista.includes(asia))
@@ -82,12 +91,12 @@ function ListaUi() {
       <h2>
       Eka
       </h2>
-      <table className="Harjotus1">
+      <table id="ekalistataulu" key="ekalista" className="Harjotus1">
         <tbody>
-        {lista1.map( rivi=>{
+        {lista1.map( (rivi, index)=>{
           return(
-            <tr><td>
-            <input type="checkbox" id={rivi} value={rivi} onChange={(event)=>valintaMuutos(event)} />
+            <tr key={`ekalista_tr${index}`}><td>
+            <input className="ekalistacb" type="checkbox" id={rivi} value={rivi} onChange={(event)=>valintaMuutos(event)} />
             <label for={rivi}>{rivi}</label>
             </td></tr>
           )}
@@ -101,9 +110,9 @@ function ListaUi() {
       <button>Nuoli ylos</button>
       <table className="Harjotus1b">
         <tbody>
-        {lista1kopio.map( rivi=>{
+        {lista1kopio.map( (rivi, index)=>{
           return(
-            <tr className="Harjotus1b">
+            <tr key={`tokalista_tr${index}`} className="Harjotus1b">
               <td>
             <input type="checkbox" id={rivi} value={rivi} />
             <label for={rivi}>{rivi}</label>
