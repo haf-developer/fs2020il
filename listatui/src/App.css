@@ -1,24 +1,37 @@
 .App {
   display: flex;
   flex-direction: column;
+  text-align: center;
+  align-items: center;
+  align-content: center;
+}
+
+.Ekatyyli {
+  /* flex-direction: row;
+  
   text-align: Left;
   align-items: left;
+  */
+  background-color: rgb(50, 157, 255);
 }
 
 .Harjotus1 {
   background-color: aquamarine;
+  border  : 3px solid #8a8a8a75;
 }
 
 .Harjotus1b {
   background-color: pink;
-  border: 10px;
+  border  : 2px solid #242424;
 }
 
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
+  /*
   flex-direction: column;
+  */
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
