@@ -50,22 +50,29 @@ function ListaUi() {
 
   const [lista1, setLista1]=useState(ekalista)
   const [lista1kopio, setLista1kopio]=useState(ekalista.map( (esine, indeksi)=>esine+" "+indeksi))
-  const [siirtolista, setSiirtolista]=useState()
+  const [siirtolista, setSiirtolista]=useState([])
   
   const siirtoOikealle=(()=>{
-    const uusilista=lista1kopio.concat(lista1)
+    const poistolista=lista1.filter((asia)=>siirtolista.includes(asia))
+    const uusisiirtolista=siirtolista.filter((asia)=>!poistolista.includes(asia))
+    const uusilista=lista1kopio.concat(poistolista)
     setLista1kopio(uusilista)
-    const poistolista=lista1.filter(()=>undefined)
-    setLista1(poistolista)
+    const uusilista1=lista1.filter((asia)=>!poistolista.includes(asia))
+    setLista1(uusilista1)
+    setSiirtolista(uusisiirtolista)
   })
 
   const siirtoVasemmalle=(()=>{
   })
 
   const valintaMuutos=((event)=>{
-    let uusilista=new Array(siirtolista)
+    let uusilista=siirtolista.slice()
     event.target.checked===true? uusilista.push(event.target.value) :
-      uusilista=uusilista.filter((asia)=>asia!==event.target.value)
+      uusilista=uusilista.filter((asia)=>{
+        // console.log("asia=", asia)
+        // console.log("event.target.value=", event.target.value)
+        // console.log("event.target.value===asia = ", event.target.value===asia)
+        return asia!==event.target.value})
     setSiirtolista(uusilista)
   })
 
@@ -87,7 +94,9 @@ function ListaUi() {
         )}
         </tbody>
       </table>
-      <button onClick={(()=>siirtoOikealle())}>Nuoli alas {siirtolista}</button>
+      <button onClick={(()=>siirtoOikealle())}>Nuoli alas
+        {siirtolista}
+      </button>
       <br/>
       <button>Nuoli ylos</button>
       <table className="Harjotus1b">
