@@ -2,22 +2,45 @@
   display: flex;
   flex-direction: column;
   text-align: center;
-  align-items: center;
-  align-content: center;
+  align-items: stretch;
+  align-content: space-between;
+  justify-content: space-between;
+}
+
+.menulista {
+  margin: 50px; 
+}
+
+.Toinentyyli {
+  height: 30vmin;
+  width: 80vmax;
 }
 
 .Ekatyyli {
-  /* flex-direction: row;
-  
-  text-align: Left;
-  align-items: left;
+  column-count: 3;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: 5vmin;
+  align-items: center;
+  background-color: rgb(60, 167, 255);
+}
+
+.Nuolipainikkeet {
+  background-color: rgb(160, 255, 155);
+  align-items: center;
+  height: 10vmin;
+  justify-content: end;
+  /*
+  justify-content: space-between;
+  place-items: right;
   */
-  background-color: rgb(50, 157, 255);
 }
 
 .Harjotus1 {
   background-color: aquamarine;
-  border  : 3px solid #8a8a8a75;
+  border  : 3px solid #ea4aaaaa;
+  text-align: left;
 }
 
 .Harjotus1b {

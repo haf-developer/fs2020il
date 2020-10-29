@@ -87,7 +87,7 @@ function Peruslistat() {
   })
 
   return (
-    <div className="Ekatyyli" style={{ height: 400, width: '100%' }}>
+    <div>
     <h2>Perus Listoja</h2>
     <div className="Ekatyyli">
       <table id="ekalistataulu" key="ekalista" className="Harjotus1">
@@ -102,11 +102,13 @@ function Peruslistat() {
         )}
         </tbody>
       </table>
-      <button onClick={(()=>siirtoOikealle())}>Nuoli alas
+      <div className="Nuolipainikkeet">
+      <button onClick={(()=>siirtoOikealle())}>Siirto oikealle
         {siirtolista}
       </button>
       <br/>
-      <button>Nuoli ylos</button>
+      <button>Siirto vasemmalle</button>
+      </div>
       <table className="Harjotus1b">
         <tbody>
         {lista1kopio.map( (rivi, index)=>{
@@ -121,12 +123,14 @@ function Peruslistat() {
         </tbody>
       </table>
       </div>
+      <div className="Toinentyyli">
       <h2>
       Viimeinen
       </h2>
       <DataGrid checkboxSelection rows={rivit} columns={sarakkeet}  pageSize={5} >
       Teksti ei tule ruudulle
       </DataGrid>
+      </div>
     </div>
   )
 }
