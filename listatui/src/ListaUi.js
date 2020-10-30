@@ -5,8 +5,8 @@ import OliolistaUi from './views/Oliolistat';
 
 function ListaUi() {
   const nakymat=[
-    {id: 0, otsake: "peruslista", nayta: <PeruslistaUi />, checked: true},
-    {id: 1, otsake: "oliolista", nayta: <OliolistaUi />, checked: false}
+    {id: 0, otsake: "peruslista", nayta: <PeruslistaUi />, checked: false},
+    {id: 1, otsake: "oliolista", nayta: <OliolistaUi />, checked: true}
   ]
 
   const [listat, setListat]=useState(nakymat)
@@ -22,9 +22,9 @@ function ListaUi() {
   return (
     <div className="App">
       <h1>Listoja</h1>
-      {listat.map( rivi=>{
+      {listat.map( (rivi, index)=>{
         return(
-          <div className="menulista">
+          <div key={`menulista${index}`} className="menulista">
           <input className="alkumenu" type="checkbox" id={rivi.id} checked={rivi.checked}
           onChange={(event)=>valintaMuutos(event)} />
           {!rivi.checked && <div>

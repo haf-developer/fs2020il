@@ -27,11 +27,13 @@
 }
 
 .Nuolipainikkeet {
+  padding: 2em;
   background-color: rgb(160, 255, 155);
+  justify-content: space-between;
+  align-items: stretch;
+  /*
   align-items: center;
   height: 10vmin;
-  justify-content: end;
-  /*
   justify-content: space-between;
   place-items: right;
   */

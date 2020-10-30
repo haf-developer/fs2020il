@@ -96,7 +96,7 @@ function Peruslistat() {
           return(
             <tr key={`ekalista_tr${index}`}><td>
             <input className="ekalistacb" type="checkbox" id={rivi} value={rivi} onChange={(event)=>valintaMuutos(event)} />
-            <label for={rivi}>{rivi}</label>
+            <label htmlFor={rivi}>{rivi}</label>
             </td></tr>
           )}
         )}
@@ -116,7 +116,7 @@ function Peruslistat() {
             <tr key={`tokalista_tr${index}`} className="Harjotus1b">
               <td>
             <input type="checkbox" id={rivi} value={rivi} />
-            <label for={rivi}>{rivi}</label>
+            <label htmlFor={rivi}>{rivi}</label>
             </td></tr>
           )}
         )}
