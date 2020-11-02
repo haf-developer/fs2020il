@@ -65,7 +65,8 @@ function Oliolistat() {
       <table key="oliot1" className="Harjotus1"><tbody>
       {lista1.map( (asia, listaindex)=>{
         return(
-          <tr key={listaindex+"ekalista"} onClick={()=>tapahtumaLisays1(0,listaindex)}><td>
+          <tr className="Rivihover" key={listaindex+"ekalista"}
+            onClick={()=>tapahtumaLisays1(0,listaindex)}><td>
           {asia.nimi}</td><td>{asia.sukunimi}</td><td>{asia.ika}
           </td></tr>
         )} 
@@ -93,7 +94,8 @@ function Oliolistat() {
     <table key="oliot2" className="Harjotus1b"><tbody>
       {lista2.map( (asia, listaindex)=>{
         return(
-          <tr key={listaindex+"tokalista"} onClick={()=>tapahtumaLisays1(1,listaindex)}><td>
+          <tr className="Rivihover" key={listaindex+"tokalista"}
+            onClick={()=>tapahtumaLisays1(1,listaindex)}><td>
           {asia.nimi}</td><td>{asia.sukunimi}</td><td>{asia.ika}
           </td></tr>
         )} 

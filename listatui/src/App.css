@@ -24,6 +24,7 @@
   column-gap: 5vmin;
   align-items: center;
   background-color: rgb(60, 167, 255);
+  padding: 1vmin;
 }
 
 .Nuolipainikkeet {
@@ -42,8 +43,13 @@
 .Harjotus1 {
   background-color: aquamarine;
   border  : 3px solid #ea4aaaaa;
-  text-align: left;
+  text-align: left;  
 }
+
+.Rivihover:hover {
+  background-color: #22222244
+}
+
 
 .Harjotus1b {
   background-color: pink;
