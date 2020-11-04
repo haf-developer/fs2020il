@@ -11,16 +11,17 @@ function TenttiUI() {
         {
         kysymys: "Onko oikeaa vastausta",
         valinnat: [
-          { id: 1, teksti: "Ei"},
-          { id: 2, teksti: "Melko varmasti"},
-          { id: 3, teksti: "On" }
+          { id: 1, valittu: false, teksti: "Ei"},
+          { id: 2, valittu: false, teksti: "Melko varmasti"},
+          { id: 3, valittu: false, teksti: "On" }
         ]
       }
       ]
     }]
   }]
 
-  const [nimi, setNimi]= useState()
+  const [nimi, setNimi]=useState()
+  const [dataAlustettu, setDataAlustettu]=useState(false)
 
   useEffect(()=>{
     const storage=window.localStorage
@@ -35,21 +36,25 @@ function TenttiUI() {
       storage.setItem( 'nimidata', JSON.stringify(alustusdata) )
       alkudata=JSON.stringify(alustusdata)
     }
-    setNimi(JSON.parse(alkudata))
+    alkudata=JSON.parse(alkudata)
+    setNimi(alkudata)
+    setDataAlustettu(true)    
   },[])
 
   useEffect(()=>{
-    window.localStorage.setItem( 'nimidata', JSON.stringify(nimi) )
+    if(dataAlustettu){
+      window.localStorage.setItem( 'nimidata', JSON.stringify(nimi) )
+    }
   },[nimi])
 
-/*
-          rivi.tentit.map((tenttirivi, tenttiindex) => {
-            return(
-              <div key={tenttiindex+"tenttirivi"}>tentis {tenttirivi}
-              </div>
-            )
-          })
-*/
+  const valintaToiminto=(event, idtentti, idkysymys, idvalinta)=>{
+    console.log("valintaToiminto idvalinta=", idvalinta)
+    console.log("valintaToiminto event.target.checked=", event.target.checked)
+    let uusidata=nimi.concat()
+    console.log("uusidata=", uusidata)
+    uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat[idvalinta].valittu=event.target.checked
+    setNimi(uusidata)
+  }
 
   return (
     <div className="App">
@@ -68,7 +73,7 @@ function TenttiUI() {
         <div key={index+"kokelasrivi"}>Suorittaja {rivi.etunimi} {rivi.sukunimi}
         { rivi.tentit &&
           <div>
-          <TenttiLista tentit={rivi.tentit}></TenttiLista>
+          <TenttiLista tentit={rivi.tentit} paluufunktio={valintaToiminto}></TenttiLista>
           </div>
         }
         </div>
