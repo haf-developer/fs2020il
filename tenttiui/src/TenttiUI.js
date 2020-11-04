@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import { AppBar, Button, Toolbar, Typography } from '@material-ui/core';
+// import { classes } from '@material-ui/styles'
+// import { AppBar } from '@material-ui/top-app-bar'
 import './TenttiUI.css';
 import TenttiLista from './views/Tenttilista'
 
@@ -58,15 +61,17 @@ function TenttiUI() {
 
   return (
     <div className="App">
-    <header className="Valikko">
-    <title>Tebttisovellus</title>
-    Valikko
-    <button className="ValikkoNappi" type="button">Kirjaudu</button>
-    </header>
+    <title>Tenttisovellus</title>
+    <AppBar position="static">
+      <Toolbar>
+        <Typography variant="h6" >
+          Tentit
+        </Typography>
+        <Button color="inherit">Tietoa sovelluksesta</Button>
+        <Button color="inherit">Poistu</Button>
+      </Toolbar>
+    </AppBar>
 
-    <h1>
-    Tenttisovellus
-    </h1>
     { nimi &&
     nimi.map((rivi, index) =>{
       return(
