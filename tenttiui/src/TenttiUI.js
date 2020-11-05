@@ -1,27 +1,11 @@
 import { useEffect, useState } from 'react';
-import { AppBar, Button, Toolbar, Typography } from '@material-ui/core';
-// import { classes } from '@material-ui/styles'
-// import { AppBar } from '@material-ui/top-app-bar'
+import alustusdata from './testi/testidata'
+import { AppBar, Button, Toolbar } from '@material-ui/core';
+// import { makeStyles } from '@material-ui/core/styles';
 import './TenttiUI.css';
 import TenttiLista from './views/Tenttilista'
 
 function TenttiUI() {
-  const alustusdata=[
-    { etunimi: "Joku", sukunimi: "Tuntematon",
-    tentit: [{
-      tentti: "Testi",
-      kysymykset: [
-        {
-        kysymys: "Onko oikeaa vastausta",
-        valinnat: [
-          { id: 1, valittu: false, teksti: "Ei"},
-          { id: 2, valittu: false, teksti: "Melko varmasti"},
-          { id: 3, valittu: false, teksti: "On" }
-        ]
-      }
-      ]
-    }]
-  }]
 
   const [nimi, setNimi]=useState()
   const [dataAlustettu, setDataAlustettu]=useState(false)
@@ -64,11 +48,9 @@ function TenttiUI() {
     <title>Tenttisovellus</title>
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" >
-          Tentit
-        </Typography>
-        <Button color="inherit">Tietoa sovelluksesta</Button>
-        <Button color="inherit">Poistu</Button>
+        <Button variant="containedPrimary" color="inherit">Kirjaudu</Button>
+        <Button variant="containedPrimary" color="inherit">Rekisteröidy</Button>
+        <Button variant="containedPrimary" color="inherit">Tietoa sovelluksesta</Button>
       </Toolbar>
     </AppBar>
 

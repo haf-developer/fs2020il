@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import KysymysLista from './kysymyslista'
 function TenttiLista({tentit, paluufunktio}) {
 
@@ -5,21 +6,17 @@ function TenttiLista({tentit, paluufunktio}) {
     <div>
       <h2>Tentit</h2>
       {tentit &&
+      
       tentit.map((rivi, index)=>{
         return(
           <div key={index+"tenttilista"}>
-          Tentin nimi {rivi.tentti}
-          {
-            rivi.kysymykset &&
-            <div>
-            <KysymysLista kysymykset={rivi.kysymykset}
-            tenttiid={index} paluufunktio={paluufunktio}></KysymysLista>
-            </div>
-          }
+          <Button color="primary">
+            {rivi.tentti}</Button>
+          <KysymysLista key={index+"t"}kysymykset={rivi.kysymykset}
+                tenttiid={index} paluufunktio={paluufunktio}></KysymysLista>
           </div>
-        )
-      })
-      }
+        )}
+      )}
     </div>
   )
 }
