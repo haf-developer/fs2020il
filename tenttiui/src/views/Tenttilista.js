@@ -6,31 +6,31 @@ function TenttiLista({tentit, paluufunktio}) {
   const [naytatentti, setNaytaTentti]=useState()
 
   const naytaTenttiToiminto=(tenttiid)=>{
-    const valittutentti=parseInt(tenttiid)
+    let valittutentti=(naytatentti !== undefined )?
+      ((naytatentti===tenttiid)?undefined:tenttiid)
+      : tenttiid
+    
     setNaytaTentti(valittutentti)
   }
 
 
 
   return(
-    <div>
-      <h2>Tentit</h2>
+    <div className="TriplaRinnakkaiset">
       {tentit &&
-      
       tentit.map((rivi, index)=>{
-        const naytettavatentti=(naytatentti !== undefined)? index===naytatentti : false
-        
         return(
-          <div key={index+"tenttilista"}>
-          <Button color="primary" onClick={()=>naytaTenttiToiminto(index)}>
+          <Button key={index+"tenttilista"} color="primary" onClick={()=>naytaTenttiToiminto(index)}>
             {rivi.tentti}</Button>
-            {naytettavatentti &&
-              <KysymysLista key={index+"t"}kysymykset={rivi.kysymykset}
-              tenttiid={index} paluufunktio={paluufunktio}></KysymysLista>
-            }
-          </div>
         )}
-      )}
+      )
+      }
+      <div>
+        { (naytatentti !==undefined ) &&
+          <KysymysLista key={naytatentti+"nt"} kysymykset={tentit[naytatentti].kysymykset}
+          tenttiid={naytatentti} paluufunktio={paluufunktio}></KysymysLista>
+        }
+      </div>
     </div>
   )
 }

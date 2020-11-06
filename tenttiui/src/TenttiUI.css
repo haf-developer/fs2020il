@@ -20,6 +20,15 @@
   color: white;
 }
 
+.TriplaRinnakkaiset {
+  /*
+  column-count: 3;
+  */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .ValikkoNappi {
   color: white;
   text-rendering: inherit;
