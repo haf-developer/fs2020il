@@ -16,6 +16,7 @@ function TenttiLista({tentit, paluufunktio}) {
 
 
   return(
+    <div>
     <div className="TriplaRinnakkaiset">
       {tentit &&
       tentit.map((rivi, index)=>{
@@ -25,12 +26,11 @@ function TenttiLista({tentit, paluufunktio}) {
         )}
       )
       }
-      <div>
-        { (naytatentti !==undefined ) &&
+    </div>
+    { (naytatentti !==undefined ) &&
           <KysymysLista key={naytatentti+"nt"} kysymykset={tentit[naytatentti].kysymykset}
           tenttiid={naytatentti} paluufunktio={paluufunktio}></KysymysLista>
         }
-      </div>
     </div>
   )
 }
