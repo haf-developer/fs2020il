@@ -4,8 +4,15 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
+import { useState } from 'react';
 
 function KysymysLista({kysymykset, tenttiid, paluufunktio}) {
+  const [naytaoikeat, setNaytaOikeat]=useState(false)
+
+  const naytaOikeatToiminto=()=>{
+    const tila=!naytaoikeat
+    setNaytaOikeat(tila)
+  }
 
   const useStyles = makeStyles({
     root: {
@@ -24,6 +31,7 @@ function KysymysLista({kysymykset, tenttiid, paluufunktio}) {
          <div key={index+"kysymyslistasta"}>Kysymys
          {rivi.kysymys}
          {rivi.valinnat.map((valintarivi,vindex)=>{
+           const oikeavastaus=valintarivi.oikein? valintarivi.oikein : false
            return(
             <div key={vindex+"valinta"}>
             <Checkbox
@@ -31,6 +39,11 @@ function KysymysLista({kysymykset, tenttiid, paluufunktio}) {
             id={valintarivi.id+"val"} defaultChecked={valintarivi.valittu}>  
               </Checkbox>
             {valintarivi.teksti}
+            {naytaoikeat &&
+            <Checkbox color="secondary"
+            id={valintarivi.id+"oikea"} defaultChecked={oikeavastaus}>  
+            </Checkbox>
+            }
             </div>
            )
           })
@@ -41,10 +54,15 @@ function KysymysLista({kysymykset, tenttiid, paluufunktio}) {
      }
     </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button onClick={()=>naytaOikeatToiminto()} size="small"
+        variant="contained" color="primary">Näytä vastaukset</Button>
       </CardActions>
     </Card>     
   )
 }
+
+/*
+ onClick={()=>naytaOikeatToiminto()}
+ */
 
 export default KysymysLista

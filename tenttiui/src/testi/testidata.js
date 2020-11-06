@@ -9,7 +9,7 @@ const alustusdata=[
       valinnat: [
         { id: 1, valittu: false, teksti: "Ei"},
         { id: 2, valittu: false, teksti: "Melko varmasti"},
-        { id: 3, valittu: false, teksti: "On" }
+        { id: 3, valittu: false, teksti: "On", oikein: true }
         ]
       },
       {
@@ -17,7 +17,7 @@ const alustusdata=[
         valinnat: [
           { id: 1, valittu: false, teksti: "Ei"},
           { id: 2, valittu: false, teksti: "Melko varmasti"},
-          { id: 3, valittu: false, teksti: "On" }
+          { id: 3, valittu: false, teksti: "On", oikein: true }
           ]
         }
         ]
@@ -28,12 +28,24 @@ const alustusdata=[
         {
         kysymys: "Onko hampaat pesty",
         valinnat: [
-          { id: 1, valittu: false, teksti: "Ehkä"},
-          { id: 2, valittu: false, teksti: "Melko varmasti"}
+          { id: 1, valittu: false, teksti: "Ehkä", oikein: true},
+          { id: 2, valittu: false, teksti: "Melko varmasti", oikein: true}
           ]
         }
         ]
-      }
+      },
+      {
+        tentti: "Kolmas Testi",
+        kysymykset: [
+          {
+          kysymys: "Pesitkö kädet",
+          valinnat: [
+            { id: 1, valittu: false, teksti: "Ehkä", oikein: true},
+            { id: 2, valittu: false, teksti: "Kyllä", oikein: true}
+            ]
+          }
+          ]
+        }
     ]
 }]
 

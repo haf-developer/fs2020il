@@ -1,6 +1,16 @@
 import { Button } from '@material-ui/core';
 import KysymysLista from './kysymyslista'
+import { useState } from 'react';
+
 function TenttiLista({tentit, paluufunktio}) {
+  const [naytatentti, setNaytaTentti]=useState()
+
+  const naytaTenttiToiminto=(tenttiid)=>{
+    const valittutentti=parseInt(tenttiid)
+    setNaytaTentti(valittutentti)
+  }
+
+
 
   return(
     <div>
@@ -8,12 +18,16 @@ function TenttiLista({tentit, paluufunktio}) {
       {tentit &&
       
       tentit.map((rivi, index)=>{
+        const naytettavatentti=(naytatentti !== undefined)? index===naytatentti : false
+        
         return(
           <div key={index+"tenttilista"}>
-          <Button color="primary">
+          <Button color="primary" onClick={()=>naytaTenttiToiminto(index)}>
             {rivi.tentti}</Button>
-          <KysymysLista key={index+"t"}kysymykset={rivi.kysymykset}
-                tenttiid={index} paluufunktio={paluufunktio}></KysymysLista>
+            {naytettavatentti &&
+              <KysymysLista key={index+"t"}kysymykset={rivi.kysymykset}
+              tenttiid={index} paluufunktio={paluufunktio}></KysymysLista>
+            }
           </div>
         )}
       )}
