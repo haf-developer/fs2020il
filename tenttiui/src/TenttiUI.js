@@ -38,7 +38,6 @@ function TenttiUI() {
 
   const lisaaTentti=(tentinnimi)=>{
     let uusidata=nimi.concat()
-    console.log("uusidata=", uusidata)
     // uusidata[0].tentit.push({tentti: tentinnimi})
     let uusitentti={tentti: tentinnimi}
     uusidata[0].tentit.push(uusitentti)

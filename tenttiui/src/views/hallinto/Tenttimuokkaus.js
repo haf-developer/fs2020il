@@ -44,7 +44,7 @@ function TenttiMuokkaus({tentit, paluufunktio, lisaysPaluufunktio}) {
     </div>
     { (naytatentti !==undefined ) &&
       <>
-      { tentit[naytatentti].kysymykset && 
+      { // tentit[naytatentti].kysymykset && 
           <KysymysMuokkaus key={naytatentti+"nt"} kysymykset={tentit[naytatentti].kysymykset}
           tenttiid={naytatentti} paluufunktio={paluufunktio}></KysymysMuokkaus>
       }
