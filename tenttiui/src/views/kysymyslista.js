@@ -37,13 +37,13 @@ function KysymysLista({kysymykset, tenttiid, paluufunktio}) {
             <Checkbox
             onClick={(event)=>paluufunktio(event, tenttiid, index, vindex)}
             id={valintarivi.id+"val"} defaultChecked={valintarivi.valittu}>  
-              </Checkbox>
-            {valintarivi.teksti}
+            </Checkbox>
             {naytaoikeat &&
-            <Checkbox color="secondary"
+            <Checkbox color="default" disabled
             id={valintarivi.id+"oikea"} defaultChecked={oikeavastaus}>  
             </Checkbox>
             }
+            {valintarivi.teksti}
             </div>
            )
           })
