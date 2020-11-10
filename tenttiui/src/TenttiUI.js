@@ -59,7 +59,20 @@ function TenttiUI() {
         uusidata[0].tentit[idtentti].push(uusikysymystaulu)
       }
       uusidata[0].tentit[idtentti].kysymykset.push(uusikysymys)
-      setNimi(uusidata)  
+      setNimi(uusidata)
+    },
+    lisaavalinta: (idtentti,idkysymys,lisattavavalinta)=>{
+      let uusidata=nimi.concat()
+      if( uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat === undefined ){
+        /*
+        let uusivalintataulu={
+          valinnat: []
+        }
+        */
+        uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat=[]
+      }
+      uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat.push(lisattavavalinta)
+      setNimi(uusidata)
     }
   }
 

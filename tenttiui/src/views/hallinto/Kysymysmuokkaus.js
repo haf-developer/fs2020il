@@ -2,7 +2,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
+import ValintaMuokkaus from './Valintamuokkaus'
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
 
@@ -10,8 +10,7 @@ function KysymysMuokkaus({kysymykset, tenttiid, paluufunktiot}) {
   const [naytaoikeat, setNaytaOikeat]=useState(true)
   const [kysymysteksi, setKysymysTeksti]=useState("Kirjoita uusi kysymys")
   const [uusikysymysalustettu, setUusiKysymysAlustettu]=useState(false)
-  const [valintaamuutetaan, setValintaaMuutetaan]=useState()
-
+  
   const hoidaMuutos=(event)=>{
     if(!uusikysymysalustettu){
       setUusiKysymysAlustettu(true)
@@ -21,15 +20,6 @@ function KysymysMuokkaus({kysymykset, tenttiid, paluufunktiot}) {
     }
   }
 
-  let valintamuutos=[]
-  if(valintaamuutetaan !== undefined){
-    const loota=<Checkbox color="default"
-    key="lisattyvalinta" defaultChecked='false'>  
-    </Checkbox>
-    const tekstikentta=<input type="text" value="Muutettava valinta"></input>      
-    valintamuutos.push(loota)
-    valintamuutos.push(tekstikentta)
-  }
 
   const naytaOikeatToiminto=()=>{
     const tila=!naytaoikeat
@@ -71,37 +61,9 @@ function KysymysMuokkaus({kysymykset, tenttiid, paluufunktiot}) {
          {naytaoikeat &&
           <>
           <div>
-          { (valintaamuutetaan !== undefined) &&
-          <>
-          { (valintaamuutetaan === index) &&
-          <>
-            {
-              valintamuutos
-            }
-            </>
-          }
-          </>
-          }
-          <Button onClick={()=>setValintaaMuutetaan(index)} size="small"
-          variant="contained" color="primary">Lisää valinta</Button>
+          <ValintaMuokkaus tenttiid={tenttiid} kysymysid={index}
+          valinnat={rivi.valinnat} paluufunktiot={paluufunktiot}></ValintaMuokkaus>
           </div>
-          {rivi.valinnat &&
-          <>
-          {rivi.valinnat.map((valintarivi,vindex)=>{
-           const oikeavastaus=valintarivi.oikein? valintarivi.oikein : false
-           return(
-            <div className={classes.valinta} key={vindex+"valinta"}>
-            <Checkbox color="default"
-            id={valintarivi.id+"oikea"} defaultChecked={oikeavastaus}>  
-            </Checkbox>
-            {valintarivi.teksti}
-            <Button className={classes.roskis}>Roskis</Button>
-            </div>
-           )
-          })
-          }
-          </>
-          }
           </>
           }
          </div>
