@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import KysymysMuokkaus from './Kysymysmuokkaus'
 import { useState } from 'react';
 
-function TenttiMuokkaus({tentit, paluufunktio, lisaysPaluufunktio}) {
+function TenttiMuokkaus({tentit, paluufunktiot, lisaysPaluufunktio}) {
   const [naytatentti, setNaytaTentti]=useState()
   const [uusitentti, setUusiTentti]=useState("tentin nimi tähän")
   const [tenttialustus, setTenttiAlustus]=useState(false)
@@ -43,13 +43,9 @@ function TenttiMuokkaus({tentit, paluufunktio, lisaysPaluufunktio}) {
     <input key="tenttinimi" type="text" value={uusitentti} onChange={event=>hoidaMuutos(event)}></input>
     </div>
     { (naytatentti !==undefined ) &&
-      <>
-      { // tentit[naytatentti].kysymykset && 
-          <KysymysMuokkaus key={naytatentti+"nt"} kysymykset={tentit[naytatentti].kysymykset}
-          tenttiid={naytatentti} paluufunktio={paluufunktio}></KysymysMuokkaus>
-      }
-      </>
-      }
+      <KysymysMuokkaus key={naytatentti+"nt"} kysymykset={tentit[naytatentti].kysymykset}
+      tenttiid={naytatentti} paluufunktiot={paluufunktiot}></KysymysMuokkaus>
+    }
     </div>
   )
 }

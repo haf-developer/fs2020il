@@ -6,8 +6,30 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
 
-function KysymysMuokkaus({kysymykset, tenttiid, paluufunktio}) {
+function KysymysMuokkaus({kysymykset, tenttiid, paluufunktiot}) {
   const [naytaoikeat, setNaytaOikeat]=useState(true)
+  const [kysymysteksi, setKysymysTeksti]=useState("Kirjoita uusi kysymys")
+  const [uusikysymysalustettu, setUusiKysymysAlustettu]=useState(false)
+  const [valintaamuutetaan, setValintaaMuutetaan]=useState()
+
+  const hoidaMuutos=(event)=>{
+    if(!uusikysymysalustettu){
+      setUusiKysymysAlustettu(true)
+      setKysymysTeksti("")
+    }else{
+      setKysymysTeksti(event.target.value)
+    }
+  }
+
+  let valintamuutos=[]
+  if(valintaamuutetaan !== undefined){
+    const loota=<Checkbox color="default"
+    key="lisattyvalinta" defaultChecked='false'>  
+    </Checkbox>
+    const tekstikentta=<input type="text" value="Muutettava valinta"></input>      
+    valintamuutos.push(loota)
+    valintamuutos.push(tekstikentta)
+  }
 
   const naytaOikeatToiminto=()=>{
     const tila=!naytaoikeat
@@ -34,8 +56,10 @@ function KysymysMuokkaus({kysymykset, tenttiid, paluufunktio}) {
   return(
     <Card className={classes.root}>
       <CardActions>
-        <Button onClick={()=>naytaOikeatToiminto()} size="small"
-        variant="contained" color="primary">Lisää kysymys</Button>
+        <Button onClick={()=>paluufunktiot.lisaakysymys(kysymysteksi, tenttiid)} size="small"
+        disabled={!uusikysymysalustettu} variant="contained" color="primary">Lisää kysymys</Button>
+    <input key="kysymysnimi" type="text" value={kysymysteksi} onChange={event=>hoidaMuutos(event)}></input>
+
       </CardActions>
     { kysymykset &&
     <CardContent>
@@ -43,8 +67,25 @@ function KysymysMuokkaus({kysymykset, tenttiid, paluufunktio}) {
      {kysymykset.map((rivi, index)=>{
        return(
          <div key={index+"kysymyslistasta"}>Kysymys
-         {rivi.kysymys}
+         {" -"+rivi.kysymys}
          {naytaoikeat &&
+          <>
+          <div>
+          { (valintaamuutetaan !== undefined) &&
+          <>
+          { (valintaamuutetaan === index) &&
+          <>
+            {
+              valintamuutos
+            }
+            </>
+          }
+          </>
+          }
+          <Button onClick={()=>setValintaaMuutetaan(index)} size="small"
+          variant="contained" color="primary">Lisää valinta</Button>
+          </div>
+          {rivi.valinnat &&
           <>
           {rivi.valinnat.map((valintarivi,vindex)=>{
            const oikeavastaus=valintarivi.oikein? valintarivi.oikein : false
@@ -59,8 +100,8 @@ function KysymysMuokkaus({kysymykset, tenttiid, paluufunktio}) {
            )
           })
           }
-          <Button onClick={()=>naytaOikeatToiminto()} size="small"
-          variant="contained" color="primary">Lisää valinta</Button>  
+          </>
+          }
           </>
           }
          </div>

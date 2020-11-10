@@ -39,9 +39,28 @@ function TenttiUI() {
   const lisaaTentti=(tentinnimi)=>{
     let uusidata=nimi.concat()
     // uusidata[0].tentit.push({tentti: tentinnimi})
-    let uusitentti={tentti: tentinnimi}
+    let uusitentti={
+      tentti: tentinnimi,
+      kysymykset: []
+    }
     uusidata[0].tentit.push(uusitentti)
     setNimi(uusidata)
+  }
+
+  const kysymysmuokkaajat={
+    lisaakysymys: (kysymysteksti, idtentti)=>{
+      let uusidata=nimi.concat()
+      // uusidata[0].tentit.push({tentti: tentinnimi})
+      let uusikysymys={kysymys: kysymysteksti}
+      if( uusidata[0].tentit[idtentti].kysymykset === undefined ){
+        let uusikysymystaulu={
+          kysymykset: []
+        }
+        uusidata[0].tentit[idtentti].push(uusikysymystaulu)
+      }
+      uusidata[0].tentit[idtentti].kysymykset.push(uusikysymys)
+      setNimi(uusidata)  
+    }
   }
 
   const valintaToiminto=(event, idtentti, idkysymys, idvalinta)=>{
@@ -89,7 +108,7 @@ function TenttiUI() {
           <div key={index+"hallinnoija"}>Hallinnoija {rivi.etunimi} {rivi.sukunimi}
           { rivi.tentit &&
             <div>
-            <TenttiMuokkaus tentit={rivi.tentit} paluufunktio={valintaToiminto}
+            <TenttiMuokkaus tentit={rivi.tentit} paluufunktiot={kysymysmuokkaajat}
             lisaysPaluufunktio={lisaaTentti}></TenttiMuokkaus>
             </div>
           }
