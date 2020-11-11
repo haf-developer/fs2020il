@@ -79,9 +79,9 @@ function TenttiUI() {
       uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat.splice(idvalinta,1)
       setNimi(uusidata)
     },
-    muutavalinta: (idtentti, idkysymys, idvalinta, uusivalinta) => {
+    muutavalinta: (idtentti, idkysymys, uudetvalinnat) => {
       let uusidata = JSON.parse(JSON.stringify(nimi))
-      uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat[idvalinta]=uusivalinta
+      uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat=uudetvalinnat
       setNimi(uusidata)
     }
   }
