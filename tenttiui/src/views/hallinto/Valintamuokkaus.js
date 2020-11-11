@@ -24,8 +24,9 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, paluufunktiot})
   const hoidaVanhanMuutos=(event, index)=>{
     let muuttuvatvalinnat=vanhatvalinnat.concat()
     muuttuvatvalinnat[index].teksti=event.target.value
-    muuttuvatvalinnat[index].muutettu=true
-    setVanhatValinnat(muuttuvatvalinnat)
+    // muuttuvatvalinnat[index].muutettu=true
+    // setVanhatValinnat(muuttuvatvalinnat)
+    paluufunktiot.muutavalinta(tenttiid, kysymysid, index, muuttuvatvalinnat[index])
   }
 
   const lisaavalintaToiminto=()=>{
@@ -35,7 +36,6 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, paluufunktiot})
     setUusiValintaAlustettu(false)
   }
 
-
   const useStyles = makeStyles({
     valinta: {
       margin: "1em",
@@ -44,14 +44,28 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, paluufunktiot})
       outlineWidth: "1px",
     },
     vanhatvalinnat: {
-      width: "77vmax"
+      width: "80vmax",
+      outlineColor: "Black",
+      outlineStyle: "Solid",
+      outlineWidth: "1px"
     },
     roskis: {
-      margin: "1em",
-      float: "right",
+      float: "right"
+    },
+    valintakentta: {
+      alignContent: "Center",
+      alignItems: "Center",
+      verticalAlign: "Justified",
+      backgroundColor: "lightgrey",
+      margin: "4px",
+      padding: "2px",
+      outlineColor: "Black",
+      outlineStyle: "Shadow",
+      outlineWidth: "1px",
+      width: "70vmax"
     },
     tekstilaatikko: {
-      margin: "1em",
+      margin: "4px",
       width: "50vmax"
     }
   })
@@ -82,17 +96,14 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, paluufunktiot})
       vanhatvalinnat.map((valintarivi,vindex)=>{
         const oikeavastaus=valintarivi.oikein? valintarivi.oikein : false
         return(
-          <div key={vindex+"valinta"}>
+          <div className={classes.valintakentta} key={vindex+"valinta"}>
           <Checkbox color="default"
          id={valintarivi.id+"oikea"} defaultChecked={oikeavastaus}>  
          </Checkbox>
-         <TextField className={classes.tekstilaatikko} value={valintarivi.teksti} variant="outlined"
-         onChange={event=>hoidaVanhanMuutos(event,vindex)}></TextField>
-         { valintarivi.muutettu &&
-          <Button size="small" variant="contained" 
-          color="primary">Tallenna muutos</Button>
-         }
-         <DeleteForever className={classes.roskis}>Roskis</DeleteForever>
+         <TextField className={classes.tekstilaatikko} variant="outlined"
+         value={valintarivi.teksti} onChange={event=>hoidaVanhanMuutos(event,vindex)}></TextField>
+         <DeleteForever className={classes.roskis} 
+         onClick={()=>paluufunktiot.poistavalinta(tenttiid, kysymysid, vindex)}></DeleteForever>
          </div>
         )
         }
