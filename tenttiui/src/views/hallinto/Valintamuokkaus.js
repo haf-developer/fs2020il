@@ -10,7 +10,7 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, paluufunktiot})
   const [valintaamuutetaan, setValintaaMuutetaan]=useState()
   const [valintateksi, setValintaTeksti]=useState("Kirjoita uusi kysymys")
   const [uusivalintaalustettu, setUusiValintaAlustettu]=useState(false)
-  const [vanhatvalinnat, setVanhatValinnat]=useState(valinnat)
+  // const [vanhatvalinnat, setVanhatValinnat]=useState(valinnat)
   
   const hoidaLisatynValinnanMuutos=(event)=>{
     if(!uusivalintaalustettu){
@@ -22,11 +22,14 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, paluufunktiot})
   }
 
   const hoidaVanhanMuutos=(event, index)=>{
-    let muuttuvatvalinnat=vanhatvalinnat.concat()
-    muuttuvatvalinnat[index].teksti=event.target.value
+    // let muuttuvatvalinnat=vanhatvalinnat.concat()
+    // muuttuvatvalinnat[index].teksti=event.target.value
     // muuttuvatvalinnat[index].muutettu=true
     // setVanhatValinnat(muuttuvatvalinnat)
-    paluufunktiot.muutavalinta(tenttiid, kysymysid, index, muuttuvatvalinnat[index])
+    // paluufunktiot.muutavalinta(tenttiid, kysymysid, index, muuttuvatvalinnat[index])
+    let muutettuvalinta=valinnat[index]
+    muutettuvalinta.teksti=event.target.value
+    paluufunktiot.muutavalinta(tenttiid, kysymysid, index, muutettuvalinta)
   }
 
   const lisaavalintaToiminto=()=>{
@@ -92,8 +95,8 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, paluufunktiot})
       variant="contained" color="primary">Luo uusi valinta</Button>
       }
       <div className={classes.vanhatvalinnat}>
-      { vanhatvalinnat &&
-      vanhatvalinnat.map((valintarivi,vindex)=>{
+      { valinnat &&
+      valinnat.map((valintarivi,vindex)=>{
         const oikeavastaus=valintarivi.oikein? valintarivi.oikein : false
         return(
           <div className={classes.valintakentta} key={vindex+"valinta"}>
