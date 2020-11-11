@@ -1,4 +1,5 @@
 import { Button } from '@material-ui/core';
+import Fade from 'react-reveal/Fade';
 import KysymysMuokkaus from './Kysymysmuokkaus'
 import { useState } from 'react';
 
@@ -43,8 +44,10 @@ function TenttiMuokkaus({tentit, paluufunktiot, lisaysPaluufunktio}) {
     <input key="tenttinimi" type="text" value={uusitentti} onChange={event=>hoidaMuutos(event)}></input>
     </div>
     { (naytatentti !==undefined ) &&
+    <Fade left>
       <KysymysMuokkaus key={naytatentti+"nt"} kysymykset={tentit[naytatentti].kysymykset}
       tenttiid={naytatentti} paluufunktiot={paluufunktiot}></KysymysMuokkaus>
+      </Fade>
     }
     </div>
   )

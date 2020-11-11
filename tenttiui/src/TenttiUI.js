@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import alustusdata from './testi/testidata'
 import { AppBar, Button, Toolbar } from '@material-ui/core';
-// import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import './TenttiUI.css';
 import TenttiLista from './views/Tenttilista'
 import TenttiMuokkaus from './views/hallinto/Tenttimuokkaus'
@@ -95,6 +95,21 @@ function TenttiUI() {
     setNimi(uusidata)
   }
 
+  const useStyles = makeStyles({
+    root: {
+      flexGrow: 1
+    },
+    painike: {
+      flexGrow: 1,
+      edge: "end",
+      '&:hover': {
+        backgroundColor: "#808080"
+      },
+    }
+  })
+
+  const classes = useStyles()
+
   return (
     <div className="App">
     <title>Tenttisovellus</title>
@@ -102,7 +117,7 @@ function TenttiUI() {
       <Toolbar>
         <Button variant="containedPrimary" color="inherit">Kirjaudu</Button>
         <Button variant="containedPrimary" color="inherit">Rekisteröidy</Button>
-        <Button variant="containedPrimary" color="inherit">Tietoa sovelluksesta</Button>
+        <Button className={classes.painike} edge="end" variant="containedPrimary" color="inherit">Tietoa sovelluksesta</Button>
       </Toolbar>
     </AppBar>
 
