@@ -61,7 +61,7 @@ function TenttiUI() {
       uusidata[0].tentit[idtentti].kysymykset.push(uusikysymys)
       setNimi(uusidata)
     },
-    lisaavalinta: (idtentti,idkysymys,lisattavavalinta)=>{
+    lisaavalinta: (idtentti, idkysymys, lisattavavalinta)=>{
       let uusidata=nimi.concat()
       if( uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat === undefined ){
         /*
@@ -72,6 +72,16 @@ function TenttiUI() {
         uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat=[]
       }
       uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat.push(lisattavavalinta)
+      setNimi(uusidata)
+    },
+    poistavalinta: (idtentti, idkysymys, idvalinta) => {
+      let uusidata = JSON.parse(JSON.stringify(nimi))
+      uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat.splice(idvalinta,1)
+      setNimi(uusidata)
+    },
+    muutavalinta: (idtentti, idkysymys, idvalinta, uusivalinta) => {
+      let uusidata = JSON.parse(JSON.stringify(nimi))
+      uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat[idvalinta]=uusivalinta
       setNimi(uusidata)
     }
   }

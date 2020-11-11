@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
+import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
 
@@ -21,6 +22,8 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, paluufunktiot})
   const lisaavalintaToiminto=()=>{
     const lisattavavalinta={valittu: false, teksti: valintateksi}
     paluufunktiot.lisaavalinta(tenttiid,kysymysid,lisattavavalinta)
+    setValintaaMuutetaan()
+    setUusiValintaAlustettu(false)
   }
 
   let valintamuutos=[]
@@ -38,15 +41,20 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, paluufunktiot})
 
   const useStyles = makeStyles({
     valinta: {
+      margin: "1em",
       outlineColor: "Black",
       outlineStyle: "Solid",
       outlineWidth: "1px",
     },
     roskis: {
+      margin: "1em",
       justifySelf: "center",
       alignSelf: "lastbaseline",
       color: "Black",
       backgroundColor: "Red"
+    },
+    tekstilaatikko: {
+      margin: "1em"
     }
   })
 
@@ -74,7 +82,7 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, paluufunktiot})
           <Checkbox color="default"
          id={valintarivi.id+"oikea"} defaultChecked={oikeavastaus}>  
          </Checkbox>
-         {valintarivi.teksti}
+         <TextField className={classes.tekstilaatikko} value={valintarivi.teksti} variant="outlined"></TextField>
          <Button className={classes.roskis}>Roskis</Button>
          </div>
         )
