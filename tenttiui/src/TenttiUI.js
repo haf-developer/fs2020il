@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import alustusdata from './testi/testidata'
+import axios from 'axios'
 import { AppBar, Button, Toolbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import './TenttiUI.css';
@@ -8,91 +9,110 @@ import TenttiMuokkaus from './views/hallinto/Tenttimuokkaus'
 
 function TenttiUI() {
 
-  const [nimi, setNimi]=useState()
+  const [data, setData]=useState()
   const [dataAlustettu, setDataAlustettu]=useState(false)
   const [hallinnointiTila, setHallinnointi]=useState(true)
 
-  useEffect(()=>{
+  const haestoragesta=()=>{
     const storage=window.localStorage
-
     let alkudata=undefined
     // storage.setItem( 'nimidata', JSON.stringify(alkudata) )
-    alkudata=storage.getItem('nimidata')
+    alkudata=storage.getItem('tenttidata')
     if(!alkudata){
-      storage.setItem( 'nimidata', JSON.stringify(alustusdata) )
+      storage.setItem( 'tenttidata', JSON.stringify(alustusdata) )
       alkudata=JSON.stringify(alustusdata)
     }else if(alkudata==='undefined' || alkudata===null){
       storage.setItem( 'nimidata', JSON.stringify(alustusdata) )
       alkudata=JSON.stringify(alustusdata)
     }
     alkudata=JSON.parse(alkudata)
-    setNimi(alkudata)
-    setDataAlustettu(true)    
+    return alkudata
+  }
+
+  useEffect(()=>{
+    // const alkudata=haestoragesta()
+    let alkudata
+    axios.get('http://localhost:3001/tentit')
+      .then(response => {
+        return response.data
+      })
+      .then(dbdata => {
+        alkudata=dbdata
+        console.log(dbdata);
+        setData(alkudata)
+        setDataAlustettu(true)    
+          }).catch(err => {
+        console.error('fetch failed', err);
+      });
   },[])
 
   useEffect(()=>{
     if(dataAlustettu){
-      window.localStorage.setItem( 'nimidata', JSON.stringify(nimi) )
+      window.localStorage.setItem( 'tenttidata', JSON.stringify(data) )
     }
-  },[nimi])
+  },[data])
 
   const lisaaTentti=(tentinnimi)=>{
-    let uusidata=nimi.concat()
+    let uusidata=data.concat()
     // uusidata[0].tentit.push({tentti: tentinnimi})
     let uusitentti={
       tentti: tentinnimi,
       kysymykset: []
     }
-    uusidata[0].tentit.push(uusitentti)
-    setNimi(uusidata)
+    axios.post('http://localhost:3001/tentit', uusitentti)
+      .then(response => {
+        console.log(response)
+        uusidata.push(uusitentti)
+        setData(uusidata)    
+      })
   }
 
   const kysymysmuokkaajat={
     lisaakysymys: (kysymysteksti, idtentti)=>{
-      let uusidata=nimi.concat()
+      let uusidata=data.concat()
       // uusidata[0].tentit.push({tentti: tentinnimi})
       let uusikysymys={kysymys: kysymysteksti}
-      if( uusidata[0].tentit[idtentti].kysymykset === undefined ){
+      if( uusidata.tentit[idtentti].kysymykset === undefined ){
         let uusikysymystaulu={
           kysymykset: []
         }
-        uusidata[0].tentit[idtentti].push(uusikysymystaulu)
+        uusidata.tentit[idtentti].push(uusikysymystaulu)
       }
-      uusidata[0].tentit[idtentti].kysymykset.push(uusikysymys)
-      setNimi(uusidata)
+      uusidata.tentit[idtentti].kysymykset.push(uusikysymys)
+      setData(uusidata)
     },
     lisaavalinta: (idtentti, idkysymys, lisattavavalinta)=>{
-      let uusidata=nimi.concat()
-      if( uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat === undefined ){
+      let uusidata=data.concat()
+      if( uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat === undefined ){
         /*
         let uusivalintataulu={
           valinnat: []
         }
         */
-        uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat=[]
+        uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat=[]
       }
-      uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat.push(lisattavavalinta)
-      setNimi(uusidata)
+      uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat.push(lisattavavalinta)
+      setData(uusidata)
     },
     poistavalinta: (idtentti, idkysymys, idvalinta) => {
-      let uusidata = JSON.parse(JSON.stringify(nimi))
-      uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat.splice(idvalinta,1)
-      setNimi(uusidata)
+      let uusidata = JSON.parse(JSON.stringify(data))
+      uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat.splice(idvalinta,1)
+      setData(uusidata)
     },
     muutavalinta: (idtentti, idkysymys, idvalinta, muutettuvalinta) => {
-      let uusidata = JSON.parse(JSON.stringify(nimi))
-      uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat[idvalinta]=muutettuvalinta
-      setNimi(uusidata)
+      let uusidata = JSON.parse(JSON.stringify(data))
+      uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat[idvalinta]=muutettuvalinta
+      setData(uusidata)
     }
   }
 
   const valintaToiminto=(event, idtentti, idkysymys, idvalinta)=>{
     console.log("valintaToiminto idvalinta=", idvalinta)
     console.log("valintaToiminto event.target.checked=", event.target.checked)
-    let uusidata=nimi.concat()
+    let uusidata=data.concat()
     console.log("uusidata=", uusidata)
-    uusidata[0].tentit[idtentti].kysymykset[idkysymys].valinnat[idvalinta].valittu=event.target.checked
-    setNimi(uusidata)
+    uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat[idvalinta].valittu=event.target.checked
+    setData(uusidata)
   }
 
   const useStyles = makeStyles({
@@ -123,8 +143,8 @@ function TenttiUI() {
 
     { !hallinnointiTila && 
     <div>
-      { nimi &&
-      nimi.map((rivi, index) =>{
+      { data &&
+      data.map((rivi, index) =>{
         return(
           <div key={index+"kokelasrivi"}>Suorittaja {rivi.etunimi} {rivi.sukunimi}
           { rivi.tentit &&
@@ -140,19 +160,11 @@ function TenttiUI() {
     }
     { hallinnointiTila && 
       <div>
-      { nimi &&
-      nimi.map((rivi, index) =>{
-        return(
-          <div key={index+"hallinnoija"}>Hallinnoija {rivi.etunimi} {rivi.sukunimi}
-          { rivi.tentit &&
-            <div>
-            <TenttiMuokkaus tentit={rivi.tentit} paluufunktiot={kysymysmuokkaajat}
-            lisaysPaluufunktio={lisaaTentti}></TenttiMuokkaus>
-            </div>
-          }
-          </div>
-          )
-        })
+      { data &&
+        <div>
+        <TenttiMuokkaus tentit={data} paluufunktiot={kysymysmuokkaajat}
+        lisaysPaluufunktio={lisaaTentti}></TenttiMuokkaus>
+        </div>          
       }
       </div>
     }

@@ -1,0 +1,59 @@
+{
+  "tentit": [
+    {
+    "id": 1,
+    "tentti": "Testi",
+    "kysymykset": [
+      {
+      "id": 1,
+      "kysymys": "Onko oikeaa vastausta",
+      "valinnat": [
+        { "id": 1, "teksti": "Ei"},
+        { "id": 2, "teksti": "Melko varmasti"},
+        { "id": 3, "teksti": "On", "oikein": true }
+        ]
+      },
+      {
+        "id": 2,
+        "kysymys": "Varmistava kysymys",
+        "valinnat": [
+          { "id": 1, "teksti": "Ei"},
+          { "id": 2, "teksti": "Melko varmasti"},
+          { "id": 3, "teksti": "On", "oikein": true }
+          ]
+        }
+        ]
+    },
+    {
+      "id": 2,
+      "tentti": "Tosi Testi",
+      "kysymykset": [
+        {
+        "id": 1,
+        "kysymys": "Onko hampaat pesty",
+        "valinnat": [
+          { "id": 1, "teksti": "Ehkä", "oikein": true},
+          { "id": 2, "teksti": "Melko varmasti", "oikein": true}
+          ]
+        }
+        ]
+      },
+      {
+        "id": 3,
+        "tentti": "Kolmas Testi",
+        "kysymykset": [
+          {
+          "id": 1,
+          "kysymys": "Pesitkö kädet",
+          "valinnat": [
+            { "id": 1, "teksti": "Ehkä", "oikein": true},
+            { "id": 2, "teksti": "Kyllä", "oikein": true}
+            ]
+          }
+          ]
+        }
+    ],
+  "profile": {
+    "name": "typicode"
+  }
+}

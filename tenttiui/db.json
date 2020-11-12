@@ -1,0 +1,13 @@
+{
+  "tentit": [
+    {
+      "id": 1,
+      "tentti": "Testi"
+    },
+    {
+      "tentti": "Kannat 1",
+      "kysymykset": [],
+      "id": 2
+    }
+  ]
+}

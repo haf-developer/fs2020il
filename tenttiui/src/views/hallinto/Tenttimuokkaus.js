@@ -26,7 +26,7 @@ function TenttiMuokkaus({tentit, paluufunktiot, lisaysPaluufunktio}) {
   }
 
 
-
+  console.log("tentit=", tentit)
   return(
     <div>
     <div className="TriplaRinnakkaiset">
