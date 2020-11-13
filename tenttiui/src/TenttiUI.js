@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useReducer } from 'react';
 import alustusdata from './testi/testidata'
 import axios from 'axios'
 import { AppBar, Button, Toolbar } from '@material-ui/core';
@@ -7,9 +7,20 @@ import './TenttiUI.css';
 import TenttiLista from './views/Tenttilista'
 import TenttiMuokkaus from './views/hallinto/Tenttimuokkaus'
 
-function TenttiUI() {
+function reducer(state, action) {
+  switch (action.type){
+    case "INIT_DATA":
+      return action.data
+    case "VALINTA_MUUTTUI":
+      return null
+    default:
+      throw new Error()
+  }
+}
 
-  const [data, setData]=useState()
+function TenttiUI() {
+  const [state, dispatch] = useReducer(reducer, []);
+  // const [data, setData]=useState()
   const [dataAlustettu, setDataAlustettu]=useState(false)
   const [hallinnointiTila, setHallinnointi]=useState(true)
 
@@ -39,7 +50,8 @@ function TenttiUI() {
       .then(dbdata => {
         alkudata=dbdata
         console.log(dbdata);
-        setData(alkudata)
+        dispatch({ type: "INIT_DATA", data: alkudata })
+        // setData(alkudata)
         setDataAlustettu(true)    
           }).catch(err => {
         console.error('fetch failed', err);
@@ -48,12 +60,12 @@ function TenttiUI() {
 
   useEffect(()=>{
     if(dataAlustettu){
-      window.localStorage.setItem( 'tenttidata', JSON.stringify(data) )
+      window.localStorage.setItem( 'tenttidata', JSON.stringify(state.data) )
     }
-  },[data])
+  },[state])
 
   const lisaaTentti=(tentinnimi)=>{
-    let uusidata=data.concat()
+    let uusidata=state.data.concat()
     // uusidata[0].tentit.push({tentti: tentinnimi})
     let uusitentti={
       tentti: tentinnimi,
@@ -63,13 +75,13 @@ function TenttiUI() {
       .then(response => {
         console.log(response)
         uusidata.push(uusitentti)
-        setData(uusidata)    
+        // setData(uusidata)
       })
   }
 
   const kysymysmuokkaajat={
     lisaakysymys: (kysymysteksti, idtentti)=>{
-      let uusidata=data.concat()
+      let uusidata=state.data.concat()
       // uusidata[0].tentit.push({tentti: tentinnimi})
       let uusikysymys={kysymys: kysymysteksti}
       if( uusidata.tentit[idtentti].kysymykset === undefined ){
@@ -79,10 +91,10 @@ function TenttiUI() {
         uusidata.tentit[idtentti].push(uusikysymystaulu)
       }
       uusidata.tentit[idtentti].kysymykset.push(uusikysymys)
-      setData(uusidata)
+      // setData(uusidata)
     },
     lisaavalinta: (idtentti, idkysymys, lisattavavalinta)=>{
-      let uusidata=data.concat()
+      let uusidata=state.data.concat()
       if( uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat === undefined ){
         /*
         let uusivalintataulu={
@@ -92,32 +104,33 @@ function TenttiUI() {
         uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat=[]
       }
       uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat.push(lisattavavalinta)
-      setData(uusidata)
+      // setData(uusidata)
     },
     poistavalinta: (idtentti, idkysymys, idvalinta) => {
-      let uusidata = JSON.parse(JSON.stringify(data))
+      let uusidata = JSON.parse(JSON.stringify(state.data))
       uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat.splice(idvalinta,1)
-      setData(uusidata)
+      // setData(uusidata)
     },
     muutavalinta: (idtentti, idkysymys, idvalinta, muutettuvalinta) => {
-      let uusidata = JSON.parse(JSON.stringify(data))
+      let uusidata = JSON.parse(JSON.stringify(state.data))
       uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat[idvalinta]=muutettuvalinta
-      setData(uusidata)
+      // setData(uusidata)
     }
   }
 
   const valintaToiminto=(event, idtentti, idkysymys, idvalinta)=>{
     console.log("valintaToiminto idvalinta=", idvalinta)
     console.log("valintaToiminto event.target.checked=", event.target.checked)
-    let uusidata=data.concat()
+    let uusidata=state.data.concat()
     console.log("uusidata=", uusidata)
     uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat[idvalinta].valittu=event.target.checked
-    setData(uusidata)
+    // setData(uusidata)
   }
 
   const useStyles = makeStyles({
     root: {
-      flexGrow: 1
+      flexGrow: 1,
+      color: "primary"
     },
     painike: {
       flexGrow: 1,
@@ -130,21 +143,25 @@ function TenttiUI() {
 
   const classes = useStyles()
 
+  console.log("state=", state)
+  console.log("hallinnointitila=", hallinnointiTila)
+
   return (
     <div className="App">
     <title>Tenttisovellus</title>
-    <AppBar position="static">
+    <AppBar position="static" className={classes.root} color="primary">
       <Toolbar>
-        <Button variant="containedPrimary" color="inherit">Kirjaudu</Button>
-        <Button variant="containedPrimary" color="inherit">Rekisteröidy</Button>
-        <Button className={classes.painike} edge="end" variant="containedPrimary" color="inherit">Tietoa sovelluksesta</Button>
+        <Button variant="contained" color="inherit">Kirjaudu</Button>
+        <Button variant="contained" color="inherit">Rekisteröidy</Button>
+        <Button className={classes.painike} edge="end" variant="contained"
+        color="inherit">Tietoa sovelluksesta</Button>
       </Toolbar>
     </AppBar>
 
     { !hallinnointiTila && 
     <div>
-      { data &&
-      data.map((rivi, index) =>{
+      { state &&
+      state.map((rivi, index) =>{
         return(
           <div key={index+"kokelasrivi"}>Suorittaja {rivi.etunimi} {rivi.sukunimi}
           { rivi.tentit &&
@@ -160,9 +177,9 @@ function TenttiUI() {
     }
     { hallinnointiTila && 
       <div>
-      { data &&
+      { state &&
         <div>
-        <TenttiMuokkaus tentit={data} paluufunktiot={kysymysmuokkaajat}
+        <TenttiMuokkaus tentit={state} paluufunktiot={kysymysmuokkaajat}
         lisaysPaluufunktio={lisaaTentti}></TenttiMuokkaus>
         </div>          
       }
