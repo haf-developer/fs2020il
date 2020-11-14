@@ -2,7 +2,8 @@ import { useEffect, useState, useReducer } from 'react';
 import alustusdata from './testi/testidata'
 import axios from 'axios'
 import { AppBar, Button, Toolbar } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
+// import { palette } from '@material-ui/system';
 import './TenttiUI.css';
 import TenttiLista from './views/Tenttilista'
 import TenttiMuokkaus from './views/hallinto/Tenttimuokkaus'
@@ -74,8 +75,11 @@ function TenttiUI() {
     axios.post('http://localhost:3001/tentit', uusitentti)
       .then(response => {
         console.log(response)
+        uusitentti=response.data
         uusidata.push(uusitentti)
         // setData(uusidata)
+      }).catch(err => {
+        console.error('lisays epäonnistui', err);
       })
   }
 
@@ -127,16 +131,72 @@ function TenttiUI() {
     // setData(uusidata)
   }
 
+  const theme=createMuiTheme(
+  {
+    overrides: {
+      MuiButton: {
+        root: {
+          backgroundColor: "blue"
+        }
+      }
+    },
+    props: {
+      MuiButton: {
+        variant: "contained",
+        color: "inherit",
+        /*
+        backgroundColor: "green"
+        */
+      }
+    }
+  }
+  )
+
+  // const vari=palette.bgcolor
+
   const useStyles = makeStyles({
     root: {
-      flexGrow: 1,
-      color: "primary"
+      contained: {
+        Button: {
+          backgroundColor: "red"
+        }
+      },
+      Button: {
+        color: "black",
+        contained: {
+          color: "black",
+          backgroundColor: "red"
+        },
+        backgroundColor: "red"
+      },
+      '&:Button': {
+        backgroundColor: "red"
+      },
+     /*
+      display: "flex",
+     backgroundColor: theme.palette.grey[200],
+     */
+     backgroundColor: "black",
+    },
+    tyokalubaari: {
+      justifyContent: "flexend",
+      justifyItems: "flexend",
+      backgroundColor: theme.palette.success.dark,
     },
     painike: {
       flexGrow: 1,
+      alignSelf: "flexend",
+      marginLeft: "70%",
+      backgroundColor: theme.palette.primary.light,
+      /*
+      justifyContent: "flexend",
       edge: "end",
+      */
       '&:hover': {
+        backgroundColor: theme.palette.primary.dark,
+        /*
         backgroundColor: "#808080"
+        */
       },
     }
   })
@@ -147,10 +207,10 @@ function TenttiUI() {
   console.log("hallinnointitila=", hallinnointiTila)
 
   return (
-    <div className="App">
+    <div className={classes.root}>
     <title>Tenttisovellus</title>
-    <AppBar position="static" className={classes.root} color="primary">
-      <Toolbar>
+    <AppBar position="static" color="primary">
+      <Toolbar className={classes.tyokalubaari}>
         <Button variant="contained" color="inherit">Kirjaudu</Button>
         <Button variant="contained" color="inherit">Rekisteröidy</Button>
         <Button className={classes.painike} edge="end" variant="contained"
