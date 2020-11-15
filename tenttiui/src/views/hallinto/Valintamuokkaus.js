@@ -5,7 +5,7 @@ import {DeleteForever} from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
 
-function ValintaMuokkaus({tenttiid, kysymysid, valinnat, paluufunktiot})
+function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch, paluufunktiot})
 {
   const [valintaamuutetaan, setValintaaMuutetaan]=useState()
   const [valintateksi, setValintaTeksti]=useState("Kirjoita uusi kysymys")

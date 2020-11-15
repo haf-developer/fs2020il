@@ -6,7 +6,7 @@ import ValintaMuokkaus from './Valintamuokkaus'
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
 
-function KysymysMuokkaus({kysymykset, tenttiid, paluufunktiot}) {
+function KysymysMuokkaus({kysymykset, tenttiid, dispatch, paluufunktiot}) {
   const [naytaoikeat, setNaytaOikeat]=useState(true)
   const [kysymysteksi, setKysymysTeksti]=useState("Kirjoita uusi kysymys")
   const [uusikysymysalustettu, setUusiKysymysAlustettu]=useState(false)
@@ -62,7 +62,7 @@ function KysymysMuokkaus({kysymykset, tenttiid, paluufunktiot}) {
           <>
           <div>
           <ValintaMuokkaus tenttiid={tenttiid} kysymysid={index}
-          valinnat={rivi.valinnat} paluufunktiot={paluufunktiot}></ValintaMuokkaus>
+          valinnat={rivi.valinnat} dispatch={dispatch} paluufunktiot={paluufunktiot}></ValintaMuokkaus>
           </div>
           </>
           }
@@ -79,9 +79,5 @@ function KysymysMuokkaus({kysymykset, tenttiid, paluufunktiot}) {
     </Card>     
   )
 }
-
-/*
- onClick={()=>naytaOikeatToiminto()}
- */
 
 export default KysymysMuokkaus

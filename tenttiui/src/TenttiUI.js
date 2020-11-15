@@ -9,10 +9,55 @@ import TenttiLista from './views/Tenttilista'
 import TenttiMuokkaus from './views/hallinto/Tenttimuokkaus'
 
 function reducer(state, action) {
+  let uusidata = state? 
+    (
+      state.data ? {data:JSON.parse(JSON.stringify(state.data))
+        ,paluufunktio:state.paluufunktio}
+      :[]
+    )
+    :[]
   switch (action.type){
-    case "INIT_DATA":
+    case 'increment':
+      return {count: state.count + 1};
+    case 'decrement':
+      return {count: state.count - 1};
+    case "INIT_DATA":{
+      // state.paluufunktio=action.paluufunktio
       return action.data
-    case "VALINTA_MUUTTUI":
+      }
+    case "TENTIN_LISAYS":{
+      console.log("reducer TENTIN_LISAYS")
+      let uusitentti={
+        tentti: action.tentinnimi,
+        kysymykset: []
+      }
+
+      Promise.all([axios.post('http://localhost:3001/tentit', uusitentti)
+        .then(response => {
+          console.log(response)
+          uusitentti=response.data
+          uusidata.data.push(uusitentti)
+          // reducer( state,{ type: "INIT_DATA", data: uusidata }) 
+          // state.data=uusidata
+          console.log("reducer TENTIN_LISAYS tentti lisatty")
+          console.log("reducer TENTIN_LISAYS paluufunktio=", uusidata.paluufunktio)
+
+          return uusidata
+          }).catch(err => {
+            console.error('TENTIN_LISAYS epäonnistui', err);
+            })
+          ]).then( promisendataa=>{
+            console.log("reducer TENTIN_LISAYS promise all fullfilled promisendataa=", promisendataa)
+            // state.paluufunktio({data: promisendataa.data, paluufunktio:promisendataa.paluufunktio})
+            state.paluufunktio(promisendataa[0])
+          }).catch( err=>{
+            console.log("reducer TENTIN_LISAYS promise all rejected", err)
+            console.error('TENTIN_LISAYS promise all epäonnistui', err);
+          })
+        console.log("reducer TENTIN_LISAYS datan palautus")
+        return uusidata
+      }
+    case "VALINNAN_TEKSTI_MUUTTUI":
       return null
     default:
       throw new Error()
@@ -20,7 +65,7 @@ function reducer(state, action) {
 }
 
 function TenttiUI() {
-  const [state, dispatch] = useReducer(reducer, []);
+  const [state, dispatch] = useReducer(reducer, undefined);
   // const [data, setData]=useState()
   const [dataAlustettu, setDataAlustettu]=useState(false)
   const [hallinnointiTila, setHallinnointi]=useState(true)
@@ -41,16 +86,21 @@ function TenttiUI() {
     return alkudata
   }
 
+  const reducerpaluufunktio=(uusidatatilaan)=>{
+    console.log("reducerpaluufunktio")
+    dispatch({ type: "INIT_DATA", data: uusidatatilaan })
+  }
+
   useEffect(()=>{
     // const alkudata=haestoragesta()
-    let alkudata
     axios.get('http://localhost:3001/tentit')
       .then(response => {
         return response.data
       })
       .then(dbdata => {
-        alkudata=dbdata
         console.log(dbdata);
+        const alkudata={data:dbdata,
+          paluufunktio:reducerpaluufunktio}
         dispatch({ type: "INIT_DATA", data: alkudata })
         // setData(alkudata)
         setDataAlustettu(true)    
@@ -60,28 +110,12 @@ function TenttiUI() {
   },[])
 
   useEffect(()=>{
+    console.log("use effect state muuttui")
     if(dataAlustettu){
-      window.localStorage.setItem( 'tenttidata', JSON.stringify(state.data) )
+      // window.localStorage.setItem( 'tenttidata', JSON.stringify(state.data) )
     }
   },[state])
 
-  const lisaaTentti=(tentinnimi)=>{
-    let uusidata=state.data.concat()
-    // uusidata[0].tentit.push({tentti: tentinnimi})
-    let uusitentti={
-      tentti: tentinnimi,
-      kysymykset: []
-    }
-    axios.post('http://localhost:3001/tentit', uusitentti)
-      .then(response => {
-        console.log(response)
-        uusitentti=response.data
-        uusidata.push(uusitentti)
-        // setData(uusidata)
-      }).catch(err => {
-        console.error('lisays epäonnistui', err);
-      })
-  }
 
   const kysymysmuokkaajat={
     lisaakysymys: (kysymysteksti, idtentti)=>{
@@ -143,10 +177,10 @@ function TenttiUI() {
     props: {
       MuiButton: {
         variant: "contained",
-        color: "inherit",
         /*
-        backgroundColor: "green"
+        color: "default",
         */
+        backgroundColor: "green"
       }
     }
   }
@@ -176,18 +210,18 @@ function TenttiUI() {
       display: "flex",
      backgroundColor: theme.palette.grey[200],
      */
-     backgroundColor: "black",
+     backgroundColor: theme.palette.grey[300],
     },
     tyokalubaari: {
       justifyContent: "flexend",
       justifyItems: "flexend",
-      backgroundColor: theme.palette.success.dark,
+      backgroundColor: theme.palette.primary.main,
     },
     painike: {
       flexGrow: 1,
       alignSelf: "flexend",
       marginLeft: "70%",
-      backgroundColor: theme.palette.primary.light,
+      backgroundColor: theme.palette.primary.main,
       /*
       justifyContent: "flexend",
       edge: "end",
@@ -203,17 +237,18 @@ function TenttiUI() {
 
   const classes = useStyles()
 
-  console.log("state=", state)
-  console.log("hallinnointitila=", hallinnointiTila)
+  // console.log("state=", state)
+  console.log("rendaus hallinnointitila=", hallinnointiTila)
 
   return (
     <div className={classes.root}>
     <title>Tenttisovellus</title>
-    <AppBar position="static" color="primary">
-      <Toolbar className={classes.tyokalubaari}>
-        <Button variant="contained" color="inherit">Kirjaudu</Button>
+    <AppBar position="static"
+    style={{backgroundColor: "blue"}}>
+      <Toolbar className={classes.tyokalubaari} >
+        <Button variant="contained" color="inherit" style={{backgroundColor: "blue"}}>Kirjaudu</Button>
         <Button variant="contained" color="inherit">Rekisteröidy</Button>
-        <Button className={classes.painike} edge="end" variant="contained"
+        <Button className={classes.painike} variant="contained"
         color="inherit">Tietoa sovelluksesta</Button>
       </Toolbar>
     </AppBar>
@@ -240,7 +275,7 @@ function TenttiUI() {
       { state &&
         <div>
         <TenttiMuokkaus tentit={state} paluufunktiot={kysymysmuokkaajat}
-        lisaysPaluufunktio={lisaaTentti}></TenttiMuokkaus>
+        dispatch={dispatch}></TenttiMuokkaus>
         </div>          
       }
       </div>

@@ -3,7 +3,7 @@ import Fade from 'react-reveal/Fade';
 import KysymysMuokkaus from './Kysymysmuokkaus'
 import { useState } from 'react';
 
-function TenttiMuokkaus({tentit, paluufunktiot, lisaysPaluufunktio}) {
+function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
   const [naytatentti, setNaytaTentti]=useState()
   const [uusitentti, setUusiTentti]=useState("tentin nimi tähän")
   const [tenttialustus, setTenttiAlustus]=useState(false)
@@ -31,7 +31,7 @@ function TenttiMuokkaus({tentit, paluufunktiot, lisaysPaluufunktio}) {
     <div>
     <div className="TriplaRinnakkaiset">
       {tentit &&
-      tentit.map((rivi, index)=>{
+      tentit.data.map((rivi, index)=>{
         return(
           <Button key={index+"tenttilista"} color="primary" onClick={()=>naytaTenttiToiminto(index)}>
             {rivi.tentti}</Button>
@@ -39,14 +39,14 @@ function TenttiMuokkaus({tentit, paluufunktiot, lisaysPaluufunktio}) {
       )
       }
     <Button key="tenttilisaaja" variant="contained" color="primary"
-    disabled={!tenttialustus} onClick={()=>lisaysPaluufunktio(uusitentti)}>
+    disabled={!tenttialustus} onClick={()=>dispatch({type: "TENTIN_LISAYS", tentinnimi: uusitentti} )} >
       Lisää tentti</Button>
     <input key="tenttinimi" type="text" value={uusitentti} onChange={event=>hoidaMuutos(event)}></input>
     </div>
     { (naytatentti !==undefined ) &&
     <Fade left>
-      <KysymysMuokkaus key={naytatentti+"nt"} kysymykset={tentit[naytatentti].kysymykset}
-      tenttiid={tentit[naytatentti].id} paluufunktiot={paluufunktiot}></KysymysMuokkaus>
+      <KysymysMuokkaus key={naytatentti+"nt"} kysymykset={tentit.data[naytatentti].kysymykset}
+      tenttiid={tentit.data[naytatentti].id} dispatch={dispatch} paluufunktiot={paluufunktiot}></KysymysMuokkaus>
       </Fade>
     }
     </div>
