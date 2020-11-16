@@ -15,14 +15,29 @@
       "id": 3
     },
     {
-      "tentti": "Toimivuus",
+      "tentti": "kannat 3",
       "kysymykset": [],
-      "id": 11
+      "id": 4
     },
     {
-      "tentti": "yks viel",
+      "tentti": "kannat 4",
       "kysymykset": [],
-      "id": 14
+      "id": 5
+    },
+    {
+      "tentti": "kannat 5",
+      "kysymykset": [],
+      "id": 6
+    },
+    {
+      "tentti": "kannat 6",
+      "kysymykset": [],
+      "id": 7
+    },
+    {
+      "tentti": "kannat 7",
+      "kysymykset": [],
+      "id": 8
     }
   ]
 }

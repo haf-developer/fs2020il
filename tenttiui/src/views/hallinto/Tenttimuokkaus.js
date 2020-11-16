@@ -1,6 +1,6 @@
-import { Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import Fade from 'react-reveal/Fade';
-import {Delete} from '@material-ui/icons';
+import {Delete, AddCircle} from '@material-ui/icons';
 import KysymysMuokkaus from './Kysymysmuokkaus'
 import { useState } from 'react';
 
@@ -8,14 +8,25 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
   const [naytatentti, setNaytaTentti]=useState()
   const [uusitentti, setUusiTentti]=useState("tentin nimi tähän")
   const [tenttialustus, setTenttiAlustus]=useState(false)
+  const [naytasyote, setNaytaSyote]=useState(false)
+  const [naytalisays, setNaytaLisays]=useState(true)
 
   const hoidaMuutos=(event)=>{
     if(!tenttialustus){
-      setTenttiAlustus(true)
-      setUusiTentti("")
-    }else{
-      setUusiTentti(event.target.value)
+      if(uusitentti.length>2 ){
+        dispatch({type: "TENTIN_LISAYS", tentinnimi: uusitentti} )
+        setTenttiAlustus(true)
+      }
     }
+    // dispatch({type: "TENTIN_NIMEN_MUUTOS", tentinnimi: uusitentti, idtentti: id} )
+
+    setUusiTentti(event.target.value)
+  }
+
+  const hoidaNaytaSyote=()=>{
+    setNaytaSyote(true)
+    setNaytaLisays(false)
+    setUusiTentti("")
   }
 
   const naytaTenttiToiminto=(tenttiid)=>{
@@ -42,10 +53,14 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
         )}
       )
       }
-    <Button key="tenttilisaaja" variant="contained" color="primary"
-    disabled={!tenttialustus} onClick={()=>dispatch({type: "TENTIN_LISAYS", tentinnimi: uusitentti} )} >
-      Lisää tentti</Button>
-    <input key="tenttinimi" type="text" value={uusitentti} onChange={event=>hoidaMuutos(event)}></input>
+    { naytasyote &&
+      <TextField key="tenttinimi" id="outlined-basic" variant="outlined"
+        value={uusitentti} onChange={event=>hoidaMuutos(event)}></TextField>  
+    }
+    { naytalisays &&
+      <AddCircle key="tenttilisaaja" variant="contained" color="primary"
+      onClick={()=>hoidaNaytaSyote()} >Lisää tentti</AddCircle>  
+    }
     </div>
     { (naytatentti !==undefined ) &&
     <Fade left>
