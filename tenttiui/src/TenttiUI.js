@@ -25,6 +25,27 @@ function reducer(state, action) {
       // state.paluufunktio=action.paluufunktio
       return action.data
       }
+    case 'TENTIN_POISTO':{
+      console.log("reducer TENTIN_POISTO idtentti=", action.idtentti)
+      axios.delete(`http://localhost:3001/tentit/${action.idtentti}`)
+        .then(response => {
+          console.log("TENTIN_POISTO response=", response)
+        }).catch(err => {
+          console.log('TENTIN_POISTO epäonnistui', err);
+          // console.error('TENTIN_POISTO epäonnistui', err);
+        })
+        console.log("reducer TENTIN_poisto datan palautus uusidata=", uusidata)
+        if( uusidata.data !== undefined){
+          const poistaindex=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.idtentti } )
+          console.log("reducer TENTIN_poisto datan palautus splice poistaindex=", poistaindex)
+          uusidata.data=uusidata.data.splice(poistaindex, 1)
+          console.log("reducer TENTIN_poisto datan palautus splice uusidata=", uusidata)
+        }else{
+          console.log("reducer TENTIN_poisto datan palautus uusidata ongelma=", uusidata)
+        }
+        console.log("reducer TENTIN_poisto datan palautus")
+        return uusidata
+      }
     case "TENTIN_LISAYS":{
       console.log("reducer TENTIN_LISAYS")
       let uusitentti={

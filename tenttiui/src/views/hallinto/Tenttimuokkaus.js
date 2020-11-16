@@ -1,5 +1,6 @@
 import { Button } from '@material-ui/core';
 import Fade from 'react-reveal/Fade';
+import {Delete} from '@material-ui/icons';
 import KysymysMuokkaus from './Kysymysmuokkaus'
 import { useState } from 'react';
 
@@ -33,8 +34,11 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
       {tentit &&
       tentit.data.map((rivi, index)=>{
         return(
-          <Button key={index+"tenttilista"} color="primary" onClick={()=>naytaTenttiToiminto(index)}>
+          <div key={index+"tenttilista"}>
+          <Button color="primary" onClick={()=>naytaTenttiToiminto(index)}>
             {rivi.tentti}</Button>
+          <Delete onClick={()=>dispatch({type: "TENTIN_POISTO", idtentti: rivi.id} )}></Delete>
+          </div>
         )}
       )
       }
