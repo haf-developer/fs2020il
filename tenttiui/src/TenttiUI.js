@@ -1,7 +1,7 @@
 import { useEffect, useState, useReducer } from 'react';
 import alustusdata from './testi/testidata'
 import axios from 'axios'
-import { AppBar, Button, Toolbar } from '@material-ui/core';
+import { AppBar, Button, Toolbar, Paper } from '@material-ui/core';
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 // import { palette } from '@material-ui/system';
 import './TenttiUI.css';
@@ -196,50 +196,28 @@ function TenttiUI() {
 
   const theme=createMuiTheme(
   {
-    overrides: {
-      MuiButton: {
-        root: {
-          backgroundColor: "blue"
-        }
-      }
-    },
-    props: {
-      MuiButton: {
-        variant: "contained",
-        /*
-        color: "default",
-        */
-        backgroundColor: "green"
-      }
-    }
   }
   )
 
   // const vari=palette.bgcolor
 
   const useStyles = makeStyles({
+    header: {
+      backgroundColor: "white"
+    },
     root: {
-      contained: {
-        Button: {
-          backgroundColor: "red"
-        }
-      },
-      Button: {
-        color: "black",
-        contained: {
-          color: "black",
-          backgroundColor: "red"
-        },
-        backgroundColor: "red"
-      },
-      '&:Button': {
-        backgroundColor: "red"
-      },
      /*
       display: "flex",
      backgroundColor: theme.palette.grey[200],
-     */
-     backgroundColor: theme.palette.grey[300],
+    backgroundColor: "#fff",
+    backgroundColor: "white",
+         */
+    color: "white",
+    backgroundColor: theme.palette.primary.main,
+
+    '&:header': {
+      backgroundColor: "black"
+    }
     },
     tyokalubaari: {
       justifyContent: "flexend",
@@ -270,18 +248,16 @@ function TenttiUI() {
   console.log("rendaus hallinnointitila=", hallinnointiTila)
 
   return (
-    <div className={classes.root}>
-    <title>Tenttisovellus</title>
-    <AppBar position="static"
-    style={{backgroundColor: "blue"}}>
+    <div >
+    <title style={{backgroundColor: "red"}}>Tenttisovellus</title>
+      <Paper component="header" className={classes.root} elevation="0">
       <Toolbar className={classes.tyokalubaari} >
         <Button variant="contained" color="inherit" style={{backgroundColor: "blue"}}>Kirjaudu</Button>
-        <Button variant="contained" color="inherit">Rekisteröidy</Button>
+        <Button color="inherit">Rekisteröidy</Button>
         <Button className={classes.painike} variant="contained"
         color="inherit">Tietoa sovelluksesta</Button>
       </Toolbar>
-    </AppBar>
-
+    </Paper>
     { !hallinnointiTila && 
     <div>
       { state &&
