@@ -1,7 +1,8 @@
 import { useEffect, useState, useReducer } from 'react';
 import alustusdata from './testi/testidata'
 import axios from 'axios'
-import { AppBar, Button, Toolbar, Paper } from '@material-ui/core';
+import {HaeTentit} from './models/kanta'
+import { Button, Toolbar, Paper } from '@material-ui/core';
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 // import { palette } from '@material-ui/system';
 import './TenttiUI.css';
@@ -34,13 +35,6 @@ function reducer(state, action) {
     }
     case 'TENTIN_POISTO':{
       console.log("reducer TENTIN_POISTO idtentti=", action.idtentti)
-      axios.delete(`http://localhost:3001/tentit/${action.idtentti}`)
-        .then(response => {
-          console.log("TENTIN_POISTO response=", response)
-        }).catch(err => {
-          console.log('TENTIN_POISTO epäonnistui', err);
-          // console.error('TENTIN_POISTO epäonnistui', err);
-        })
         console.log("reducer TENTIN_poisto datan palautus uusidata=", uusidata)
         if( uusidata.data !== undefined){
           const poistaindex=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.idtentti } )
@@ -99,7 +93,9 @@ function TenttiUI() {
   }
 
   useEffect(()=>{
+    HaeTentit(dispatch)
     // const alkudata=haestoragesta()
+    /*
     axios.get('http://localhost:3001/tentit')
       .then(response => {
         return response.data
@@ -114,6 +110,7 @@ function TenttiUI() {
           }).catch(err => {
         console.error('fetch failed', err);
       });
+      */
   },[])
 
   useEffect(()=>{
@@ -250,7 +247,7 @@ function TenttiUI() {
   return (
     <div >
     <title style={{backgroundColor: "red"}}>Tenttisovellus</title>
-      <Paper component="header" className={classes.root} elevation="0">
+      <Paper component="header" className={classes.root} elevation={0}>
       <Toolbar className={classes.tyokalubaari} >
         <Button variant="contained" color="inherit" style={{backgroundColor: "blue"}}>Kirjaudu</Button>
         <Button color="inherit">Rekisteröidy</Button>

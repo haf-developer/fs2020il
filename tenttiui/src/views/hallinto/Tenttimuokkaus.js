@@ -1,5 +1,6 @@
 import { Button, TextField } from '@material-ui/core';
 import Fade from 'react-reveal/Fade';
+import {LisaaTentti, PoistaTentti} from './../../models/kanta'
 import {Delete, AddCircle} from '@material-ui/icons';
 import KysymysMuokkaus from './Kysymysmuokkaus'
 import { useState } from 'react';
@@ -14,7 +15,7 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
   const hoidaMuutos=(event)=>{
     if(!tenttialustus){
       if(uusitentti.length>2 ){
-        dispatch({type: "TENTIN_LISAYS", tentinnimi: uusitentti} )
+        // dispatch({type: "TENTIN_LISAYS", tentinnimi: uusitentti} )
         setTenttiAlustus(true)
       }
     }
@@ -48,7 +49,7 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
           <div key={index+"tenttilista"}>
           <Button color="primary" onClick={()=>naytaTenttiToiminto(index)}>
             {rivi.tentti}</Button>
-          <Delete onClick={()=>dispatch({type: "TENTIN_POISTO", idtentti: rivi.id} )}></Delete>
+          <Delete onClick={()=>PoistaTentti( dispatch, rivi.id )}></Delete>
           </div>
         )}
       )
