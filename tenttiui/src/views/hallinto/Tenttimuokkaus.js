@@ -1,33 +1,31 @@
 import { Button, TextField } from '@material-ui/core';
 import Fade from 'react-reveal/Fade';
 import {LisaaTentti, PoistaTentti} from './../../models/kanta'
-import {Delete, AddCircle} from '@material-ui/icons';
+import {Delete, AddCircle } from '@material-ui/icons';
 import KysymysMuokkaus from './Kysymysmuokkaus'
 import { useState } from 'react';
 
 function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
   const [naytatentti, setNaytaTentti]=useState()
-  const [uusitentti, setUusiTentti]=useState("tentin nimi tähän")
+  const [uusitentti, setUusiTentti]=useState()
   const [tenttialustus, setTenttiAlustus]=useState(false)
   const [naytasyote, setNaytaSyote]=useState(false)
   const [naytalisays, setNaytaLisays]=useState(true)
 
-  const hoidaMuutos=(event)=>{
+  const hoidaSyoteMuutos=(event)=>{
+    /*
     if(!tenttialustus){
       if(uusitentti.length>2 ){
-        // dispatch({type: "TENTIN_LISAYS", tentinnimi: uusitentti} )
         setTenttiAlustus(true)
       }
     }
-    // dispatch({type: "TENTIN_NIMEN_MUUTOS", tentinnimi: uusitentti, idtentti: id} )
-
+    */
     setUusiTentti(event.target.value)
   }
 
   const hoidaNaytaSyote=()=>{
     setNaytaSyote(true)
     setNaytaLisays(false)
-    setUusiTentti("")
   }
 
   const naytaTenttiToiminto=(tenttiid)=>{
@@ -38,6 +36,14 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
     setNaytaTentti(valittutentti)
   }
 
+  const hoidaSyoteBlur=()=>{
+    console.log("hoidaSyoteBlur event=")
+    if(uusitentti.length>2 ){
+      LisaaTentti(dispatch, uusitentti)
+      // dispatch({type: "TENTIN_LISAYS", tentinnimi: uusitentti} )
+    }
+
+  }
 
   console.log("tentit=", tentit)
   return(
@@ -55,8 +61,9 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
       )
       }
     { naytasyote &&
-      <TextField key="tenttinimi" id="outlined-basic" variant="outlined"
-        value={uusitentti} onChange={event=>hoidaMuutos(event)}></TextField>  
+      <TextField key="tenttinimi" id="outlined-basic" variant="outlined" label="tentin nimi tähän"
+        value={uusitentti} onChange={event=>hoidaSyoteMuutos(event)}
+        onBlur={()=>hoidaSyoteBlur()}></TextField>  
     }
     { naytalisays &&
       <AddCircle key="tenttilisaaja" variant="contained" color="primary"

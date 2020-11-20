@@ -1,5 +1,27 @@
 import axios from 'axios'
 
+/*
+INSERT INTO persons (lastname,firstname) VALUES ('Smith', 'John') RETURNING id;
+
+Optimistinen lukitus
+
+Kirjoitusvaiheessa STALE data/object jne. jne.
+Tauluissa siis versiokentät
+
+postgresql transaction
+BEGIN;
+UPDATE accounts SET balance = balance - 100.00
+    WHERE name = 'Alice';
+SAVEPOINT my_savepoint;
+UPDATE accounts SET balance = balance + 100.00
+    WHERE name = 'Bob';
+-- oops ... forget that and use Wally's account
+ROLLBACK TO my_savepoint;
+UPDATE accounts SET balance = balance + 100.00
+    WHERE name = 'Wally';
+COMMIT;
+*/
+
 function HaeTentit(dispatch){
   console.log("Kanta HaeTentit")
   axios.get('http://localhost:3001/tentit')
@@ -32,15 +54,20 @@ function PoistaTentti( dispatch, tenttitunniste)
 
 function LisaaTentti(dispatch, tentinnimi){
   console.log("Kanta LisaaTentti tentinnimi", tentinnimi)
-  let uusitentti={
+  let lisaatentti={
     tentti: tentinnimi,
     kysymykset: []
   }
-  axios.post('http://localhost:3001/tentit', uusitentti)
+  axios.post('http://localhost:3001/tentit', lisaatentti)
   .then(response => {
     console.log(response)
-    uusitentti=response.data
-    dispatch({type: "TENTIN_LISAYS", tentinnimi: uusitentti} )
+    const lisattytentti=response.data
+    console.log("Kanta LisaaTentti lisattytentti=", lisattytentti)
+    console.log("Kanta LisaaTentti lisattytentti=", lisattytentti)
+    console.log("Kanta LisaaTentti lisattytentti=", lisattytentti)
+    console.log("Kanta LisaaTentti lisattytentti=", lisattytentti)
+
+    dispatch({type: "TENTIN_LISAYS", uusitentti: lisattytentti} )
     // uusidata.data.push(uusitentti)
     // reducer( state,{ type: "INIT_DATA", data: uusidata }) 
     // state.data=uusidata
@@ -50,7 +77,7 @@ function LisaaTentti(dispatch, tentinnimi){
   }).catch(err => {
     console.error('Kanta LisaaTentti Promise lisaatentti epäonnistui', err);
   })
-
+  console.log("Kanta LisaaTentti Promise ilmeisesti pendaa")
 }
 
 

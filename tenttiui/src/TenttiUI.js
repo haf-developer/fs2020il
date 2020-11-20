@@ -1,6 +1,5 @@
 import { useEffect, useState, useReducer } from 'react';
 import alustusdata from './testi/testidata'
-import axios from 'axios'
 import {HaeTentit} from './models/kanta'
 import { Button, Toolbar, Paper } from '@material-ui/core';
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
@@ -46,13 +45,9 @@ function reducer(state, action) {
         return uusidata
       }
     case "TENTIN_LISAYS":{
-      console.log("reducer TENTIN_LISAYS")
-      let uusitentti={
-        tentti: action.tentinnimi,
-        kysymykset: []
-      }
-
-        
+      console.log("reducer TENTIN_LISAYS alussa uusidata=", uusidata)
+      console.log("reducer TENTIN_LISAYS action=", action)
+      uusidata.data.push(action.uusitentti)
       console.log("reducer TENTIN_LISAYS datan palautus uusidata=", uusidata)
       return uusidata
       }
@@ -94,23 +89,6 @@ function TenttiUI() {
 
   useEffect(()=>{
     HaeTentit(dispatch)
-    // const alkudata=haestoragesta()
-    /*
-    axios.get('http://localhost:3001/tentit')
-      .then(response => {
-        return response.data
-      })
-      .then(dbdata => {
-        console.log(dbdata);
-        const sidottupaluu=reducerpaluufunktio.bind(this)
-        // const sidottupaluu=()=>{this.reducerpaluufunktio();}
-        dispatch({ type: "INIT_DATA", data: {data:dbdata, paluufunktio:sidottupaluu} })
-        // setData(alkudata)
-        setDataAlustettu(true)    
-          }).catch(err => {
-        console.error('fetch failed', err);
-      });
-      */
   },[])
 
   useEffect(()=>{
@@ -122,28 +100,6 @@ function TenttiUI() {
 
 
   const kysymysmuokkaajat={
-    lisaatentti: (tenttiteksti)=>{
-      console.log("Paluufunktio lisaatentti tenttiteksti=", tenttiteksti)
-
-      let uusitentti={
-        tentti: tenttiteksti,
-        kysymykset: []
-      }
-
-      axios.post('http://localhost:3001/tentit', uusitentti)
-        .then(response => {
-          console.log(response)
-          uusitentti=response.data
-          // uusidata.data.push(uusitentti)
-          // reducer( state,{ type: "INIT_DATA", data: uusidata }) 
-          // state.data=uusidata
-          console.log("Paluufunktio lisaatentti  tentti lisatty")
-
-          // return uusidata
-        }).catch(err => {
-          console.error('Paluufunktio lisaatentti epäonnistui', err);
-        })
-    },
     lisaakysymys: (kysymysteksti, idtentti)=>{
       let uusidata=state.data.concat()
       // uusidata[0].tentit.push({tentti: tentinnimi})
