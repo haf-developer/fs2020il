@@ -62,7 +62,7 @@ function LisaaTentti(dispatch, tentinnimi){
   .then(response => {
     console.log("Kanta LisaaTentti promise response=" ,response)
     const lisattytentti=response.data
-    console.log("Kanta LisaaTentti MIKSI EI NAY lisattytentti=", lisattytentti)
+    console.log("Kanta LisaaTentti lisattytentti=", lisattytentti)
     dispatch({type: "TENTIN_LISAYS", uusitentti: lisattytentti} )
     console.log("Kanta LisaaTentti Promise tentti lisatty")
   }).catch(err => {

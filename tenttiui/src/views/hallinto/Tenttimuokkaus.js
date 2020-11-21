@@ -47,8 +47,10 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
   }
 
   const hoidaSyoteNappain=(event)=>{
-    console.log("hoidaSyoteNappain event=", event)
-
+    if( event.key === "Enter")
+    {
+      hoidaSyoteBlur()
+    }
   }
 
   console.log("tentit=", tentit)
@@ -69,7 +71,7 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
     { naytasyote &&
       <TextField key="tenttinimi" id="outlined-basic" variant="outlined" label="tentin nimi tähän"
         value={uusitentti} onChange={event=>hoidaSyoteMuutos(event)}
-        onBlur={()=>hoidaSyoteBlur()}></TextField>  
+        onBlur={()=>hoidaSyoteBlur()} onKeyUp={(event)=>hoidaSyoteNappain(event)}></TextField>  
     }
     { naytalisays &&
       <AddCircle key="tenttilisaaja" variant="contained" color="primary"
