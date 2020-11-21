@@ -60,20 +60,11 @@ function LisaaTentti(dispatch, tentinnimi){
   }
   axios.post('http://localhost:3001/tentit', lisaatentti)
   .then(response => {
-    console.log(response)
+    console.log("Kanta LisaaTentti promise response=" ,response)
     const lisattytentti=response.data
-    console.log("Kanta LisaaTentti lisattytentti=", lisattytentti)
-    console.log("Kanta LisaaTentti lisattytentti=", lisattytentti)
-    console.log("Kanta LisaaTentti lisattytentti=", lisattytentti)
-    console.log("Kanta LisaaTentti lisattytentti=", lisattytentti)
-
+    console.log("Kanta LisaaTentti MIKSI EI NAY lisattytentti=", lisattytentti)
     dispatch({type: "TENTIN_LISAYS", uusitentti: lisattytentti} )
-    // uusidata.data.push(uusitentti)
-    // reducer( state,{ type: "INIT_DATA", data: uusidata }) 
-    // state.data=uusidata
     console.log("Kanta LisaaTentti Promise tentti lisatty")
-
-    // return uusidata
   }).catch(err => {
     console.error('Kanta LisaaTentti Promise lisaatentti epäonnistui', err);
   })

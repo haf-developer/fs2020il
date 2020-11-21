@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
   const [naytatentti, setNaytaTentti]=useState()
-  const [uusitentti, setUusiTentti]=useState()
+  const [uusitentti, setUusiTentti]=useState("")
   const [tenttialustus, setTenttiAlustus]=useState(false)
   const [naytasyote, setNaytaSyote]=useState(false)
   const [naytalisays, setNaytaLisays]=useState(true)
@@ -40,8 +40,14 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
     console.log("hoidaSyoteBlur event=")
     if(uusitentti.length>2 ){
       LisaaTentti(dispatch, uusitentti)
-      // dispatch({type: "TENTIN_LISAYS", tentinnimi: uusitentti} )
+      setNaytaSyote(false)
+      setNaytaLisays(true)
+      setUusiTentti("")
     }
+  }
+
+  const hoidaSyoteNappain=(event)=>{
+    console.log("hoidaSyoteNappain event=", event)
 
   }
 

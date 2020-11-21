@@ -1,0 +1,19 @@
+{
+  "workbench.colorCustomizations": {
+  "[Material Theme Ocean High Contrast]": {
+    "scrollbarSlider.hoverBackground": "#ffffffa4",
+    "scrollbarSlider.background": "#1f7070ce",
+    "scrollbarSlider.activeBackground": "#171985da",
+    "activityBar.foreground": "#1050ffe8",
+    "list.activeSelectionBackground": "#4d4d4dec",
+    "list.focusBackground": "#6dad7bcc",
+    "breadcrumb.activeSelectionForeground": "#868bc7ea",
+    "settings.focusedRowBackground": "#043d5df1",
+    "textBlockQuote.background": "#0400ffe1",
+    "editor.background": "#15171fe8",
+    "selection.background": "#be7070f3",
+    "editorSuggestWidget.selectedBackground": "#00619467"
+  }
+  },
+  "workbench.colorTheme": "Material Theme Ocean High Contrast"
+}
