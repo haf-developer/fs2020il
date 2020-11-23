@@ -1,27 +1,17 @@
-import { Button, TextField } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import Fade from 'react-reveal/Fade';
 import {LisaaTentti, PoistaTentti} from './../../models/kanta'
 import {Delete, AddCircle } from '@material-ui/icons';
 import KysymysMuokkaus from './Kysymysmuokkaus'
+import TekstiSyote from './Tekstisyote'
 import { useState } from 'react';
 
 function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
   const [naytatentti, setNaytaTentti]=useState()
-  const [uusitentti, setUusiTentti]=useState("")
   const [tenttialustus, setTenttiAlustus]=useState(false)
   const [naytasyote, setNaytaSyote]=useState(false)
   const [naytalisays, setNaytaLisays]=useState(true)
-
-  const hoidaSyoteMuutos=(event)=>{
-    /*
-    if(!tenttialustus){
-      if(uusitentti.length>2 ){
-        setTenttiAlustus(true)
-      }
-    }
-    */
-    setUusiTentti(event.target.value)
-  }
+  const [keskitytty, setKeskitytty]=useState()
 
   const hoidaNaytaSyote=()=>{
     setNaytaSyote(true)
@@ -36,21 +26,21 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
     setNaytaTentti(valittutentti)
   }
 
-  const hoidaSyoteBlur=()=>{
-    console.log("hoidaSyoteBlur event=")
-    if(uusitentti.length>2 ){
-      LisaaTentti(dispatch, uusitentti)
-      setNaytaSyote(false)
-      setNaytaLisays(true)
-      setUusiTentti("")
-    }
+  const syotteenpaluu=(teksti)=>{
+    console.log("TenttiMuokkaus syotteenpaluu teksti=", teksti)
+    LisaaTentti(dispatch, teksti)
+    setNaytaSyote(false)
+    setNaytaLisays(true)
   }
 
-  const hoidaSyoteNappain=(event)=>{
-    if( event.key === "Enter")
-    {
-      hoidaSyoteBlur()
-    }
+  const nimenmuutospaluu=(teksti)=>{
+    console.log("TenttiMuokkaus nimenmuutospaluu teksti=", teksti)
+
+  }
+
+  const hoidasulkeminentaikeskitys=( indeksi )=>{
+    console.log("TenttiMuokkaus hoidasulkeminentaikeskitys indeksi=", indeksi)
+
   }
 
   console.log("tentit=", tentit)
@@ -59,19 +49,26 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
     <div className="TriplaRinnakkaiset">
       {tentit &&
       tentit.data.map((rivi, index)=>{
+        const syotetainappula=(naytatentti !==undefined )? 
+          (index===naytatentti)? true : false
+          : false
         return(
           <div key={index+"tenttilista"}>
+          { syotetainappula &&
+          <TekstiSyote paluufunktio={nimenmuutospaluu} vinkki="Muute tenttia" 
+            alkuteksti={rivi.tentti} onClick={()=>hoidasulkeminentaikeskitys(index)}></TekstiSyote>
+          }
+          { !syotetainappula &&
           <Button color="primary" onClick={()=>naytaTenttiToiminto(index)}>
-            {rivi.tentti}</Button>
+          {rivi.tentti}</Button>
+          }
           <Delete onClick={()=>PoistaTentti( dispatch, rivi.id )}></Delete>
           </div>
         )}
       )
       }
     { naytasyote &&
-      <TextField key="tenttinimi" id="outlined-basic" variant="outlined" label="tentin nimi tähän"
-        value={uusitentti} onChange={event=>hoidaSyoteMuutos(event)}
-        onBlur={()=>hoidaSyoteBlur()} onKeyUp={(event)=>hoidaSyoteNappain(event)}></TextField>  
+      <TekstiSyote paluufunktio={syotteenpaluu} vinkki="tentin nimi tähän"></TekstiSyote>
     }
     { naytalisays &&
       <AddCircle key="tenttilisaaja" variant="contained" color="primary"

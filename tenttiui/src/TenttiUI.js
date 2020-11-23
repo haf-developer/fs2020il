@@ -7,6 +7,7 @@ import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import './TenttiUI.css';
 import TenttiLista from './views/Tenttilista'
 import TenttiMuokkaus from './views/hallinto/Tenttimuokkaus'
+import ChartDemo from './views/chartdemo'
 
 function reducer(state, action) {
   let uusidata = state? 
@@ -63,6 +64,7 @@ function TenttiUI() {
   // const [data, setData]=useState()
   const [dataAlustettu, setDataAlustettu]=useState(false)
   const [hallinnointiTila, setHallinnointi]=useState(true)
+  const [demoTila, setDemoTila]=useState(false)
 
   const haestoragesta=()=>{
     const storage=window.localStorage
@@ -180,7 +182,7 @@ function TenttiUI() {
     painike: {
       flexGrow: 1,
       alignSelf: "flexend",
-      marginLeft: "70%",
+      marginLeft: "60%",
       backgroundColor: theme.palette.primary.main,
       /*
       justifyContent: "flexend",
@@ -207,6 +209,7 @@ function TenttiUI() {
       <Toolbar className={classes.tyokalubaari} >
         <Button variant="contained" color="inherit" style={{backgroundColor: "blue"}}>Kirjaudu</Button>
         <Button color="inherit">Rekisteröidy</Button>
+        <Button color="inherit" onClick={()=>setDemoTila(!demoTila)}>Chart demo</Button>
         <Button className={classes.painike} variant="contained"
         color="inherit">Tietoa sovelluksesta</Button>
       </Toolbar>
@@ -228,7 +231,7 @@ function TenttiUI() {
       }
     </div>
     }
-    { hallinnointiTila && 
+    { (hallinnointiTila && !demoTila) && 
       <div>
       { state &&
         <div>
@@ -237,6 +240,9 @@ function TenttiUI() {
         </div>          
       }
       </div>
+    }
+    { demoTila &&
+      <ChartDemo></ChartDemo>
     }
     </div>
   );

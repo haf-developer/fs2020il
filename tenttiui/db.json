@@ -8,6 +8,16 @@
       "tentti": "kannat 2",
       "kysymykset": [],
       "id": 2
+    },
+    {
+      "tentti": "tapahtumat",
+      "kysymykset": [],
+      "id": 3
+    },
+    {
+      "tentti": "uusi tentti",
+      "kysymykset": [],
+      "id": 4
     }
   ]
 }
