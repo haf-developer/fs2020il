@@ -1,8 +1,14 @@
 import { TextField } from '@material-ui/core';
 import { useState } from 'react';
 
-function TekstiSyote({paluufunktio, vinkki="", alkuteksti="", minimiraja=2}){
+function TekstiSyote({paluufunktio, paluuPainallus=undefined, paluuid=undefined, vinkki="", alkuteksti="", minimiraja=2}){
   const [teksti, setTeksti]=useState(alkuteksti)
+
+  const hoidaPainallus=(event)=>{
+    if( paluuPainallus ){
+      paluuPainallus(event, paluuid)
+    }
+  }
 
   const hoidaSyoteMuutos=(event)=>{
     setTeksti(event.target.value)
@@ -27,7 +33,8 @@ function TekstiSyote({paluufunktio, vinkki="", alkuteksti="", minimiraja=2}){
   return(
     <TextField key="syotenimi" id="syote_outlined_basic" variant="outlined" label={vinkki}
     value={teksti} onChange={event=>hoidaSyoteMuutos(event)}
-    onBlur={()=>hoidaSyoteBlur()} onKeyUp={(event)=>hoidaSyoteNappain(event)}></TextField>
+    onBlur={()=>hoidaSyoteBlur()} onKeyUp={(event)=>hoidaSyoteNappain(event)}
+    onClick={(event)=>hoidaPainallus(event)}></TextField>
   )
 }
 

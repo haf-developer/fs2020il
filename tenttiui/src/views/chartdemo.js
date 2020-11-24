@@ -7,16 +7,19 @@ import { colors } from '@material-ui/core';
 function ChartDemo(){
   const [chartdata, setChartData] = useState(
     {
-      labels: ["Heikko", "Kohtalainen", "Hyvä" ],
+      labels: ["Neuvottelu", "Sopimukset", "Laadun varmistus", "Toimittajan validointi" ],
       datasets: [{
-        label: "Suoritustaso aihealueittain",
-        data: [15, 15, 30],
+        label: "Hyvä",
+        data: [15, 15, 15, 15],
+        labels: [ "a", "b", "c1", "c2"],
         backgroundColor: [
-        'rgba(175, 0, 0, 0.8)',
-        'rgba(255, 255, 35, 0.8)',
-        'rgba(0, 165, 0, 0.8)',
-        ]
-      }]
+          'rgba(0, 165, 0, 0.8)',
+          'rgba(225, 225, 0, 0.8)',
+          'rgba(175, 0, 0, 0.8)',
+          'rgba(175, 0, 0, 0.8)',
+          ]
+      }
+    ]
     })
 
   return(

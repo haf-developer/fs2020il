@@ -22,7 +22,9 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
     let valittutentti=(naytatentti !== undefined )?
       ((naytatentti===tenttiid)?undefined:tenttiid)
       : tenttiid
-    
+    if( valittutentti===undefined){
+      setKeskitytty(undefined)
+    }
     setNaytaTentti(valittutentti)
   }
 
@@ -38,9 +40,18 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
 
   }
 
-  const hoidasulkeminentaikeskitys=( indeksi )=>{
+  const hoidasulkeminentaikeskitys=( event, indeksi )=>{
+    console.log("TenttiMuokkaus hoidasulkeminentaikeskitys event=", event)
     console.log("TenttiMuokkaus hoidasulkeminentaikeskitys indeksi=", indeksi)
-
+    if( naytatentti !== undefined){
+      let piilota=(keskitytty !==undefined)? true : false
+      if( piilota){
+        setNaytaTentti(undefined)
+        setKeskitytty(undefined)
+      }else{
+        setKeskitytty(true)
+      }
+    }
   }
 
   console.log("tentit=", tentit)
@@ -55,12 +66,12 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
         return(
           <div key={index+"tenttilista"}>
           { syotetainappula &&
-          <TekstiSyote paluufunktio={nimenmuutospaluu} vinkki="Muute tenttia" 
-            alkuteksti={rivi.tentti} onClick={()=>hoidasulkeminentaikeskitys(index)}></TekstiSyote>
+            <TekstiSyote paluufunktio={nimenmuutospaluu} vinkki="Muuta tenttia" 
+              alkuteksti={rivi.tentti} paluuPainallus={hoidasulkeminentaikeskitys} paluuid={index}></TekstiSyote>
           }
           { !syotetainappula &&
-          <Button color="primary" onClick={()=>naytaTenttiToiminto(index)}>
-          {rivi.tentti}</Button>
+            <Button variant="outlined" color="primary" onClick={()=>naytaTenttiToiminto(index)}>
+            {rivi.tentti}</Button>
           }
           <Delete onClick={()=>PoistaTentti( dispatch, rivi.id )}></Delete>
           </div>
