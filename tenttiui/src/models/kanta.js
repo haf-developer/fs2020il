@@ -71,5 +71,18 @@ function LisaaTentti(dispatch, tentinnimi){
   console.log("Kanta LisaaTentti Promise ilmeisesti pendaa")
 }
 
+function MuutaTentti(dispatch, id, tentinnimi, muuttuvatentti){
+  console.log("Kanta MuutaTentti id ja tentinnimi=", {id,tentinnimi})
+  const muuttunuttentti={...muuttuvatentti, tentti: tentinnimi }
 
-export { HaeTentit, LisaaTentti, PoistaTentti }
+  axios.put(`http://localhost:3001/tentit/${id}`, muuttunuttentti)
+  .then(response => {
+    console.log("Kanta MuutaTentti response=", response)
+    dispatch({type: "TENTIN_NIMEN_MUUTOS", muutettutentti: muuttunuttentti} )
+  }).catch(err => {
+    console.log('Kanta MuutaTentti epäonnistui', err);
+  })
+}
+
+
+export { HaeTentit, LisaaTentti, PoistaTentti, MuutaTentti }

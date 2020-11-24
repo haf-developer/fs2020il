@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import Fade from 'react-reveal/Fade';
-import {LisaaTentti, PoistaTentti} from './../../models/kanta'
+import {LisaaTentti, PoistaTentti, MuutaTentti} from './../../models/kanta'
 import {Delete, AddCircle } from '@material-ui/icons';
 import KysymysMuokkaus from './Kysymysmuokkaus'
 import TekstiSyote from './Tekstisyote'
@@ -22,7 +22,7 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
     let valittutentti=(naytatentti !== undefined )?
       ((naytatentti===tenttiid)?undefined:tenttiid)
       : tenttiid
-    if( valittutentti===undefined){
+    if( valittutentti!==undefined){
       setKeskitytty(undefined)
     }
     setNaytaTentti(valittutentti)
@@ -37,7 +37,7 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
 
   const nimenmuutospaluu=(teksti)=>{
     console.log("TenttiMuokkaus nimenmuutospaluu teksti=", teksti)
-
+    MuutaTentti(dispatch, tentit.data[naytatentti].id, teksti, tentit.data[naytatentti]) 
   }
 
   const hoidasulkeminentaikeskitys=( event, indeksi )=>{

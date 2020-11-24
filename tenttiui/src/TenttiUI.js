@@ -28,9 +28,12 @@ function reducer(state, action) {
       return action.data
       }
     case 'TENTIN_NIMEN_MUUTOS':{
-      console.log("reducer TENTIN_NIMEN_MUUTOS idtentti=", action.idtentti)
-
-      console.log("reducer TENTIN_NIMEN_MUUTOS datan palautus")
+      console.log("reducer TENTIN_NIMEN_MUUTOS muutettutentti=", action.muutettutentti)
+      if( uusidata.data !== undefined){
+        const muutaindex=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.muutettutentti.id } )
+        uusidata.data[muutaindex]=action.muutettutentti
+      }
+      console.log("reducer TENTIN_NIMEN_MUUTOS datan palautus uusidata.data=", uusidata.data)
       return uusidata
     }
     case 'TENTIN_POISTO':{
