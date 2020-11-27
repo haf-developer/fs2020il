@@ -1,19 +1,10 @@
-const config = require('./utils/config')
 const express = require('express')
 const app = express()
-const db = require('./db/kyselyt')
+app.use(express.json())
+const config = require('./utils/config')
+const tenttiRouter = require('./controllers/tentit')
 
-app.get('/', (req, res, next ) => {
-db.query('SELECT * FROM henkilot' , undefined /* [req.params.id] */,
-    (err, result)=>{
-      if(err){
-        next(err)
-      }
-      const arvot=JSON.stringify(result)
-      console.log("kannasta palautui=", arvot)
-      res.send('Hello World! ' + arvot )
-     } )
-})
+app.use('/api', tenttiRouter)
 
 const port = config.PORT
 

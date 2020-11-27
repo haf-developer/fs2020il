@@ -1,26 +1,5 @@
 import axios from 'axios'
 
-/*
-INSERT INTO persons (lastname,firstname) VALUES ('Smith', 'John') RETURNING id;
-
-Optimistinen lukitus
-
-Kirjoitusvaiheessa STALE data/object jne. jne.
-Tauluissa siis versiokentät
-
-postgresql transaction
-BEGIN;
-UPDATE accounts SET balance = balance - 100.00
-    WHERE name = 'Alice';
-SAVEPOINT my_savepoint;
-UPDATE accounts SET balance = balance + 100.00
-    WHERE name = 'Bob';
--- oops ... forget that and use Wally's account
-ROLLBACK TO my_savepoint;
-UPDATE accounts SET balance = balance + 100.00
-    WHERE name = 'Wally';
-COMMIT;
-*/
 
 function HaeTentit(dispatch){
   console.log("Kanta HaeTentit")
@@ -83,6 +62,5 @@ function MuutaTentti(dispatch, id, tentinnimi, muuttuvatentti){
     console.log('Kanta MuutaTentti epäonnistui', err);
   })
 }
-
 
 export { HaeTentit, LisaaTentti, PoistaTentti, MuutaTentti }
