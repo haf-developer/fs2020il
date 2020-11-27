@@ -3,7 +3,7 @@ import axios from 'axios'
 
 function HaeTentit(dispatch){
   console.log("Kanta HaeTentit")
-  axios.get('http://localhost:3001/tentit')
+  axios.get('http://localhost:3003/api/tentit')
   .then(response => {
     return response.data
   })
@@ -15,7 +15,7 @@ function HaeTentit(dispatch){
     // setData(alkudata)
     // setDataAlustettu(true)
       }).catch(err => {
-    console.error('fetch failed', err);
+    console.error('KANTA HaeTentit fetch failed', err);
   });
 }
 

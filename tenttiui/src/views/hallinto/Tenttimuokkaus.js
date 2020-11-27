@@ -67,11 +67,11 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
           <div key={index+"tenttilista"}>
           { syotetainappula &&
             <TekstiSyote paluufunktio={nimenmuutospaluu} vinkki="Muuta tenttia" 
-              alkuteksti={rivi.tentti} paluuPainallus={hoidasulkeminentaikeskitys} paluuid={index}></TekstiSyote>
+              alkuteksti={rivi.nimi} paluuPainallus={hoidasulkeminentaikeskitys} paluuid={index}></TekstiSyote>
           }
           { !syotetainappula &&
             <Button variant="outlined" color="primary" onClick={()=>naytaTenttiToiminto(index)}>
-            {rivi.tentti}</Button>
+            {rivi.nimi}</Button>
           }
           <Delete onClick={()=>PoistaTentti( dispatch, rivi.id )}></Delete>
           </div>
