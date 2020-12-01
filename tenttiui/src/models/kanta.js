@@ -1,22 +1,36 @@
 import axios from 'axios'
 
+const port=3003
 
 function HaeTentit(dispatch){
   console.log("Kanta HaeTentit")
-  axios.get('http://localhost:3003/api/tentit')
+  axios.post(`http://localhost:${port}/api/tentit`)
   .then(response => {
     return response.data
   })
-  .then(dbdata => {
-    console.log(dbdata);
-    // const sidottupaluu=reducerpaluufunktio.bind(this)
-    // const sidottupaluu=()=>{this.reducerpaluufunktio();}
-    dispatch({ type: "INIT_DATA", data: {data:dbdata } })
-    // setData(alkudata)
-    // setDataAlustettu(true)
-      }).catch(err => {
+  .then(dbdata => { 
+    console.log("Kanta HaeTentit tentit=", dbdata);
+    // ${dbdata[0].id}
+    Promise.all(
+    dbdata.map(asia=>{ 
+    return axios.post(`http://localhost:${port}/api/tentit/${asia.id}/kysymykset`)
+    }))
+    .then( kysymysdatat => {
+      console.log("Kanta HaeTentit kysymysdatat=", kysymysdatat);
+      kysymysdatat.forEach((element, index ) => {
+        dbdata[index].kysymykset=element.data        
+      })
+      // const sidottupaluu=reducerpaluufunktio.bind(this)
+      // const sidottupaluu=()=>{this.reducerpaluufunktio();}
+      dispatch({ type: "INIT_DATA", data: {data:dbdata } })
+      // setData(alkudata)
+      // setDataAlustettu(true)
+      return kysymysdatat
+      })
+      })
+    .catch(err => {
     console.error('KANTA HaeTentit fetch failed', err);
-  });
+  })
 }
 
 function PoistaTentti( dispatch, tenttitunniste)
