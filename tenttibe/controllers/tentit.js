@@ -26,6 +26,19 @@ tentitRouter.post('/tentit', (req, res, next ) => {
       } )
 })
 
+tentitRouter.post('/kysymykset/:id/vaihtoehdot/', (req, res, next ) => {
+  console.log("kannasta vaihtoehtoja req.params.id=", req.params.id)
+  db.query(`SELECT vaihtoehdot.id,vaihtoehto,oikein FROM vaihtoehdot JOIN
+    kysymykset ON vaihtoehdot.kysymysid=kysymykset.id
+    WHERE kysymykset.id=$1`, [req.params.id],(err, result)=>{
+    if(err){
+      next(err)
+    }
+    res.json( result.rows )
+    } )
+  })
+
+
 tentitRouter.post('/tentit/:id/kysymykset/', (req, res, next ) => {
   console.log("kannasta kysymyksii req.params.id=", req.params.id)
   db.query(`SELECT id,kysymys FROM kysymykset INNER JOIN
@@ -34,8 +47,6 @@ tentitRouter.post('/tentit/:id/kysymykset/', (req, res, next ) => {
     if(err){
       next(err)
     }
-    // const arvot=JSON.stringify(result.rows)
-    // console.log("kannasta kysymyksii palautui=", result.rows)
     res.json( result.rows )
     } )
   })

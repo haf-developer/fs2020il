@@ -2,6 +2,53 @@ import axios from 'axios'
 
 const port=3003
 
+const vaihtoehtohaku=(dbdata, kysymysdatat, dispatch)=>{
+  console.log("Kanta vaihtoehtohaku")
+  const uusidata=JSON.parse(JSON.stringify(dbdata))
+
+  Promise.all(
+    kysymysdatat.map((element, index ) => {
+      uusidata[index].kysymykset=element.data
+      if(uusidata[index].kysymykset !==undefined){
+        console.log("PITUUS TARKISTUS arraytype=", Array.isArray(uusidata[index].kysymykset))
+        if(uusidata[index].kysymykset.length>0){
+          console.log("MAPATAAN length=", uusidata[index].kysymykset.length)
+          console.log("MAPATAAN index=", index)
+          return(
+            uusidata[index].kysymykset.map(asia=>{ 
+            return axios.post(`http://localhost:${port}/api/kysymykset/${asia.id}/vaihtoehdot`)
+            })
+          )
+        }
+      }
+      console.log("FOREACH index=", index)
+    })
+  ).then( vaihtoehdot =>{
+    console.log("KANTA vaihtoehtohaku vaihtoehdot=", vaihtoehdot)
+    dispatch({ type: "INIT_DATA", data: {data:uusidata } })
+    return vaihtoehdot
+  }).catch(err => {
+    console.error('KANTA vaihtoehtohaku fetch failed', err);
+  })
+  console.log("KANTA vaihtoehtohaku loppu")
+}
+
+const kysymyshaku=(dbdata, dispatch)=>{
+  Promise.all(
+    dbdata.map(asia=>{ 
+    return axios.post(`http://localhost:${port}/api/tentit/${asia.id}/kysymykset`)
+    }))
+    .then( kysymysdatat => {
+      console.log("Kanta kysymyshaku kysymysdatat=", kysymysdatat);
+      vaihtoehtohaku(dbdata, kysymysdatat, dispatch)
+      return kysymysdatat
+    }
+  ).catch(err => {
+    console.error('KANTA kysymyshaku fetch failed', err);
+  })
+  console.log("KANTA kysymyshaku loppu")
+}
+
 function HaeTentit(dispatch){
   console.log("Kanta HaeTentit")
   axios.post(`http://localhost:${port}/api/tentit`)
@@ -10,24 +57,8 @@ function HaeTentit(dispatch){
   })
   .then(dbdata => { 
     console.log("Kanta HaeTentit tentit=", dbdata);
-    // ${dbdata[0].id}
-    Promise.all(
-    dbdata.map(asia=>{ 
-    return axios.post(`http://localhost:${port}/api/tentit/${asia.id}/kysymykset`)
-    }))
-    .then( kysymysdatat => {
-      console.log("Kanta HaeTentit kysymysdatat=", kysymysdatat);
-      kysymysdatat.forEach((element, index ) => {
-        dbdata[index].kysymykset=element.data        
-      })
-      // const sidottupaluu=reducerpaluufunktio.bind(this)
-      // const sidottupaluu=()=>{this.reducerpaluufunktio();}
-      dispatch({ type: "INIT_DATA", data: {data:dbdata } })
-      // setData(alkudata)
-      // setDataAlustettu(true)
-      return kysymysdatat
-      })
-      })
+    kysymyshaku(dbdata, dispatch)
+    })
     .catch(err => {
     console.error('KANTA HaeTentit fetch failed', err);
   })
