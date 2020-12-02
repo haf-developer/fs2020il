@@ -50,7 +50,8 @@ tentitRouter.post('/tentit/', (req, res, next ) => {
   })
 
 tentitRouter.delete('/tentit/:id', (req, res, next ) => {
-  db.query(`DELETE id FROM tentit WHERE id=$1`, [req.params.id],(err, result)=>{
+  console.log("kannasta pois tentti req.params.id=", req.params.id)
+  db.query(`DELETE FROM tentit WHERE id=$1`, [req.params.id],(err, result)=>{
     if(err){
       res.status(404).end()
       // next(err)
