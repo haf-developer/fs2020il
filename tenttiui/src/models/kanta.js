@@ -3,25 +3,18 @@ import axios from 'axios'
 const port=3003
 
 const vaihtoehtohaku=(dbdata, kysymysdatat, dispatch)=>{
-  console.log("Kanta vaihtoehtohaku")
+  console.log("KANTA vaihtoehtohaku")
   const uusidata=JSON.parse(JSON.stringify(dbdata))
 
   Promise.all(
     kysymysdatat.map((element, index ) => {
       uusidata[index].kysymykset=element.data
-      if(uusidata[index].kysymykset !==undefined){
-        console.log("PITUUS TARKISTUS arraytype=", Array.isArray(uusidata[index].kysymykset))
-        if(uusidata[index].kysymykset.length>0){
-          console.log("MAPATAAN length=", uusidata[index].kysymykset.length)
-          console.log("MAPATAAN index=", index)
-          return(
-            uusidata[index].kysymykset.map(asia=>{ 
-            return axios.post(`http://localhost:${port}/api/kysymykset/${asia.id}/vaihtoehdot`)
-            })
-          )
-        }
-      }
-      console.log("FOREACH index=", index)
+      // console.log("PITUUS TARKISTUS arraytype=", Array.isArray(uusidata[index].kysymykset))
+      return(
+        uusidata[index].kysymykset.map(asia=>{ 
+        return axios.get(`http://localhost:${port}/api/kysymykset/${asia.id}/vaihtoehdot`)
+        })
+      )
     })
   ).then( vaihtoehdot =>{
     console.log("KANTA vaihtoehtohaku vaihtoehdot=", vaihtoehdot)
@@ -36,7 +29,7 @@ const vaihtoehtohaku=(dbdata, kysymysdatat, dispatch)=>{
 const kysymyshaku=(dbdata, dispatch)=>{
   Promise.all(
     dbdata.map(asia=>{ 
-    return axios.post(`http://localhost:${port}/api/tentit/${asia.id}/kysymykset`)
+    return axios.get(`http://localhost:${port}/api/tentit/${asia.id}/kysymykset`)
     }))
     .then( kysymysdatat => {
       console.log("Kanta kysymyshaku kysymysdatat=", kysymysdatat);
@@ -51,7 +44,7 @@ const kysymyshaku=(dbdata, dispatch)=>{
 
 function HaeTentit(dispatch){
   console.log("Kanta HaeTentit")
-  axios.post(`http://localhost:${port}/api/tentit`)
+  axios.get(`http://localhost:${port}/api/tentit`)
   .then(response => {
     return response.data
   })
