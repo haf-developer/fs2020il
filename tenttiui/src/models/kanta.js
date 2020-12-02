@@ -59,33 +59,31 @@ function HaeTentit(dispatch){
 
 function PoistaTentti( dispatch, tenttitunniste)
 {
-  axios.delete(`http://localhost:3001/tentit/${tenttitunniste}`)
+  axios.delete(`http://localhost:${port}/api/tentit/${tenttitunniste}`)
   .then(response => {
-    console.log("Kanta PoistaTentti response=", response)
+    console.log("KANTA PoistaTentti response=", response)
     dispatch({type: "TENTIN_POISTO", idtentti: tenttitunniste})
   }).catch(err => {
-    console.log('Kanta PoistaTentti epäonnistui', err);
+    console.log('KANTA PoistaTentti epäonnistui', err);
     // console.error('TENTIN_POISTO epäonnistui', err);
   })
 }
 
 function LisaaTentti(dispatch, tentinnimi){
-  console.log("Kanta LisaaTentti tentinnimi", tentinnimi)
-  let lisaatentti={
-    tentti: tentinnimi,
-    kysymykset: []
-  }
-  axios.post('http://localhost:3001/tentit', lisaatentti)
+  console.log("KANTA LisaaTentti tentinnimi", tentinnimi)
+
+  axios.post(`http://localhost:${port}/api/tentit`, {nimi: tentinnimi})
   .then(response => {
-    console.log("Kanta LisaaTentti promise response=" ,response)
-    const lisattytentti=response.data
-    console.log("Kanta LisaaTentti lisattytentti=", lisattytentti)
+    console.log("KANTA LisaaTentti promise response=" ,response)
+    const lisattytentti=response.data[0]
+    console.log("KANTA LisaaTentti lisattytentti=", lisattytentti)
     dispatch({type: "TENTIN_LISAYS", uusitentti: lisattytentti} )
-    console.log("Kanta LisaaTentti Promise tentti lisatty")
+    console.log("KANTA LisaaTentti Promise tentti lisatty")
+    return response
   }).catch(err => {
-    console.error('Kanta LisaaTentti Promise lisaatentti epäonnistui', err);
+    console.error('KANTA LisaaTentti Promise lisaatentti epäonnistui', err);
   })
-  console.log("Kanta LisaaTentti Promise ilmeisesti pendaa")
+  console.log("KANTA LisaaTentti Promise ilmeisesti pendaa")
 }
 
 function MuutaTentti(dispatch, id, tentinnimi, muuttuvatentti){

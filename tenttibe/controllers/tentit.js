@@ -39,6 +39,26 @@ tentitRouter.get('/kysymykset/:id/vaihtoehdot/', (req, res, next ) => {
   })
 
 
+tentitRouter.post('/tentit/', (req, res, next ) => {
+  console.log("Lisätään kantaan req.body.nimi=", req.body.nimi)
+  db.query(`INSERT INTO tentit(nimi) VALUES ($1) RETURNING *`, [req.body.nimi],(err, result)=>{
+    if(err){
+      next(err)
+    }
+    res.json( result.rows )
+    } )
+  })
+
+tentitRouter.delete('/tentit/:id', (req, res, next ) => {
+  db.query(`DELETE id FROM tentit WHERE id=$1`, [req.params.id],(err, result)=>{
+    if(err){
+      res.status(404).end()
+      // next(err)
+    }
+    res.json( result.rows )
+  } )
+})
+
 tentitRouter.get('/tentit/:id/kysymykset/', (req, res, next ) => {
   console.log("kannasta kysymyksii req.params.id=", req.params.id)
   db.query(`SELECT id,kysymys FROM kysymykset INNER JOIN
