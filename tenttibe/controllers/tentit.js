@@ -60,6 +60,26 @@ tentitRouter.delete('/tentit/:id', (req, res, next ) => {
   } )
 })
 
+tentitRouter.post('/tentit/:id/kysymykset/', (req, res, next ) => {
+  console.log("Lisätään kysymys tentille req.params.id=", req.params.id)
+  console.log("Lisätään req.body.kysymys=", req.body.kysymys)
+  db.query(`INSERT INTO kysymykset(kysymys) VALUES ($1) RETURNING *`, [req.body.kysymys],(err, result)=>{
+    if(err){
+      next(err)
+    }
+    console.log("Lisätään kysymys edelleen tentille req.params.id=", req.params.id)
+    console.log("Lisätään kysymys edelleen tentille result.rows=", result.rows)
+
+    db.query(`INSERT INTO tenttikysymykset(kysymys_id,tentti_id) VALUES ($1,$2) RETURNING *`, 
+    [result.rows[0].id, req.params.id],(err, result2)=>{
+      if(err){
+        next(err)
+      }
+      res.json( result.rows )
+      } )
+    } )
+  })
+
 tentitRouter.get('/tentit/:id/kysymykset/', (req, res, next ) => {
   console.log("kannasta kysymyksii req.params.id=", req.params.id)
   db.query(`SELECT id,kysymys FROM kysymykset INNER JOIN

@@ -70,7 +70,7 @@ function PoistaTentti( dispatch, tenttitunniste)
 }
 
 function LisaaTentti(dispatch, tentinnimi){
-  console.log("KANTA LisaaTentti tentinnimi", tentinnimi)
+  console.log("KANTA LisaaTentti tentinnimi=", tentinnimi)
 
   axios.post(`http://localhost:${port}/api/tentit`, {nimi: tentinnimi})
   .then(response => {
@@ -99,4 +99,22 @@ function MuutaTentti(dispatch, id, tentinnimi, muuttuvatentti){
   })
 }
 
-export { HaeTentit, LisaaTentti, PoistaTentti, MuutaTentti }
+function LisaaKysymys(dispatch, idtentti, kysymys){
+  console.log("KANTA LisaaKysymys kysymys=", kysymys)
+
+  axios.post(`http://localhost:${port}/api/tentit/${idtentti}/kysymykset`, {kysymys: kysymys})
+  .then(response => {
+    console.log("KANTA LisaaKysymys promise response=" ,response)
+    const lisattykysymys=response.data[0]
+    console.log("KANTA LisaaKysymys lisattykysymys=", lisattykysymys)
+    dispatch({type: "KYSYMYS_LISAYS", tentille: idtentti, uusikysymys: lisattykysymys} )
+    console.log("KANTA LisaaKysymys Promise kysymys lisatty")
+    return response
+  }).catch(err => {
+    console.error('KANTA LisaaKysymys Promise epäonnistui', err);
+  })
+  console.log("KANTA LisaaKysymys Promise ilmeisesti pendaa")
+}
+
+export { HaeTentit, LisaaTentti, PoistaTentti, MuutaTentti,
+  LisaaKysymys }

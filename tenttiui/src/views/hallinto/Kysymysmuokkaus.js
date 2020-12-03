@@ -4,6 +4,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import ValintaMuokkaus from './Valintamuokkaus'
 import { makeStyles } from '@material-ui/core/styles';
+import { LisaaKysymys } from './../../models/kanta'
 import { useState } from 'react';
 
 function KysymysMuokkaus({kysymykset, tenttiid, dispatch, paluufunktiot}) {
@@ -46,7 +47,7 @@ function KysymysMuokkaus({kysymykset, tenttiid, dispatch, paluufunktiot}) {
   return(
     <Card className={classes.root}>
       <CardActions>
-        <Button onClick={()=>paluufunktiot.lisaakysymys(kysymysteksi, tenttiid)} size="small"
+        <Button onClick={()=>LisaaKysymys(dispatch, kysymysteksi, tenttiid)} size="small"
         disabled={!uusikysymysalustettu} variant="contained" color="primary">Lisää kysymys</Button>
     <input key="kysymysnimi" type="text" value={kysymysteksi} onChange={event=>hoidaMuutos(event)}></input>
 

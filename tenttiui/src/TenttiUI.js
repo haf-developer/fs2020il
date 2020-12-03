@@ -55,6 +55,13 @@ function reducer(state, action) {
       console.log("reducer TENTIN_LISAYS datan palautus uusidata=", uusidata)
       return uusidata
       }
+    case "KYSYMYS_LISAYS":{
+      console.log("reducer KYSYMYS_LISAYS action=", action)
+      const indeksi=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.tentille } )
+      uusidata.data[indeksi].kysymykset.push(action.uusikysymys)
+      console.log("reducer KYSYMYS_LISAYS datan palautus uusidata=", uusidata)
+      return uusidata
+    }
     case "VALINNAN_TEKSTI_MUUTTUI":
       return null
     default:
