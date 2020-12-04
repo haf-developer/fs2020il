@@ -11,13 +11,25 @@ const vaihtoehtohaku=(dbdata, kysymysdatat, dispatch)=>{
       uusidata[index].kysymykset=element.data
       // console.log("PITUUS TARKISTUS arraytype=", Array.isArray(uusidata[index].kysymykset))
       return(
-        uusidata[index].kysymykset.map(asia=>{ 
-        return axios.get(`http://localhost:${port}/api/kysymykset/${asia.id}/vaihtoehdot`)
-        })
+        Promise.all(
+          uusidata[index].kysymykset.map(asia=>{ 
+          return axios.get(`http://localhost:${port}/api/kysymykset/${asia.id}/vaihtoehdot`)
+          })
+        )
       )
     })
   ).then( vaihtoehdot =>{
     console.log("KANTA vaihtoehtohaku vaihtoehdot=", vaihtoehdot)
+    vaihtoehdot.forEach( (valinnat, valintaindex)=>{
+      console.log("KANTA vaihtoehtohaku vaihtoehdot valinnat=", valinnat)
+      console.log("KANTA vaihtoehtohaku vaihtoehdot valinnat valintaindex =", valintaindex)
+      if(valinnat.length>0){
+        valinnat.forEach((promiseasiat, promiseindex)=>{
+          console.log("KANTA vaihtoehtohaku vaihtoehdot promiseasiat=", promiseasiat)
+          uusidata[valintaindex].kysymykset[promiseindex].vaihtoehdot=promiseasiat.data
+        } )
+      }
+    })
     dispatch({ type: "INIT_DATA", data: {data:uusidata } })
     return vaihtoehdot
   }).catch(err => {

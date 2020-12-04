@@ -47,7 +47,7 @@ function KysymysMuokkaus({kysymykset, tenttiid, dispatch, paluufunktiot}) {
   return(
     <Card className={classes.root}>
       <CardActions>
-        <Button onClick={()=>LisaaKysymys(dispatch, kysymysteksi, tenttiid)} size="small"
+        <Button onClick={()=>LisaaKysymys(dispatch, tenttiid, kysymysteksi )} size="small"
         disabled={!uusikysymysalustettu} variant="contained" color="primary">Lisää kysymys</Button>
     <input key="kysymysnimi" type="text" value={kysymysteksi} onChange={event=>hoidaMuutos(event)}></input>
 
