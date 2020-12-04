@@ -9,7 +9,6 @@ const vaihtoehtohaku=(dbdata, kysymysdatat, dispatch)=>{
   Promise.all(
     kysymysdatat.map((element, index ) => {
       uusidata[index].kysymykset=element.data
-      // console.log("PITUUS TARKISTUS arraytype=", Array.isArray(uusidata[index].kysymykset))
       return(
         Promise.all(
           uusidata[index].kysymykset.map(asia=>{ 
@@ -77,13 +76,11 @@ function PoistaTentti( dispatch, tenttitunniste)
     dispatch({type: "TENTIN_POISTO", idtentti: tenttitunniste})
   }).catch(err => {
     console.log('KANTA PoistaTentti epäonnistui', err);
-    // console.error('TENTIN_POISTO epäonnistui', err);
   })
 }
 
 function LisaaTentti(dispatch, tentinnimi){
   console.log("KANTA LisaaTentti tentinnimi=", tentinnimi)
-
   axios.post(`http://localhost:${port}/api/tentit`, {nimi: tentinnimi})
   .then(response => {
     console.log("KANTA LisaaTentti promise response=" ,response)
@@ -128,5 +125,24 @@ function LisaaKysymys(dispatch, idtentti, kysymys){
   console.log("KANTA LisaaKysymys Promise ilmeisesti pendaa")
 }
 
+function LisaaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
+  console.log("KANTA LisaaVaihtoehto vaihtoehto=", vaihtoehto)
+  // /kysymykset/:kysymysid/vaihtoehdot/
+  axios.post(`http://localhost:${port}/api/kysymykset/${idkysymys}/vaihtoehdot`, {vaihtoehto: vaihtoehto})
+  .then(response => {
+    console.log("KANTA LisaaVaihtoehto promise response=" ,response)
+    const lisattyvaihtoehto=response.data[0]
+    console.log("KANTA LisaaVaihtoehto lisatty vaihtoehto=", lisattyvaihtoehto)
+    dispatch({type: "VAIHTOEHTO_LISAYS", tentille: idtentti, kysymykselle: idkysymys, uusivaihtoehto: lisattyvaihtoehto} )
+    console.log("KANTA LisaaVaihtoehto Promise vaihtoehto lisatty")
+    return response
+  }).catch(err => {
+    console.error('KANTA LisaaVaihtoehto Promise epäonnistui', err);
+  })
+
+  console.log("KANTA LisaaVaihtoehto poistuminen")
+}
+
 export { HaeTentit, LisaaTentti, PoistaTentti, MuutaTentti,
-  LisaaKysymys }
+  LisaaKysymys,
+  LisaaVaihtoehto }

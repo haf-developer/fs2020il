@@ -4,11 +4,12 @@ import TextField from '@material-ui/core/TextField';
 import {DeleteForever} from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
+import { LisaaVaihtoehto } from './../../models/kanta'
 
 function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch, paluufunktiot})
 {
   const [valintaamuutetaan, setValintaaMuutetaan]=useState()
-  const [valintateksi, setValintaTeksti]=useState("Kirjoita uusi kysymys")
+  const [valintateksi, setValintaTeksti]=useState("Kirjoita uusi vaihtoehto")
   const [uusivalintaalustettu, setUusiValintaAlustettu]=useState(false)
   // const [vanhatvalinnat, setVanhatValinnat]=useState(valinnat)
   
@@ -33,8 +34,9 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch, paluufunktiot
   }
 
   const lisaavalintaToiminto=()=>{
-    const lisattavavalinta={valittu: false, teksti: valintateksi}
-    paluufunktiot.lisaavalinta(tenttiid,kysymysid,lisattavavalinta)
+    // LisaaVaihtoehto(dispatch, tenttiid, kysymysid, valintateksi)
+    const lisattavavalinta={vaihtoehto: valintateksi, oikein: false}
+    LisaaVaihtoehto(dispatch, tenttiid, kysymysid, lisattavavalinta)
     setValintaaMuutetaan()
     setUusiValintaAlustettu(false)
   }
@@ -81,8 +83,8 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch, paluufunktiot
       <div className={classes.valinta} key="valintavaihtoehdot">
       { (valintaamuutetaan !== undefined) &&
         <>
-        <Checkbox color="default" checked="false"
-          key="lisattyvalinta" defaultChecked='false'></Checkbox>
+        <Checkbox color="default" checked={false}
+          key="lisattyvalinta" defaultChecked={false}></Checkbox>
         <TextField className={classes.tekstilaatikko} 
         variant="outlined" value={valintateksi} 
           onChange={event=>hoidaLisatynValinnanMuutos(event)}></TextField>
@@ -104,7 +106,7 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch, paluufunktiot
          id={valintarivi.id+"oikea"} defaultChecked={oikeavastaus}>  
          </Checkbox>
          <TextField className={classes.tekstilaatikko} variant="outlined"
-         value={valintarivi.teksti} onChange={event=>hoidaVanhanMuutos(event,vindex)}></TextField>
+         value={valintarivi.vaihtoehto} onChange={event=>hoidaVanhanMuutos(event,vindex)}></TextField>
          <DeleteForever className={classes.roskis} 
          onClick={()=>paluufunktiot.poistavalinta(tenttiid, kysymysid, vindex)}></DeleteForever>
          </div>

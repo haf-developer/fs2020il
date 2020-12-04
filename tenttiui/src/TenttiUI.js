@@ -62,6 +62,15 @@ function reducer(state, action) {
       console.log("reducer KYSYMYS_LISAYS datan palautus uusidata=", uusidata)
       return uusidata
     }
+    case "VAIHTOEHTO_LISAYS":{
+      console.log("reducer VAIHTOEHTO_LISAYS action=", action)
+      const tentinindeksi=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.tentille } )
+      const kysymyksenindeksi=uusidata.data[tentinindeksi].kysymykset.findIndex( (kysymys) =>{
+        return kysymys.id===action.kysymykselle } )
+      uusidata.data[tentinindeksi].kysymykset[kysymyksenindeksi].vaihtoehdot.push(action.uusivaihtoehto)
+      console.log("reducer VAIHTOEHTO_LISAYS datan palautus uusidata=", uusidata)
+      return uusidata
+    }
     case "VALINNAN_TEKSTI_MUUTTUI":
       return null
     default:
@@ -112,19 +121,6 @@ function TenttiUI() {
 
 
   const kysymysmuokkaajat={
-    lisaakysymys: (kysymysteksti, idtentti)=>{
-      let uusidata=state.data.concat()
-      // uusidata[0].tentit.push({tentti: tentinnimi})
-      let uusikysymys={kysymys: kysymysteksti}
-      if( uusidata.tentit[idtentti].kysymykset === undefined ){
-        let uusikysymystaulu={
-          kysymykset: []
-        }
-        uusidata.tentit[idtentti].push(uusikysymystaulu)
-      }
-      uusidata.tentit[idtentti].kysymykset.push(uusikysymys)
-      // setData(uusidata)
-    },
     lisaavalinta: (idtentti, idkysymys, lisattavavalinta)=>{
       let uusidata=state.data.concat()
       if( uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat === undefined ){

@@ -62,8 +62,8 @@ function KysymysMuokkaus({kysymykset, tenttiid, dispatch, paluufunktiot}) {
          {naytaoikeat &&
           <>
           <div>
-          <ValintaMuokkaus tenttiid={tenttiid} kysymysid={index}
-          valinnat={rivi.valinnat} dispatch={dispatch} paluufunktiot={paluufunktiot}></ValintaMuokkaus>
+          <ValintaMuokkaus tenttiid={tenttiid} kysymysid={rivi.id}
+          valinnat={rivi.vaihtoehdot} dispatch={dispatch} paluufunktiot={paluufunktiot}></ValintaMuokkaus>
           </div>
           </>
           }
