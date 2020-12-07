@@ -2,7 +2,12 @@ const express = require('express')
 const app = express()
 app.use(express.json())
 const cors = require('cors')
-app.use(cors())
+
+const corsoptions={
+  origin: 'http://localhost:3000'
+}
+
+app.use(cors(corsoptions))
 const config = require('./utils/config')
 const tenttiRouter = require('./controllers/tentit')
 
