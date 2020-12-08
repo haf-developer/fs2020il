@@ -58,6 +58,9 @@ function reducer(state, action) {
     case "KYSYMYS_LISAYS":{
       console.log("reducer KYSYMYS_LISAYS action=", action)
       const indeksi=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.tentille } )
+      if(undefined===uusidata.data[indeksi].kysymykset){
+        uusidata.data[indeksi].kysymykset=[]
+      }
       uusidata.data[indeksi].kysymykset.push(action.uusikysymys)
       console.log("reducer KYSYMYS_LISAYS datan palautus uusidata=", uusidata)
       return uusidata
@@ -67,6 +70,9 @@ function reducer(state, action) {
       const tentinindeksi=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.tentille } )
       const kysymyksenindeksi=uusidata.data[tentinindeksi].kysymykset.findIndex( (kysymys) =>{
         return kysymys.id===action.kysymykselle } )
+      if( undefined===uusidata.data[tentinindeksi].kysymykset[kysymyksenindeksi].vaihtoehdot ){
+        uusidata.data[tentinindeksi].kysymykset[kysymyksenindeksi].vaihtoehdot=[]
+      }
       uusidata.data[tentinindeksi].kysymykset[kysymyksenindeksi].vaihtoehdot.push(action.uusivaihtoehto)
       console.log("reducer VAIHTOEHTO_LISAYS datan palautus uusidata=", uusidata)
       return uusidata
