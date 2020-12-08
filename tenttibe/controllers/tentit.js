@@ -15,15 +15,26 @@ tentitRouter.get('/henkilot', (req, res, next ) => {
   })
 
 tentitRouter.get('/tentit', (req, res, next ) => {
-  db.query(`SELECT * FROM tentit` , undefined /* [req.params.id] */,
-    (err, result)=>{
-      if(err){
-        next(err)
-      }
-      const arvot=JSON.stringify(result.rows)
-      console.log("kannasta palautui=", result.rows)
-      res.send( arvot )
-      } )
+  db.getClient( (err, client, release)=>{
+    console.log("temttirouter get /tentit alku")
+    client.query('SELECT * FROM tentit')
+    .then(queryresult => {
+      res.json(queryresult.rows)
+      console.log("temttirouter get /tentit release(err) err=", err)
+      release(err)
+      return queryresult
+    })
+    .catch(e => {
+      console.error(e.stack)
+      console.log( "Virhe temttirouter get /tentit kutsutaan next() e=", e)
+      next(e)
+      })
+      .then(() =>{
+        console.log("temttirouter get /tentit client.end()")
+        // client.end()
+      })
+  })
+
 })
 
 tentitRouter.get('/kysymykset/:id/vaihtoehdot/', (req, res, next ) => {
