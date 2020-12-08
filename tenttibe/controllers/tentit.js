@@ -19,9 +19,9 @@ tentitRouter.get('/tentit', (req, res, next ) => {
     console.log("temttirouter get /tentit alku")
     client.query('SELECT * FROM tentit')
     .then(queryresult => {
+      release(err)
       res.json(queryresult.rows)
       console.log("temttirouter get /tentit release(err) err=", err)
-      release(err)
       return queryresult
     })
     .catch(e => {
@@ -43,11 +43,11 @@ tentitRouter.get('/kysymykset/:id/vaihtoehdot/', (req, res, next ) => {
     client.query(`SELECT vaihtoehdot.id,vaihtoehto,oikein FROM vaihtoehdot JOIN
       kysymykset ON vaihtoehdot.kysymysid=kysymykset.id
       WHERE kysymykset.id=$1`, [req.params.id],(err, result)=>{
+      release(err)
       if(err){
         next(err)
       }
       res.json( result.rows )
-      release(err)
       } )
     })    
   })
@@ -87,7 +87,7 @@ tentitRouter.post('/tentit/', (req, res, next ) => {
           next(err)
         }
         res.json( result.rows )
-      } )
+      })
     })
   })
 })
@@ -106,22 +106,61 @@ tentitRouter.delete('/tentit/:id', (req, res, next ) => {
 tentitRouter.post('/tentit/:id/kysymykset/', (req, res, next ) => {
   console.log("Lisätään kysymys tentille req.params.id=", req.params.id)
   console.log("Lisätään req.body.kysymys=", req.body.kysymys)
-  db.query(`INSERT INTO kysymykset(kysymys) VALUES ($1) RETURNING *`, [req.body.kysymys],(err, result)=>{
-    if(err){
-      next(err)
-    }
-    console.log("Lisätään kysymys edelleen tentille req.params.id=", req.params.id)
-    console.log("Lisätään kysymys edelleen tentille result.rows=", result.rows)
-
-    db.query(`INSERT INTO tenttikysymykset(kysymys_id,tentti_id) VALUES ($1,$2) RETURNING *`, 
-    [result.rows[0].id, req.params.id],(err, result2)=>{
-      if(err){
-        next(err)
+  db.getClient( (err, client, release)=>{
+    const shouldAbort = err => {
+      if (err) {
+        console.error('Error in transaction', err.stack)
+        client.query('ROLLBACK', err => {
+          if (err) {
+            console.error('Error rolling back client', err.stack)
+          }
+          // release the client back to the pool
+          release()
+        })
       }
-      res.json( result.rows )
-      } )
-    } )
+      return !!err
+    }
+
+    client.query('BEGIN', err => {
+      if (shouldAbort(err)){
+        return
+      }
+      client.query(`INSERT INTO kysymykset(kysymys) VALUES ($1) RETURNING *`, [req.body.kysymys],(err, result)=>{
+        if (shouldAbort(err)){
+          return
+        }
+        /*
+        if(err){
+          next(err)
+        }
+        */
+        console.log("Lisätään kysymys edelleen tentille req.params.id=", req.params.id)
+        console.log("Lisätään kysymys edelleen tentille result.rows=", result.rows)
+
+        client.query(`INSERT INTO tenttikysymykset(kysymys_id,tentti_id) VALUES ($1,$2) RETURNING *`, 
+        [result.rows[0].id, req.params.id],(err, result2)=>{
+          if (shouldAbort(err)){
+            return
+          }
+
+          if(err){
+            next(err)
+          }
+          client.query('COMMIT', err => {
+            if (err) {
+              console.error('Error committing transaction', err.stack)
+            }
+            release()
+            if(err){
+              next(err)
+            }  
+            res.json( result.rows )
+          })        
+        })
+      })
+    })
   })
+})
 
 tentitRouter.post('/kysymykset/:kysymysid/vaihtoehdot/', (req, res, next ) => {
   console.log("Lisätään vaihtoehto kysymykselle req.params.kysymysid=", req.params.kysymysid)
