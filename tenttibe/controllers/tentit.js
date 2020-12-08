@@ -39,26 +39,58 @@ tentitRouter.get('/tentit', (req, res, next ) => {
 
 tentitRouter.get('/kysymykset/:id/vaihtoehdot/', (req, res, next ) => {
   console.log("kannasta vaihtoehtoja req.params.id=", req.params.id)
-  db.query(`SELECT vaihtoehdot.id,vaihtoehto,oikein FROM vaihtoehdot JOIN
-    kysymykset ON vaihtoehdot.kysymysid=kysymykset.id
-    WHERE kysymykset.id=$1`, [req.params.id],(err, result)=>{
-    if(err){
-      next(err)
-    }
-    res.json( result.rows )
-    } )
+  db.getClient( (err, client, release)=>{
+    client.query(`SELECT vaihtoehdot.id,vaihtoehto,oikein FROM vaihtoehdot JOIN
+      kysymykset ON vaihtoehdot.kysymysid=kysymykset.id
+      WHERE kysymykset.id=$1`, [req.params.id],(err, result)=>{
+      if(err){
+        next(err)
+      }
+      res.json( result.rows )
+      release(err)
+      } )
+    })    
   })
-
 
 tentitRouter.post('/tentit/', (req, res, next ) => {
-  console.log("Lisätään kantaan req.body.nimi=", req.body.nimi)
-  db.query(`INSERT INTO tentit(nimi) VALUES ($1) RETURNING *`, [req.body.nimi],(err, result)=>{
-    if(err){
-      next(err)
+  console.log("tentitRouter.post /tentit/ Lisätään kantaan req.body.nimi=", req.body.nimi)
+  db.getClient( (err, client, release)=>{
+    const shouldAbort = err => {
+      if (err) {
+        console.error('Error in transaction', err.stack)
+        client.query('ROLLBACK', err => {
+          if (err) {
+            console.error('Error rolling back client', err.stack)
+          }
+          // release the client back to the pool
+          release()
+        })
+      }
+      return !!err
     }
-    res.json( result.rows )
-    } )
+
+    client.query('BEGIN', err => {
+      if (shouldAbort(err)){
+        return
+      }
+      client.query(`INSERT INTO tentit(nimi) VALUES ($1) RETURNING *`, [req.body.nimi],(err, result)=>{
+        if (shouldAbort(err)){
+          return
+        }
+        client.query('COMMIT', err => {
+          if (err) {
+            console.error('Error committing transaction', err.stack)
+          }
+          release()
+        })        
+        if(err){
+          next(err)
+        }
+        res.json( result.rows )
+      } )
+    })
   })
+})
 
 tentitRouter.delete('/tentit/:id', (req, res, next ) => {
   console.log("kannasta pois tentti req.params.id=", req.params.id)

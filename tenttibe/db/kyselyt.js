@@ -65,12 +65,5 @@ module.exports = {
         })
       .catch(e => console.error(e.stack))
       .then(() => client.end())
-    /*
-    client
-      .query('SELECT NOW()')
-      .then(result => console.log(result))
-      .catch(e => console.error(e.stack))
-      .then(() => client.end())
-      */
   }
 }
