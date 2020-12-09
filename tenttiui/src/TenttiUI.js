@@ -2,8 +2,9 @@ import { useEffect, useState, useReducer } from 'react';
 import alustusdata from './testi/testidata'
 import {HaeTentit} from './models/kanta'
 import { Button, Toolbar, Paper } from '@material-ui/core';
-import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
+// import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 // import { palette } from '@material-ui/system';
+import useStyles from './views/tyyli'
 import './TenttiUI.css';
 import TenttiLista from './views/Tenttilista'
 import TenttiMuokkaus from './views/hallinto/Tenttimuokkaus'
@@ -51,6 +52,9 @@ function reducer(state, action) {
     case "TENTIN_LISAYS":{
       console.log("reducer TENTIN_LISAYS alussa uusidata=", uusidata)
       console.log("reducer TENTIN_LISAYS action=", action)
+      if(undefined===uusidata.data){
+        uusidata.data=[]
+      }
       uusidata.data.push(action.uusitentti)
       console.log("reducer TENTIN_LISAYS datan palautus uusidata=", uusidata)
       return uusidata
@@ -127,19 +131,6 @@ function TenttiUI() {
 
 
   const kysymysmuokkaajat={
-    lisaavalinta: (idtentti, idkysymys, lisattavavalinta)=>{
-      let uusidata=state.data.concat()
-      if( uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat === undefined ){
-        /*
-        let uusivalintataulu={
-          valinnat: []
-        }
-        */
-        uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat=[]
-      }
-      uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat.push(lisattavavalinta)
-      // setData(uusidata)
-    },
     poistavalinta: (idtentti, idkysymys, idvalinta) => {
       let uusidata = JSON.parse(JSON.stringify(state.data))
       uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat.splice(idvalinta,1)
@@ -161,63 +152,14 @@ function TenttiUI() {
     // setData(uusidata)
   }
 
-  const theme=createMuiTheme(
-  {
-  }
-  )
-
-  // const vari=palette.bgcolor
-
-  const useStyles = makeStyles({
-    header: {
-      backgroundColor: "white"
-    },
-    root: {
-     /*
-      display: "flex",
-     backgroundColor: theme.palette.grey[200],
-    backgroundColor: "#fff",
-    backgroundColor: "white",
-         */
-    color: "white",
-    backgroundColor: theme.palette.primary.main,
-
-    '&:header': {
-      backgroundColor: "black"
-    }
-    },
-    tyokalubaari: {
-      justifyContent: "flexend",
-      justifyItems: "flexend",
-      backgroundColor: theme.palette.primary.main,
-    },
-    painike: {
-      flexGrow: 1,
-      alignSelf: "flexend",
-      marginLeft: "60%",
-      backgroundColor: theme.palette.primary.main,
-      /*
-      justifyContent: "flexend",
-      edge: "end",
-      */
-      '&:hover': {
-        backgroundColor: theme.palette.primary.dark,
-        /*
-        backgroundColor: "#808080"
-        */
-      },
-    }
-  })
-
-  const classes = useStyles()
+  const classes=useStyles()
 
   // console.log("state=", state)
   console.log("rendaus hallinnointitila=", hallinnointiTila)
-
   return (
     <div >
     <title style={{backgroundColor: "red"}}>Tenttisovellus</title>
-      <Paper component="header" className={classes.root} elevation={0}>
+    <Paper component="header" className={classes.root} elevation={0}>
       <Toolbar className={classes.tyokalubaari} >
         <Button variant="contained" color="inherit" style={{backgroundColor: "blue"}}>Kirjaudu</Button>
         <Button color="inherit">Rekisteröidy</Button>
