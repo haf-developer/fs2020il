@@ -143,6 +143,24 @@ function LisaaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
   console.log("KANTA LisaaVaihtoehto poistuminen")
 }
 
+function MuutaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
+  console.log("KANTA MuutaVaihtoehto vaihtoehto=", vaihtoehto)
+  // vaihtoehdot/:vaihtoehtoid
+  axios.put(`http://localhost:${port}/api/vaihtoehdot/${vaihtoehto.id}`, {vaihtoehto: vaihtoehto})
+  .then(response => {
+    console.log("KANTA MuutaVaihtoehto promise response=" ,response)
+    const muutettuvaihtoehto=response.data[0]
+    console.log("KANTA MuutaVaihtoehto muutettu vaihtoehto=", muutettuvaihtoehto)
+    dispatch({type: "VAIHTOEHTO_MUUTOS", tentille: idtentti, kysymykselle: idkysymys, uusivaihtoehto: muutettuvaihtoehto} )
+    console.log("KANTA MuutaVaihtoehto Promise vaihtoehto muutettu")
+    return response
+  }).catch(err => {
+    console.error('KANTA MuutaVaihtoehto Promise epäonnistui', err);
+  })
+
+  console.log("KANTA MuutaVaihtoehto poistuminen")
+}
+
 export { HaeTentit, LisaaTentti, PoistaTentti, MuutaTentti,
   LisaaKysymys,
-  LisaaVaihtoehto }
+  LisaaVaihtoehto, MuutaVaihtoehto }

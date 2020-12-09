@@ -8,6 +8,9 @@ const corsoptions={
 }
 
 app.use(cors(corsoptions))
+
+const paasynhallinta = require('./utils/paasynhallinta')
+app.use(paasynhallinta)
 const config = require('./utils/config')
 const tenttiRouter = require('./controllers/tentit')
 

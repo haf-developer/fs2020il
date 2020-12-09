@@ -75,7 +75,7 @@ function KysymysMuokkaus({kysymykset, tenttiid, dispatch, paluufunktiot}) {
     }
       <CardActions>
         <Button onClick={()=>naytaOikeatToiminto()} size="small"
-        variant="contained" color="primary">Näytä vastaukset</Button>
+        variant="contained" color="primary">Näytä vaihtoehdot</Button>
       </CardActions>
     </Card>     
   )

@@ -1,7 +1,8 @@
 import { TextField } from '@material-ui/core';
 import { useState } from 'react';
 
-function TekstiSyote({paluufunktio, paluuPainallus=undefined, paluuid=undefined, vinkki="", alkuteksti="", minimiraja=2}){
+function TekstiSyote({paluufunktio, paluuPainallus=undefined, paluuid=undefined, vinkki="",
+  alkuteksti="", minimiraja=2, palautaid=false}){
   const [teksti, setTeksti]=useState(alkuteksti)
 
   const hoidaPainallus=(event)=>{
@@ -18,7 +19,7 @@ function TekstiSyote({paluufunktio, paluuPainallus=undefined, paluuid=undefined,
     console.log("hoidaSyoteBlur event=")
     if(teksti.length > minimiraja ){
       if(alkuteksti !== teksti){
-        paluufunktio(teksti)
+        palautaid? paluufunktio(teksti, paluuid):paluufunktio(teksti)
       }
     }
   }

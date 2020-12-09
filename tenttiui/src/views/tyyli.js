@@ -35,6 +35,37 @@ const useStyles = makeStyles({
       backgroundColor: "#808080"
       */
     },
+  },
+  valinta: {
+    margin: "1em",
+    outlineColor: "Black",
+    outlineStyle: "Solid",
+    outlineWidth: "1px",
+  },
+  vanhatvalinnat: {
+    width: "80vmax",
+    outlineColor: "Black",
+    outlineStyle: "Solid",
+    outlineWidth: "1px"
+  },
+  roskis: {
+    float: "right"
+  },
+  valintakentta: {
+    alignContent: "Center",
+    alignItems: "Center",
+    verticalAlign: "Justified",
+    backgroundColor: "lightgrey",
+    margin: "4px",
+    padding: "2px",
+    outlineColor: "Black",
+    outlineStyle: "Shadow",
+    outlineWidth: "1px",
+    width: "70vmax"
+  },
+  tekstilaatikko: {
+    margin: "4px",
+    width: "50vmax"
   }
 })
 

@@ -2,8 +2,6 @@ import { useEffect, useState, useReducer } from 'react';
 import alustusdata from './testi/testidata'
 import {HaeTentit} from './models/kanta'
 import { Button, Toolbar, Paper } from '@material-ui/core';
-// import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
-// import { palette } from '@material-ui/system';
 import useStyles from './views/tyyli'
 import './TenttiUI.css';
 import TenttiLista from './views/Tenttilista'
@@ -19,10 +17,6 @@ function reducer(state, action) {
     )
     :[]
   switch (action.type){
-    case 'increment':
-      return {count: state.count + 1};
-    case 'decrement':
-      return {count: state.count - 1};
     case "INIT_DATA":{
       // state.paluufunktio=action.paluufunktio
       console.log("reducer INIT_DATA action.data=", action.data)
@@ -81,6 +75,18 @@ function reducer(state, action) {
       console.log("reducer VAIHTOEHTO_LISAYS datan palautus uusidata=", uusidata)
       return uusidata
     }
+    case "VAIHTOEHTO_MUUTOS":{
+      console.log("reducer VAIHTOEHTO_MUUTOS action=", action)
+      const tentinindeksi=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.tentille } )
+      const kysymyksenindeksi=uusidata.data[tentinindeksi].kysymykset.findIndex( (kysymys) =>{
+        return kysymys.id===action.kysymykselle } )
+      const vaihtoehtoindeksi=uusidata.data[tentinindeksi].kysymykset[kysymyksenindeksi]
+        .vaihtoehdot.findIndex((vaihtoehto) =>{
+          return vaihtoehto.id===action.uusivaihtoehto.id })
+      uusidata.data[tentinindeksi].kysymykset[kysymyksenindeksi].vaihtoehdot[vaihtoehtoindeksi]=action.uusivaihtoehto
+      console.log("reducer VAIHTOEHTO_MUUTOS datan palautus uusidata=", uusidata)
+      return uusidata
+    }
     case "VALINNAN_TEKSTI_MUUTTUI":
       return null
     default:
@@ -134,11 +140,6 @@ function TenttiUI() {
     poistavalinta: (idtentti, idkysymys, idvalinta) => {
       let uusidata = JSON.parse(JSON.stringify(state.data))
       uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat.splice(idvalinta,1)
-      // setData(uusidata)
-    },
-    muutavalinta: (idtentti, idkysymys, idvalinta, muutettuvalinta) => {
-      let uusidata = JSON.parse(JSON.stringify(state.data))
-      uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat[idvalinta]=muutettuvalinta
       // setData(uusidata)
     }
   }

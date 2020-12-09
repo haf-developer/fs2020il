@@ -1,10 +1,12 @@
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
+import TekstiSyote from './Tekstisyote'
 import TextField from '@material-ui/core/TextField';
 import {DeleteForever} from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
+import useStyles from './../tyyli'
+// import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
-import { LisaaVaihtoehto } from './../../models/kanta'
+import { LisaaVaihtoehto, MuutaVaihtoehto } from './../../models/kanta'
 
 function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch, paluufunktiot})
 {
@@ -23,14 +25,22 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch, paluufunktiot
   }
 
   const hoidaVanhanMuutos=(event, index)=>{
+    // console.log("hoidaVanhanMuutos event=", event)
+    // console.log("hoidaVanhanMuutos indeksi=", index)
+
     // let muuttuvatvalinnat=vanhatvalinnat.concat()
     // muuttuvatvalinnat[index].teksti=event.target.value
     // muuttuvatvalinnat[index].muutettu=true
     // setVanhatValinnat(muuttuvatvalinnat)
     // paluufunktiot.muutavalinta(tenttiid, kysymysid, index, muuttuvatvalinnat[index])
+  }
+
+  const vaihtoehdonmuutospaluu=(teksti, index)=>{
+    console.log("vaihtoehdonmuutospaluu teksti=", teksti)
+    console.log("vaihtoehdonmuutospaluu indeksi=", index)
     let muutettuvalinta=valinnat[index]
-    muutettuvalinta.teksti=event.target.value
-    paluufunktiot.muutavalinta(tenttiid, kysymysid, index, muutettuvalinta)
+    muutettuvalinta.vaihtoehto=teksti
+    MuutaVaihtoehto(dispatch, tenttiid, kysymysid, muutettuvalinta)
   }
 
   const lisaavalintaToiminto=()=>{
@@ -41,40 +51,6 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch, paluufunktiot
     setUusiValintaAlustettu(false)
   }
 
-  const useStyles = makeStyles({
-    valinta: {
-      margin: "1em",
-      outlineColor: "Black",
-      outlineStyle: "Solid",
-      outlineWidth: "1px",
-    },
-    vanhatvalinnat: {
-      width: "80vmax",
-      outlineColor: "Black",
-      outlineStyle: "Solid",
-      outlineWidth: "1px"
-    },
-    roskis: {
-      float: "right"
-    },
-    valintakentta: {
-      alignContent: "Center",
-      alignItems: "Center",
-      verticalAlign: "Justified",
-      backgroundColor: "lightgrey",
-      margin: "4px",
-      padding: "2px",
-      outlineColor: "Black",
-      outlineStyle: "Shadow",
-      outlineWidth: "1px",
-      width: "70vmax"
-    },
-    tekstilaatikko: {
-      margin: "4px",
-      width: "50vmax"
-    }
-  })
-
   const classes = useStyles()
 
   return(
@@ -83,7 +59,7 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch, paluufunktiot
       <div className={classes.valinta} key="valintavaihtoehdot">
       { (valintaamuutetaan !== undefined) &&
         <>
-        <Checkbox color="default" checked={false}
+        <Checkbox color="default"
           key="lisattyvalinta" defaultChecked={false}></Checkbox>
         <TextField className={classes.tekstilaatikko} 
         variant="outlined" value={valintateksi} 
@@ -105,8 +81,8 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch, paluufunktiot
           <Checkbox color="default"
          id={valintarivi.id+"oikea"} defaultChecked={oikeavastaus}>  
          </Checkbox>
-         <TextField className={classes.tekstilaatikko} variant="outlined"
-         value={valintarivi.vaihtoehto} onChange={event=>hoidaVanhanMuutos(event,vindex)}></TextField>
+         <TekstiSyote paluufunktio={vaihtoehdonmuutospaluu} vinkki="Muuta vaihtoehtoa" palautaid={true}
+              alkuteksti={valintarivi.vaihtoehto} paluuPainallus={hoidaVanhanMuutos} paluuid={vindex}></TekstiSyote>
          <DeleteForever className={classes.roskis} 
          onClick={()=>paluufunktiot.poistavalinta(tenttiid, kysymysid, vindex)}></DeleteForever>
          </div>

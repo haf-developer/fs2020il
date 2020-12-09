@@ -171,8 +171,20 @@ tentitRouter.post('/kysymykset/:kysymysid/vaihtoehdot/', (req, res, next ) => {
       next(err)
     }
     res.json( result.rows )
-    } )
   })
+})
+
+tentitRouter.put('/vaihtoehdot/:vaihtoehtoid', (req, res, next ) => {
+  console.log("Muutetaan req.params.vaihtoehtoid=", req.params.vaihtoehtoid)
+  console.log("Vaihtoehto req.body.vaihtoehto=", req.body.vaihtoehto)
+  db.query(`UPDATE vaihtoehdot SET vaihtoehto=$1, oikein=$2 WHERE id=$3 RETURNING *`,
+    [req.body.vaihtoehto.vaihtoehto, req.body.vaihtoehto.oikein, req.params.vaihtoehtoid],(err, result)=>{
+    if(err){
+      next(err)
+    }
+    res.json( result.rows )
+  })
+})
 
 tentitRouter.get('/tentit/:id/kysymykset/', (req, res, next ) => {
   console.log("kannasta kysymyksii req.params.id=", req.params.id)
@@ -183,10 +195,10 @@ tentitRouter.get('/tentit/:id/kysymykset/', (req, res, next ) => {
       next(err)
     }
     res.json( result.rows )
-    } )
   })
+})
 
-tentitRouter.put('/tentit/:id/kysykset/:id/', (req, res, next ) => {
+tentitRouter.put('/kysykset/:id/', (req, res, next ) => {
   db.query('SELECT * FROM tentit' , undefined /* [req.params.id] */,
   (err, result)=>{
     if(err){
@@ -195,7 +207,7 @@ tentitRouter.put('/tentit/:id/kysykset/:id/', (req, res, next ) => {
     const arvot=JSON.stringify(result.rows)
     console.log("kannasta palautui=", result.rows)
     res.send( arvot )
-    } )
   })
+})
 
 module.exports = tentitRouter
