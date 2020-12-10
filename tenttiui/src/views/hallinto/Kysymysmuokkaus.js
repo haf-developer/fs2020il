@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { LisaaKysymys } from './../../models/kanta'
 import { useState } from 'react';
 
-function KysymysMuokkaus({kysymykset, tenttiid, dispatch, paluufunktiot}) {
+function KysymysMuokkaus({kysymykset, tenttiid, dispatch}) {
   const [naytaoikeat, setNaytaOikeat]=useState(true)
   const [kysymysteksi, setKysymysTeksti]=useState("Kirjoita uusi kysymys")
   const [uusikysymysalustettu, setUusiKysymysAlustettu]=useState(false)
@@ -63,7 +63,7 @@ function KysymysMuokkaus({kysymykset, tenttiid, dispatch, paluufunktiot}) {
           <>
           <div>
           <ValintaMuokkaus tenttiid={tenttiid} kysymysid={rivi.id}
-          valinnat={rivi.vaihtoehdot} dispatch={dispatch} paluufunktiot={paluufunktiot}></ValintaMuokkaus>
+          valinnat={rivi.vaihtoehdot} dispatch={dispatch}></ValintaMuokkaus>
           </div>
           </>
           }

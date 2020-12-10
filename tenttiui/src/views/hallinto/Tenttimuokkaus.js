@@ -6,7 +6,7 @@ import KysymysMuokkaus from './Kysymysmuokkaus'
 import TekstiSyote from './Tekstisyote'
 import { useState } from 'react';
 
-function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
+function TenttiMuokkaus({tentit, dispatch}) {
   const [naytatentti, setNaytaTentti]=useState()
   const [tenttialustus, setTenttiAlustus]=useState(false)
   const [naytasyote, setNaytaSyote]=useState(false)
@@ -89,7 +89,7 @@ function TenttiMuokkaus({tentit, paluufunktiot, dispatch}) {
     { (naytatentti !==undefined ) &&
     <Fade left>
       <KysymysMuokkaus key={naytatentti+"nt"} kysymykset={tentit.data[naytatentti].kysymykset}
-      tenttiid={tentit.data[naytatentti].id} dispatch={dispatch} paluufunktiot={paluufunktiot}></KysymysMuokkaus>
+      tenttiid={tentit.data[naytatentti].id} dispatch={dispatch}></KysymysMuokkaus>
       </Fade>
     }
     </div>

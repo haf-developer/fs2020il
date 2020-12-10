@@ -87,6 +87,20 @@ function reducer(state, action) {
       console.log("reducer VAIHTOEHTO_MUUTOS datan palautus uusidata=", uusidata)
       return uusidata
     }
+    case "VAIHTOEHTO_POISTO":{
+      // , tentille: idtentti, kysymykselle: idkysymys, idvaihtoehto: vaihtoehto.id})
+      console.log("reducer VAIHTOEHTO_POISTO action=", action)
+      const tentinindeksi=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.tentille } )
+      const kysymyksenindeksi=uusidata.data[tentinindeksi].kysymykset.findIndex( (kysymys) =>{
+        return kysymys.id===action.kysymykselle } )
+      const vaihtoehtoindeksi=uusidata.data[tentinindeksi].kysymykset[kysymyksenindeksi]
+        .vaihtoehdot.findIndex((vaihtoehto) =>{
+          return vaihtoehto.id===action.idvaihtoehto})
+
+      uusidata.data[tentinindeksi].kysymykset[kysymyksenindeksi]
+        .vaihtoehdot.splice(vaihtoehtoindeksi, 1)
+      return uusidata
+    }
     case "VALINNAN_TEKSTI_MUUTTUI":
       return null
     default:
@@ -135,15 +149,6 @@ function TenttiUI() {
     }
   },[state])
 
-
-  const kysymysmuokkaajat={
-    poistavalinta: (idtentti, idkysymys, idvalinta) => {
-      let uusidata = JSON.parse(JSON.stringify(state.data))
-      uusidata.tentit[idtentti].kysymykset[idkysymys].valinnat.splice(idvalinta,1)
-      // setData(uusidata)
-    }
-  }
-
   const valintaToiminto=(event, idtentti, idkysymys, idvalinta)=>{
     console.log("valintaToiminto idvalinta=", idvalinta)
     console.log("valintaToiminto event.target.checked=", event.target.checked)
@@ -190,7 +195,7 @@ function TenttiUI() {
       <div>
       { state &&
         <div>
-        <TenttiMuokkaus tentit={state} paluufunktiot={kysymysmuokkaajat}
+        <TenttiMuokkaus tentit={state}
         dispatch={dispatch}></TenttiMuokkaus>
         </div>          
       }

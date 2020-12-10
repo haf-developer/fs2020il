@@ -145,7 +145,6 @@ function LisaaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
 
 function MuutaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
   console.log("KANTA MuutaVaihtoehto vaihtoehto=", vaihtoehto)
-  // vaihtoehdot/:vaihtoehtoid
   axios.put(`http://localhost:${port}/api/vaihtoehdot/${vaihtoehto.id}`, {vaihtoehto: vaihtoehto})
   .then(response => {
     console.log("KANTA MuutaVaihtoehto promise response=" ,response)
@@ -161,6 +160,24 @@ function MuutaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
   console.log("KANTA MuutaVaihtoehto poistuminen")
 }
 
+function PoistaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto_id){
+  // tentitRouter.delete('/vaihtoehdot/:vaihtoehtoid'
+  console.log("KANTA PoistaVaihtoehto vaihtoehto_id=",vaihtoehto_id)
+  if(vaihtoehto_id){
+    axios.delete(`http://localhost:${port}/api/vaihtoehdot/${vaihtoehto_id}`)
+    .then(response => {
+      console.log("KANTA PoistaVaihtoehto promise response=" ,response)
+      // , tentille: idtentti, kysymykselle: idkysymys, uusivaihtoehto: muutettuvaihtoehto} )
+      dispatch({type: "VAIHTOEHTO_POISTO", tentille: idtentti, kysymykselle: idkysymys, idvaihtoehto: vaihtoehto_id})
+
+      return response
+    }).catch(err => {
+      console.error('KANTA PoistaVaihtoehto Promise epäonnistui', err);
+    })
+  }
+  console.log("KANTA PoistaVaihtoehto poistuminen")
+}
+
 export { HaeTentit, LisaaTentti, PoistaTentti, MuutaTentti,
   LisaaKysymys,
-  LisaaVaihtoehto, MuutaVaihtoehto }
+  LisaaVaihtoehto, MuutaVaihtoehto, PoistaVaihtoehto }

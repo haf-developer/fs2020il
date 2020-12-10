@@ -100,7 +100,7 @@ tentitRouter.delete('/tentit/:id', (req, res, next ) => {
       // next(err)
     }
     res.json( result.rows )
-  } )
+  })
 })
 
 tentitRouter.post('/tentit/:id/kysymykset/', (req, res, next ) => {
@@ -181,6 +181,17 @@ tentitRouter.put('/vaihtoehdot/:vaihtoehtoid', (req, res, next ) => {
     [req.body.vaihtoehto.vaihtoehto, req.body.vaihtoehto.oikein, req.params.vaihtoehtoid],(err, result)=>{
     if(err){
       next(err)
+    }
+    res.json( result.rows )
+  })
+})
+
+tentitRouter.delete('/vaihtoehdot/:vaihtoehtoid', (req, res, next ) => {
+  console.log("Poistetaan req.params.vaihtoehtoid=", req.params.vaihtoehtoid)
+  db.query(`DELETE FROM vaihtoehdot WHERE id=$1`, [req.params.vaihtoehtoid],(err, result)=>{
+    if(err){
+      res.status(404).end()
+      // next(err)
     }
     res.json( result.rows )
   })

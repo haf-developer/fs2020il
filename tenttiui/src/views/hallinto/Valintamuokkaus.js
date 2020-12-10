@@ -6,9 +6,9 @@ import {DeleteForever} from '@material-ui/icons';
 import useStyles from './../tyyli'
 // import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
-import { LisaaVaihtoehto, MuutaVaihtoehto } from './../../models/kanta'
+import { LisaaVaihtoehto, MuutaVaihtoehto, PoistaVaihtoehto } from './../../models/kanta'
 
-function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch, paluufunktiot})
+function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch})
 {
   const [valintaamuutetaan, setValintaaMuutetaan]=useState()
   const [valintateksi, setValintaTeksti]=useState("Kirjoita uusi vaihtoehto")
@@ -84,7 +84,7 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch, paluufunktiot
          <TekstiSyote paluufunktio={vaihtoehdonmuutospaluu} vinkki="Muuta vaihtoehtoa" palautaid={true}
               alkuteksti={valintarivi.vaihtoehto} paluuPainallus={hoidaVanhanMuutos} paluuid={vindex}></TekstiSyote>
          <DeleteForever className={classes.roskis} 
-         onClick={()=>paluufunktiot.poistavalinta(tenttiid, kysymysid, vindex)}></DeleteForever>
+         onClick={()=>PoistaVaihtoehto(dispatch, tenttiid, kysymysid, valintarivi.id)}></DeleteForever>
          </div>
         )
         }
