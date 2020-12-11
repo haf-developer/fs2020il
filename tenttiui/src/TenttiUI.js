@@ -7,20 +7,32 @@ import './TenttiUI.css';
 import TenttiLista from './views/Tenttilista'
 import TenttiMuokkaus from './views/hallinto/Tenttimuokkaus'
 import ChartDemo from './views/chartdemo'
+import Kirjaudu from './views/Kirjaudu'
 
 function reducer(state, action) {
   let uusidata = state? 
     (
       state.data ? {data:JSON.parse(JSON.stringify(state.data))
-        ,paluufunktio:state.paluufunktio}
+        ,paluufunktio:state.paluufunktio
+        ,naytto:state.naytto}
       :[]
     )
     :[]
   switch (action.type){
+    case "INIT":{
+      console.log("reducer INIT action=", action)
+      return { naytto: action.naytto }
+      }
+    case "TALLENNA_TOKEN":{
+      //"TALLENNA_TOKEN", uusitoken: saatutoken} )
+      console.log("reducer TALLENNA_TOKEN action=", action)
+      return {token: action.uusitoken, naytto: "kirjaudu"}
+    }
     case "INIT_DATA":{
       // state.paluufunktio=action.paluufunktio
       console.log("reducer INIT_DATA action.data=", action.data)
-      return action.data
+      console.log("reducer uusidata=", uusidata)
+      return {data:action.data, naytto: "hallinnointitila"}
       }
     case 'TENTIN_NIMEN_MUUTOS':{
       console.log("reducer TENTIN_NIMEN_MUUTOS muutettutentti=", action.muutettutentti)
@@ -139,11 +151,29 @@ function TenttiUI() {
   }
 
   useEffect(()=>{
-    HaeTentit(dispatch)
+    let teealustus=true
+    if(state){
+      if(state.naytto){
+        console.log("kohta haetaan tentit")
+        teealustus=false
+        if(state.naytto==="kirjaudu"){
+          console.log("NYT haetaan tentit")
+          HaeTentit(dispatch)
+        }
+      }
+    }
+    if(teealustus){
+      console.log("useEffect Tehdään INIT")
+      dispatch({type: "INIT", naytto: 'kirjaudu'} )  
+    }
   },[])
 
   useEffect(()=>{
     console.log("use effect state muuttui")
+    if(state.token && state.naytto==="kirjaudu"){
+      HaeTentit(dispatch)
+    }
+
     if(dataAlustettu){
       // window.localStorage.setItem( 'tenttidata', JSON.stringify(state.data) )
     }
@@ -160,8 +190,19 @@ function TenttiUI() {
 
   const classes=useStyles()
 
-  // console.log("state=", state)
+  console.log("state=", state)
   console.log("rendaus hallinnointitila=", hallinnointiTila)
+  let nayttotila=false
+  if(state){
+    if(state.naytto){
+      if(state.naytto==="kirjaudu"){
+        nayttotila=true
+      }
+    }
+  }
+
+  console.log("NÄYTETÄÄN nayttotila=", nayttotila)
+
   return (
     <div >
     <title style={{backgroundColor: "red"}}>Tenttisovellus</title>
@@ -174,6 +215,28 @@ function TenttiUI() {
         color="inherit">Tietoa sovelluksesta</Button>
       </Toolbar>
     </Paper>
+    { state &&
+    <>
+    { state.naytto &&
+    <>
+    {
+      state.naytto==="kirjaudu" &&
+      <div>
+      <Kirjaudu dispatch={dispatch}>
+      </Kirjaudu>
+      </div>
+    }
+    {
+      state.naytto==="hallinnointitila" &&
+      <div>
+      <TenttiMuokkaus tentit={state}
+      dispatch={dispatch}></TenttiMuokkaus>
+      </div>          
+    }
+    </>
+    }
+    </>
+    }
     { !hallinnointiTila && 
     <div>
       { state &&
@@ -193,12 +256,6 @@ function TenttiUI() {
     }
     { (hallinnointiTila && !demoTila) && 
       <div>
-      { state &&
-        <div>
-        <TenttiMuokkaus tentit={state}
-        dispatch={dispatch}></TenttiMuokkaus>
-        </div>          
-      }
       </div>
     }
     { demoTila &&

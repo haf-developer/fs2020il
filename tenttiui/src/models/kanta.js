@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 const port=3003
+let token=undefined
 
 const vaihtoehtohaku=(dbdata, kysymysdatat, dispatch)=>{
   console.log("KANTA vaihtoehtohaku")
@@ -55,7 +56,9 @@ const kysymyshaku=(dbdata, dispatch)=>{
 
 function HaeTentit(dispatch){
   console.log("Kanta HaeTentit")
-  axios.get(`http://localhost:${port}/api/tentit`)
+  const config = {headers: { Authorization: token }}
+
+  axios.get(`http://localhost:${port}/api/tentit`,config)
   .then(response => {
     return response.data
   })
@@ -64,7 +67,9 @@ function HaeTentit(dispatch){
     kysymyshaku(dbdata, dispatch)
     })
     .catch(err => {
-    console.error('KANTA HaeTentit fetch failed', err);
+    console.error('KANTA HaeTentit epäonnistui.', err);
+    console.log("Tehdään INIT")
+    dispatch({type: "INIT", naytto: 'kirjaudu'} )
   })
 }
 
@@ -178,6 +183,30 @@ function PoistaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto_id){
   console.log("KANTA PoistaVaihtoehto poistuminen")
 }
 
+function Kirjautuminen(dispatch, kayttaja){
+  console.log("KANTA Kirjautuminen kayttaja=", kayttaja) // email, salasana
+  
+  axios.post(`http://localhost:${port}/api/kirjaudu`, {kayttaja})
+  .then(response => {
+    console.log("KANTA Kirjautuminen promise response=" ,response)
+    const saatutoken=response.data[0]
+    console.log("KANTA Kirjautuminen uusi token=", saatutoken)
+    token=saatutoken
+    dispatch({type: "TALLENNA_TOKEN", uusitoken: saatutoken} )
+    console.log("KANTA Kirjautuminen Promise token lisatty")
+    return response
+  }).catch(err => {
+    console.error('KANTA Kirjautuminen Promise epäonnistui', err);
+  })
+
+  console.log("KANTA Kirjautuminen poistuminen")
+}
+
+const Rekisterointi=(()=>{
+  
+})
+
 export { HaeTentit, LisaaTentti, PoistaTentti, MuutaTentti,
   LisaaKysymys,
-  LisaaVaihtoehto, MuutaVaihtoehto, PoistaVaihtoehto }
+  LisaaVaihtoehto, MuutaVaihtoehto, PoistaVaihtoehto,
+  Kirjautuminen, Rekisterointi }

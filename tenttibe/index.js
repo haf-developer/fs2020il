@@ -13,8 +13,10 @@ const paasynhallinta = require('./utils/paasynhallinta')
 app.use(paasynhallinta)
 const config = require('./utils/config')
 const tenttiRouter = require('./controllers/tentit')
+const henkilotRouter = require('./utils/henkilot')
 
 app.use('/api', tenttiRouter)
+app.use('/api', henkilotRouter)
 
 const port = config.PORT
 
