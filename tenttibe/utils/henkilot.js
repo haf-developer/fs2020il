@@ -23,27 +23,48 @@ henkilotRouter.get('/henkilot', (req, res, next ) => {
       // .catch(error => next(error))
   })
 
-  // axios.post(`http://localhost:${port}/api/kirjaudu`, {kayttaja})
+
 henkilotRouter.post('/kirjaudu', (req, res, next ) => {
   console.log("kirjautuminen req.body=", req.body)
-  db.query('SELECT sahkoposti FROM henkilot WHERE sahkoposti=$1 AND etunimi=$2', [req.body.email,
+  db.query('SELECT sahkoposti FROM henkilot WHERE sahkoposti=$1 AND salasana=$2', [req.body.email,
     req.body.salasana], (err, result)=>{
-      if(err){
-        next(err)
+    if(err){
+      next(err)
+    }
+    if(result.rows){
+      if(result.rows[0]===req.body.email)
+      {
+        let tokeni=jwt.sign({email: req.body.email},'shhhhh')
+        console.log("token=", tokeni)        
+        res.status(200).send(tokeni)
       }
-      if(result.rows){
-        if(result.rows[0]===req.body.email)
-        {
-          let tokeni=jwt.sign({email: req.body.email},'shhhhh')
-          console.log("token=", tokeni)        
-          res.status(200).send(tokeni)
-        }
-      }else{
-        return res.status(401).json({
-          error: 'Väärä email tai salasana'
-        })
+    }else{
+      return res.status(401).json({
+        error: 'Väärä email tai salasana'
+      })
+    }
+  })
+})
+
+henkilotRouter.post('/rekisteroi', (req, res, next ) => {
+  console.log("rekisteroi req.body=", req.body)
+  db.query('SELECT * FROM henkilot', undefined, (err, result)=>{
+    if(err){
+      next(err)
+    }
+    let rooli='opiskelija'
+    console.log("rekistoroi henkilot result=", result)
+    if(result.rows){
+
+      if(result.rows.length==0){
+        rooli='admin'
       }
+
+    }
+    return res.status(401).json({
+      error: 'Ei toimi vielä'
     })
+  })
 })
 
 module.exports = henkilotRouter

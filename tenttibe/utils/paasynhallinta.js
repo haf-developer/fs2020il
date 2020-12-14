@@ -19,8 +19,8 @@ const myLogger = function (req, res, next) {
       return res.status(401).json({ error: 'Ei kirjauduttu palveluun' })
     }
   }else{
-    console.log('Ollaanko kirjautumassa')
-    if(req.path==="/api/kirjaudu"){
+    console.log('Ollaanko kirjautumassa / rekisteroitymässä')
+    if(req.path==="/api/kirjaudu" || req.path==="/api/rekisteroi"){
       console.log('KIrjautumaan vain')
       next()
     }else{

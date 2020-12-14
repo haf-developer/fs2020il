@@ -8,6 +8,7 @@ import TenttiLista from './views/Tenttilista'
 import TenttiMuokkaus from './views/hallinto/Tenttimuokkaus'
 import ChartDemo from './views/chartdemo'
 import Kirjaudu from './views/Kirjaudu'
+import Rekisterointi from './views/Rekisterointi'
 
 function reducer(state, action) {
   let uusidata = state? 
@@ -22,6 +23,14 @@ function reducer(state, action) {
     case "INIT":{
       console.log("reducer INIT action=", action)
       return { naytto: action.naytto }
+      }
+      case "REKISTEROIDY":{
+        console.log("reducer REKISTEROIDY")
+        return { naytto: "Rekisterointi" }      
+        }
+      case "REKISTEROITY":{
+        console.log("reducer REKISTEROITY Voiko tehdä uudestaan?")
+      return { naytto: "kirjaudu" }      
       }
     case "TALLENNA_TOKEN":{
       //"TALLENNA_TOKEN", uusitoken: saatutoken} )
@@ -164,7 +173,7 @@ function TenttiUI() {
     }
     if(teealustus){
       console.log("useEffect Tehdään INIT")
-      dispatch({type: "INIT", naytto: 'kirjaudu'} )  
+      dispatch({type: "INIT", naytto: 'kirjaudu'})
     }
   },[])
 
@@ -211,7 +220,7 @@ function TenttiUI() {
     <Paper component="header" className={classes.root} elevation={0}>
       <Toolbar className={classes.tyokalubaari} >
         <Button variant="contained" color="inherit" style={{backgroundColor: "blue"}}>Kirjaudu</Button>
-        <Button color="inherit">Rekisteröidy</Button>
+        <Button color="inherit" onClick={()=>dispatch({type: "REKISTEROIDY"})}>Rekisteröidy</Button>
         <Button color="inherit" onClick={()=>setDemoTila(!demoTila)}>Chart demo</Button>
         <Button className={classes.painike} variant="contained"
         color="inherit">Tietoa sovelluksesta</Button>
@@ -226,6 +235,12 @@ function TenttiUI() {
       <div>
       <Kirjaudu dispatch={dispatch}>
       </Kirjaudu>
+      </div>
+    }
+    {
+      state.naytto==="rekisteroidy" &&
+      <div>
+      <Rekisterointi dispatch={dispatch}></Rekisterointi>
       </div>
     }
     {

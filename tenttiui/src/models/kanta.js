@@ -75,7 +75,7 @@ function HaeTentit(dispatch){
 
 function PoistaTentti( dispatch, tenttitunniste)
 {
-  axios.delete(`http://localhost:${port}/api/tentit/${tenttitunniste}`)
+  axios.delete(`http://localhost:${port}/api/tentit/${tenttitunniste}`, basicconfig)
   .then(response => {
     console.log("KANTA PoistaTentti response=", response)
     dispatch({type: "TENTIN_POISTO", idtentti: tenttitunniste})
@@ -86,7 +86,7 @@ function PoistaTentti( dispatch, tenttitunniste)
 
 function LisaaTentti(dispatch, tentinnimi){
   console.log("KANTA LisaaTentti tentinnimi=", tentinnimi)
-  axios.post(`http://localhost:${port}/api/tentit`, {nimi: tentinnimi})
+  axios.post(`http://localhost:${port}/api/tentit`, {nimi: tentinnimi}, basicconfig)
   .then(response => {
     console.log("KANTA LisaaTentti promise response=" ,response)
     const lisattytentti=response.data[0]
@@ -104,7 +104,7 @@ function MuutaTentti(dispatch, id, tentinnimi, muuttuvatentti){
   console.log("Kanta MuutaTentti id ja tentinnimi=", {id,tentinnimi})
   const muuttunuttentti={...muuttuvatentti, tentti: tentinnimi }
 
-  axios.put(`http://localhost:3001/tentit/${id}`, muuttunuttentti)
+  axios.put(`http://localhost:3001/tentit/${id}`, muuttunuttentti, basicconfig)
   .then(response => {
     console.log("Kanta MuutaTentti response=", response)
     dispatch({type: "TENTIN_NIMEN_MUUTOS", muutettutentti: muuttunuttentti} )
@@ -116,7 +116,7 @@ function MuutaTentti(dispatch, id, tentinnimi, muuttuvatentti){
 function LisaaKysymys(dispatch, idtentti, kysymys){
   console.log("KANTA LisaaKysymys kysymys=", kysymys)
 
-  axios.post(`http://localhost:${port}/api/tentit/${idtentti}/kysymykset`, {kysymys: kysymys})
+  axios.post(`http://localhost:${port}/api/tentit/${idtentti}/kysymykset`, {kysymys: kysymys}, basicconfig)
   .then(response => {
     console.log("KANTA LisaaKysymys promise response=" ,response)
     const lisattykysymys=response.data[0]
@@ -133,7 +133,7 @@ function LisaaKysymys(dispatch, idtentti, kysymys){
 function LisaaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
   console.log("KANTA LisaaVaihtoehto vaihtoehto=", vaihtoehto)
   // /kysymykset/:kysymysid/vaihtoehdot/
-  axios.post(`http://localhost:${port}/api/kysymykset/${idkysymys}/vaihtoehdot`, {vaihtoehto: vaihtoehto})
+  axios.post(`http://localhost:${port}/api/kysymykset/${idkysymys}/vaihtoehdot`, {vaihtoehto: vaihtoehto}, basicconfig)
   .then(response => {
     console.log("KANTA LisaaVaihtoehto promise response=" ,response)
     const lisattyvaihtoehto=response.data[0]
@@ -150,7 +150,7 @@ function LisaaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
 
 function MuutaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
   console.log("KANTA MuutaVaihtoehto vaihtoehto=", vaihtoehto)
-  axios.put(`http://localhost:${port}/api/vaihtoehdot/${vaihtoehto.id}`, {vaihtoehto: vaihtoehto})
+  axios.put(`http://localhost:${port}/api/vaihtoehdot/${vaihtoehto.id}`, {vaihtoehto: vaihtoehto}, basicconfig)
   .then(response => {
     console.log("KANTA MuutaVaihtoehto promise response=" ,response)
     const muutettuvaihtoehto=response.data[0]
@@ -169,7 +169,7 @@ function PoistaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto_id){
   // tentitRouter.delete('/vaihtoehdot/:vaihtoehtoid'
   console.log("KANTA PoistaVaihtoehto vaihtoehto_id=",vaihtoehto_id)
   if(vaihtoehto_id){
-    axios.delete(`http://localhost:${port}/api/vaihtoehdot/${vaihtoehto_id}`)
+    axios.delete(`http://localhost:${port}/api/vaihtoehdot/${vaihtoehto_id}`, basicconfig)
     .then(response => {
       console.log("KANTA PoistaVaihtoehto promise response=" ,response)
       // , tentille: idtentti, kysymykselle: idkysymys, uusivaihtoehto: muutettuvaihtoehto} )
@@ -203,11 +203,20 @@ function Kirjautuminen(dispatch, kayttaja){
   console.log("KANTA Kirjautuminen poistuminen")
 }
 
-const Rekisterointi=(()=>{
-  
+const Rekisteroityminen=((dispatch, kayttaja)=>{
+  console.log("KANTA Rekisteroityminen kayttaja=", kayttaja)
+  // henkilotRouter.post('/rekisteroi
+  axios.post(`http://localhost:${port}/api/rekisteroi`, {kayttaja})
+  .then(response => {
+    console.log("KANTA Rekisteroityminen promise response=" ,response)
+    dispatch({type: "REKISTEROITY"})
+    return response
+  }).catch(err => {
+    console.error('KANTA Rekisteroityminen Promise epäonnistui', err);
+  })
 })
 
 export { HaeTentit, LisaaTentti, PoistaTentti, MuutaTentti,
   LisaaKysymys,
   LisaaVaihtoehto, MuutaVaihtoehto, PoistaVaihtoehto,
-  Kirjautuminen, Rekisterointi }
+  Kirjautuminen, Rekisteroityminen }
