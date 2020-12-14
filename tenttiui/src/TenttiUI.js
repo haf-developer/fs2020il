@@ -32,7 +32,7 @@ function reducer(state, action) {
       // state.paluufunktio=action.paluufunktio
       console.log("reducer INIT_DATA action.data=", action.data)
       console.log("reducer uusidata=", uusidata)
-      return {data:action.data, naytto: "hallinnointitila"}
+      return ({data: action.data, naytto: "hallinnointitila"})
       }
     case 'TENTIN_NIMEN_MUUTOS':{
       console.log("reducer TENTIN_NIMEN_MUUTOS muutettutentti=", action.muutettutentti)
@@ -170,8 +170,10 @@ function TenttiUI() {
 
   useEffect(()=>{
     console.log("use effect state muuttui")
-    if(state.token && state.naytto==="kirjaudu"){
-      HaeTentit(dispatch)
+    if(state){
+      if(state.token && state.naytto==="kirjaudu"){
+        HaeTentit(dispatch)
+      }
     }
 
     if(dataAlustettu){

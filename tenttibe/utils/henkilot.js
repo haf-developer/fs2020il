@@ -6,8 +6,8 @@ const SALT_ROUNDS=10
 
 bcrypt.hash("kissa", SALT_ROUNDS, (err, hash)=>{
   console.log("hash=",hash)
-  let token=jwt.sign({foo: 'bar'},'shhhhh')
-  console.log("token=", token)
+  // let token=jwt.sign({foo: 'bar'},'shhhhh')
+  // console.log("token=", token)
 })
 
 henkilotRouter.get('/henkilot', (req, res, next ) => {
@@ -34,7 +34,7 @@ henkilotRouter.post('/kirjaudu', (req, res, next ) => {
       if(result.rows){
         if(result.rows[0]===req.body.email)
         {
-          let tokeni=jwt.sign({foo: 'bar'},'shhhhh')
+          let tokeni=jwt.sign({email: req.body.email},'shhhhh')
           console.log("token=", tokeni)        
           res.status(200).send(tokeni)
         }

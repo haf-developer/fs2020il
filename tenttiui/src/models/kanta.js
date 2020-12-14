@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const port=3003
 let token=undefined
+let basicconfig=undefined
 
 const vaihtoehtohaku=(dbdata, kysymysdatat, dispatch)=>{
   console.log("KANTA vaihtoehtohaku")
@@ -13,7 +14,7 @@ const vaihtoehtohaku=(dbdata, kysymysdatat, dispatch)=>{
       return(
         Promise.all(
           uusidata[index].kysymykset.map(asia=>{ 
-          return axios.get(`http://localhost:${port}/api/kysymykset/${asia.id}/vaihtoehdot`)
+          return axios.get(`http://localhost:${port}/api/kysymykset/${asia.id}/vaihtoehdot`, basicconfig)
           })
         )
       )
@@ -30,7 +31,7 @@ const vaihtoehtohaku=(dbdata, kysymysdatat, dispatch)=>{
         } )
       }
     })
-    dispatch({ type: "INIT_DATA", data: {data:uusidata } })
+    dispatch({ type: "INIT_DATA", data: uusidata })
     return vaihtoehdot
   }).catch(err => {
     console.error('KANTA vaihtoehtohaku fetch failed', err);
@@ -41,7 +42,7 @@ const vaihtoehtohaku=(dbdata, kysymysdatat, dispatch)=>{
 const kysymyshaku=(dbdata, dispatch)=>{
   Promise.all(
     dbdata.map(asia=>{ 
-    return axios.get(`http://localhost:${port}/api/tentit/${asia.id}/kysymykset`)
+    return axios.get(`http://localhost:${port}/api/tentit/${asia.id}/kysymykset`, basicconfig)
     }))
     .then( kysymysdatat => {
       console.log("Kanta kysymyshaku kysymysdatat=", kysymysdatat);
@@ -56,9 +57,8 @@ const kysymyshaku=(dbdata, dispatch)=>{
 
 function HaeTentit(dispatch){
   console.log("Kanta HaeTentit")
-  const config = {headers: { Authorization: token }}
 
-  axios.get(`http://localhost:${port}/api/tentit`,config)
+  axios.get(`http://localhost:${port}/api/tentit`,basicconfig)
   .then(response => {
     return response.data
   })
@@ -189,10 +189,11 @@ function Kirjautuminen(dispatch, kayttaja){
   axios.post(`http://localhost:${port}/api/kirjaudu`, {kayttaja})
   .then(response => {
     console.log("KANTA Kirjautuminen promise response=" ,response)
-    const saatutoken=response.data[0]
+    const saatutoken=response.data
     console.log("KANTA Kirjautuminen uusi token=", saatutoken)
     token=saatutoken
     dispatch({type: "TALLENNA_TOKEN", uusitoken: saatutoken} )
+    basicconfig={headers: { Authorization: `Basic ${token}`}}
     console.log("KANTA Kirjautuminen Promise token lisatty")
     return response
   }).catch(err => {
