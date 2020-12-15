@@ -238,7 +238,7 @@ function TenttiUI() {
       </div>
     }
     {
-      state.naytto==="rekisteroidy" &&
+      state.naytto==="Rekisterointi" &&
       <div>
       <Rekisterointi dispatch={dispatch}></Rekisterointi>
       </div>
@@ -270,10 +270,6 @@ function TenttiUI() {
         })
       }
     </div>
-    }
-    { (hallinnointiTila && !demoTila) && 
-      <div>
-      </div>
     }
     { demoTila &&
       <ChartDemo></ChartDemo>

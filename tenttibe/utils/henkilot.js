@@ -59,6 +59,7 @@ henkilotRouter.post('/rekisteroi', (req, res, next ) => {
       if(result.rows.length==0){
         rooli='admin'
       }
+    console.log("rekistoroi aseta rooli=", rooli)
 
     }
     return res.status(401).json({
