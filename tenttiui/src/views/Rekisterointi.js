@@ -17,10 +17,8 @@ const Rekisterointi=(({dispatch})=>{
     Rekisteroityminen(dispatch, kayttaja)
   }
  
-  const hoidaSyotteet = (event, kentta)=>{
-    let kopiokayttaja=JSON.parse(JSON.stringify(kayttaja))
-    kopiokayttaja[kentta]=event.target.value
-    setKayttaja(kopiokayttaja)
+  const hoidaSyotteet = (event)=>{
+    setKayttaja({ ...kayttaja, [event.target.name]: event.target.value })
   }
 
   const avaimet=Object.keys(kayttaja)
@@ -34,7 +32,7 @@ const Rekisterointi=(({dispatch})=>{
         return(
           <div key={rivi +"id_div"}>
           {rivi}<input key={rivi+"_id"} type={syote} value={kayttaja[rivi]}
-          onChange={(event)=>hoidaSyotteet(event,rivi)}></input>
+          name={rivi} onChange={(event)=>hoidaSyotteet(event)}></input>
           </div>
         )
         })
