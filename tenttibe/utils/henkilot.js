@@ -72,10 +72,14 @@ henkilotRouter.post('/rekisteroi', (req, res, next ) => {
       }
       console.log("rekistoroi aseta rooli=", rooli)
       // TODO: salasanan pituuden tarkistus epäonnistumisen operaatiot
-      if(req.body.kayttaja.salasana < 6){
+      if(req.body.kayttaja.salasana.length < 6){
         console.log("rekistoroi VIRHE salasana liian lyhyt salasan=", req.body.kayttaja.salasana)
-        throw new Error("Salasana alle 6 merkkiä")
+        return res.status(403).json({
+          error: 'Salasana ei kelpaa'
+        })
+        //throw new Error("Salasana alle 6 merkkiä")
       }
+      console.log("Salasana kelpaa rekistorointi jatkuu")
       bcrypt.hash(req.body.kayttaja.salasana, SALT_ROUNDS, (hasherr, hash)=>{
         console.log("hash=",hash)
         const posti = req.body.kayttaja.sahkoposti? req.body.kayttaja.sahkoposti : "eipostii"
