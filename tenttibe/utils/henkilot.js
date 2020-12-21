@@ -2,7 +2,6 @@ const henkilotRouter = require('express').Router()
 const db = require('../db/kyselyt')
 const jwt=require('jsonwebtoken')
 const bcrypt=require('bcrypt')
-// const { json } = require('express')
 const SALT_ROUNDS=10
 
 henkilotRouter.get('/henkilot', (req, res, next ) => {
@@ -11,9 +10,8 @@ henkilotRouter.get('/henkilot', (req, res, next ) => {
       if(err){
         next(err)
       }
-      const arvot=JSON.stringify(result.rows)
-      console.log("kannasta palautui=", arvot)
-      res.send('Hello World! ' + arvot )
+      res.status(200).json(result)
+      return result
       })
       // .catch(error => next(error))
   })
@@ -56,7 +54,9 @@ henkilotRouter.post('/rekisteroi', (req, res, next ) => {
   })
   if( !kelpaako){
     console.log("Heitetään virhe koska tiedot ei kelpaa")
-    throw new Error("Tiedot puutteelliset")
+    return res.status(403).json({
+      error: 'Tiedot puutteelliset'
+    })
   }
 
   db.query('SELECT * FROM henkilot', undefined, (err, result)=>{
@@ -96,7 +96,7 @@ henkilotRouter.post('/rekisteroi', (req, res, next ) => {
           res.status(200).json(result2)
           return result2  
         })
-      })    
+      })
     }else{
       return res.status(401).json({
         error: 'Ei toimi vielä'
