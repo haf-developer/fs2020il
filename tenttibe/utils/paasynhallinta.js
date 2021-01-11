@@ -1,6 +1,6 @@
 const jwt=require('jsonwebtoken')
 const myLogger = function (req, res, next) {
-  console.log('LOGGED path',req.path)
+  // console.log('LOGGED path',req.path)
   let token=req.get('authorization')
   if(token){
     token=token.split(' ')[1]

@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
+    "test": "cross-env NODE_ENV=test jasmine",
     "lint": "eslint ."
   },
   "author": "Hauva Vuf",
@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
+    "jasmine": "^3.6.3",
     "jest": "^25.5.2",
     "nodemon": "^2.0.3",
     "supertest": "^4.0.2"
