@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import Fade from 'react-reveal/Fade';
-import {LisaaTentti, PoistaTentti, MuutaTentti} from './../../models/kanta'
+import {lisaaTentti, poistaTentti, muutaTentti} from './../../models/kanta'
 import {Delete, AddCircle } from '@material-ui/icons';
 import KysymysMuokkaus from './Kysymysmuokkaus'
 import TekstiSyote from './Tekstisyote'
@@ -30,14 +30,14 @@ function TenttiMuokkaus({tentit, dispatch}) {
 
   const syotteenpaluu=(teksti)=>{
     console.log("TenttiMuokkaus syotteenpaluu teksti=", teksti)
-    LisaaTentti(dispatch, teksti)
+    lisaaTentti(dispatch, teksti)
     setNaytaSyote(false)
     setNaytaLisays(true)
   }
 
   const nimenmuutospaluu=(teksti)=>{
     console.log("TenttiMuokkaus nimenmuutospaluu teksti=", teksti)
-    MuutaTentti(dispatch, tentit.data[naytatentti].id, teksti, tentit.data[naytatentti]) 
+    muutaTentti(dispatch, tentit.data[naytatentti].id, teksti, tentit.data[naytatentti]) 
   }
 
   const hoidasulkeminentaikeskitys=( event, indeksi )=>{
@@ -73,7 +73,7 @@ function TenttiMuokkaus({tentit, dispatch}) {
             <Button variant="outlined" color="primary" onClick={()=>naytaTenttiToiminto(index)}>
             {rivi.nimi}</Button>
           }
-          <Delete onClick={()=>PoistaTentti( dispatch, rivi.id )}></Delete>
+          <Delete onClick={()=>poistaTentti( dispatch, rivi.id )}></Delete>
           </div>
         )}
       )

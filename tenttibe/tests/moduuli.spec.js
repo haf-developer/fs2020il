@@ -1,17 +1,15 @@
 const funktiot=require("./moduuli")
 
 describe("Testaajan testaus", function() {
-  let a;
+  let a
 
   it("testi spec eka", ()=> {
-    a = true;
-    expect(a).toBe(true);
-  });
+    a = true
+    expect(a).toBe(true)
+  })
 
-  it("testi hirsipuu tosi", ()=> {
+  it("testi summa palauttaa nollan", ()=> {
     let tulos=funktiot.summa(-1,1,3)
-    expect(tulos).toBe(0);
-  });
-
-
+    expect(tulos).toBe(0)
+  })
 })

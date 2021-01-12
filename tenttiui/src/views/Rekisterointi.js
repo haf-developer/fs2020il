@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {Rekisteroityminen} from './../models/kanta'
+import {rekisteroityminen} from './../models/kanta'
 
 const Rekisterointi=(({dispatch})=>{
   const [kayttaja, setKayttaja] = useState(
@@ -14,7 +14,7 @@ const Rekisterointi=(({dispatch})=>{
   const hoidaRekisterointi = (event) => {
     event.preventDefault()
     console.log('hoidaRekisterointi button clicked', event.target)
-    Rekisteroityminen(dispatch, kayttaja)
+    rekisteroityminen(dispatch, kayttaja)
   }
  
   const hoidaSyotteet = (event)=>{

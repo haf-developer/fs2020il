@@ -1,4 +1,4 @@
-import {Kirjautuminen} from './../models/kanta'
+import {kirjautuminen} from './../models/kanta'
 import { useState } from 'react';
 
 const Kirjaudu=(({dispatch})=>{
@@ -26,7 +26,7 @@ const Kirjaudu=(({dispatch})=>{
         name="salasana" onChange={(event)=>hoidaSyotteet(event)}></input>
       </div>
 
-      <button onClick={()=>Kirjautuminen(dispatch, kayttaja)}>kirjaudu</button>
+      <button onClick={()=>kirjautuminen(dispatch, kayttaja)}>kirjaudu</button>
     </div>
   )
 })

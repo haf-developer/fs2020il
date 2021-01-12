@@ -131,7 +131,7 @@ describe("paasynhallinta", ()=> {
     {
       a=err
     }
-    console.log("Saadut tentit=",a)
+    console.log("Saadut tentit=",a.body)
     expect(a.status).toBe(200)
   })
 

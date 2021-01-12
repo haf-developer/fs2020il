@@ -15,7 +15,7 @@ const myLogger = function (req, res, next) {
         return res.status(401).json({ error: 'Ei kirjauduttu palveluun' })
       }
     }catch(error) {
-      console.log('Logger Error=', error)
+      // console.log('Logger Error=', error)
       return res.status(401).json({ error: 'Ei kirjauduttu palveluun' })
     }
   }else{

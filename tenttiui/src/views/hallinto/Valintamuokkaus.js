@@ -6,7 +6,7 @@ import {DeleteForever} from '@material-ui/icons';
 import useStyles from './../tyyli'
 // import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
-import { LisaaVaihtoehto, MuutaVaihtoehto, PoistaVaihtoehto } from './../../models/kanta'
+import { lisaaVaihtoehto, muutaVaihtoehto, poistaVaihtoehto } from './../../models/kanta'
 
 function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch})
 {
@@ -40,13 +40,13 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch})
     console.log("vaihtoehdonmuutospaluu indeksi=", index)
     let muutettuvalinta=valinnat[index]
     muutettuvalinta.vaihtoehto=teksti
-    MuutaVaihtoehto(dispatch, tenttiid, kysymysid, muutettuvalinta)
+    muutaVaihtoehto(dispatch, tenttiid, kysymysid, muutettuvalinta)
   }
 
   const lisaavalintaToiminto=()=>{
     // LisaaVaihtoehto(dispatch, tenttiid, kysymysid, valintateksi)
     const lisattavavalinta={vaihtoehto: valintateksi, oikein: false}
-    LisaaVaihtoehto(dispatch, tenttiid, kysymysid, lisattavavalinta)
+    lisaaVaihtoehto(dispatch, tenttiid, kysymysid, lisattavavalinta)
     setValintaaMuutetaan()
     setUusiValintaAlustettu(false)
   }
@@ -84,7 +84,7 @@ function ValintaMuokkaus({tenttiid, kysymysid, valinnat, dispatch})
          <TekstiSyote paluufunktio={vaihtoehdonmuutospaluu} vinkki="Muuta vaihtoehtoa" palautaid={true}
               alkuteksti={valintarivi.vaihtoehto} paluuPainallus={hoidaVanhanMuutos} paluuid={vindex}></TekstiSyote>
          <DeleteForever className={classes.roskis} 
-         onClick={()=>PoistaVaihtoehto(dispatch, tenttiid, kysymysid, valintarivi.id)}></DeleteForever>
+         onClick={()=>poistaVaihtoehto(dispatch, tenttiid, kysymysid, valintarivi.id)}></DeleteForever>
          </div>
         )
         }

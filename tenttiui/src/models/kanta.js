@@ -55,7 +55,7 @@ const kysymyshaku=(dbdata, dispatch)=>{
   console.log("KANTA kysymyshaku loppu")
 }
 
-function HaeTentit(dispatch){
+function haeTentit(dispatch){
   console.log("Kanta HaeTentit")
 
   axios.get(`http://localhost:${port}/api/tentit`,basicconfig)
@@ -73,7 +73,7 @@ function HaeTentit(dispatch){
   })
 }
 
-function PoistaTentti( dispatch, tenttitunniste)
+function poistaTentti( dispatch, tenttitunniste)
 {
   axios.delete(`http://localhost:${port}/api/tentit/${tenttitunniste}`, basicconfig)
   .then(response => {
@@ -84,7 +84,7 @@ function PoistaTentti( dispatch, tenttitunniste)
   })
 }
 
-function LisaaTentti(dispatch, tentinnimi){
+function lisaaTentti(dispatch, tentinnimi){
   console.log("KANTA LisaaTentti tentinnimi=", tentinnimi)
   axios.post(`http://localhost:${port}/api/tentit`, {nimi: tentinnimi}, basicconfig)
   .then(response => {
@@ -100,7 +100,7 @@ function LisaaTentti(dispatch, tentinnimi){
   console.log("KANTA LisaaTentti Promise ilmeisesti pendaa")
 }
 
-function MuutaTentti(dispatch, id, tentinnimi, muuttuvatentti){
+function muutaTentti(dispatch, id, tentinnimi, muuttuvatentti){
   console.log("Kanta MuutaTentti id ja tentinnimi=", {id,tentinnimi})
   const muuttunuttentti={...muuttuvatentti, tentti: tentinnimi }
 
@@ -113,7 +113,7 @@ function MuutaTentti(dispatch, id, tentinnimi, muuttuvatentti){
   })
 }
 
-function LisaaKysymys(dispatch, idtentti, kysymys){
+function lisaaKysymys(dispatch, idtentti, kysymys){
   console.log("KANTA LisaaKysymys kysymys=", kysymys)
 
   axios.post(`http://localhost:${port}/api/tentit/${idtentti}/kysymykset`, {kysymys: kysymys}, basicconfig)
@@ -130,7 +130,7 @@ function LisaaKysymys(dispatch, idtentti, kysymys){
   console.log("KANTA LisaaKysymys Promise ilmeisesti pendaa")
 }
 
-function LisaaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
+function lisaaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
   console.log("KANTA LisaaVaihtoehto vaihtoehto=", vaihtoehto)
   // /kysymykset/:kysymysid/vaihtoehdot/
   axios.post(`http://localhost:${port}/api/kysymykset/${idkysymys}/vaihtoehdot`, {vaihtoehto: vaihtoehto}, basicconfig)
@@ -148,7 +148,7 @@ function LisaaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
   console.log("KANTA LisaaVaihtoehto poistuminen")
 }
 
-function MuutaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
+function muutaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
   console.log("KANTA MuutaVaihtoehto vaihtoehto=", vaihtoehto)
   axios.put(`http://localhost:${port}/api/vaihtoehdot/${vaihtoehto.id}`, {vaihtoehto: vaihtoehto}, basicconfig)
   .then(response => {
@@ -165,7 +165,7 @@ function MuutaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto){
   console.log("KANTA MuutaVaihtoehto poistuminen")
 }
 
-function PoistaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto_id){
+function poistaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto_id){
   // tentitRouter.delete('/vaihtoehdot/:vaihtoehtoid'
   console.log("KANTA PoistaVaihtoehto vaihtoehto_id=",vaihtoehto_id)
   if(vaihtoehto_id){
@@ -183,7 +183,7 @@ function PoistaVaihtoehto(dispatch, idtentti, idkysymys, vaihtoehto_id){
   console.log("KANTA PoistaVaihtoehto poistuminen")
 }
 
-function Kirjautuminen(dispatch, kayttaja){
+function kirjautuminen(dispatch, kayttaja){
   console.log("KANTA Kirjautuminen kayttaja=", kayttaja) // email, salasana
   
   axios.post(`http://localhost:${port}/api/kirjaudu`, {kayttaja})
@@ -203,7 +203,7 @@ function Kirjautuminen(dispatch, kayttaja){
   console.log("KANTA Kirjautuminen poistuminen")
 }
 
-const Rekisteroityminen=((dispatch, kayttaja)=>{
+const rekisteroityminen=((dispatch, kayttaja)=>{
   console.log("KANTA Rekisteroityminen kayttaja=", kayttaja)
   // henkilotRouter.post('/rekisteroi
   axios.post(`http://localhost:${port}/api/rekisteroi`, {kayttaja})
@@ -216,7 +216,7 @@ const Rekisteroityminen=((dispatch, kayttaja)=>{
   })
 })
 
-export { HaeTentit, LisaaTentti, PoistaTentti, MuutaTentti,
-  LisaaKysymys,
-  LisaaVaihtoehto, MuutaVaihtoehto, PoistaVaihtoehto,
-  Kirjautuminen, Rekisteroityminen }
+export { haeTentit, lisaaTentti, poistaTentti, muutaTentti,
+  lisaaKysymys,
+  lisaaVaihtoehto, muutaVaihtoehto, poistaVaihtoehto,
+  kirjautuminen, rekisteroityminen }

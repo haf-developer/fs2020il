@@ -1,6 +1,6 @@
 import { useEffect, useState, useReducer } from 'react';
 import alustusdata from './testi/testidata'
-import {HaeTentit} from './models/kanta'
+import {haeTentit} from './models/kanta'
 import { Button, Toolbar, Paper } from '@material-ui/core';
 import useStyles from './views/tyyli'
 import './TenttiUI.css';
@@ -24,19 +24,19 @@ function reducer(state, action) {
       console.log("reducer INIT action=", action)
       return { naytto: action.naytto }
       }
-      case "REKISTEROIDY":{
-        console.log("reducer REKISTEROIDY")
-        return { naytto: "Rekisterointi" }      
-        }
-      case "REKISTEROITY":{
-        console.log("reducer REKISTEROITY Voiko tehdä uudestaan?")
+    case "REKISTEROIDY":{
+      console.log("reducer REKISTEROIDY")
+      return { naytto: "Rekisterointi" }      
+      }
+    case "REKISTEROITY":{
+      console.log("reducer REKISTEROITY Voiko tehdä uudestaan?")
       return { naytto: "kirjaudu" }      
       }
     case "TALLENNA_TOKEN":{
       //"TALLENNA_TOKEN", uusitoken: saatutoken} )
       console.log("reducer TALLENNA_TOKEN action=", action)
       return {token: action.uusitoken, naytto: "kirjaudu"}
-    }
+      }
     case "INIT_DATA":{
       // state.paluufunktio=action.paluufunktio
       console.log("reducer INIT_DATA action.data=", action.data)
@@ -51,18 +51,18 @@ function reducer(state, action) {
       }
       console.log("reducer TENTIN_NIMEN_MUUTOS datan palautus uusidata.data=", uusidata.data)
       return uusidata
-    }
+      }
     case 'TENTIN_POISTO':{
       console.log("reducer TENTIN_POISTO idtentti=", action.idtentti)
-        console.log("reducer TENTIN_poisto datan palautus uusidata=", uusidata)
-        if( uusidata.data !== undefined){
-          const poistaindex=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.idtentti } )
-          uusidata.data.splice(poistaindex, 1)
-        }else{
-          console.log("reducer TENTIN_poisto datan palautus uusidata ongelma=", uusidata)
-        }
-        console.log("reducer TENTIN_poisto datan palautus")
-        return uusidata
+      console.log("reducer TENTIN_poisto datan palautus uusidata=", uusidata)
+      if( uusidata.data !== undefined){
+        const poistaindex=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.idtentti } )
+        uusidata.data.splice(poistaindex, 1)
+      }else{
+        console.log("reducer TENTIN_poisto datan palautus uusidata ongelma=", uusidata)
+      }
+      console.log("reducer TENTIN_poisto datan palautus")
+      return uusidata
       }
     case "TENTIN_LISAYS":{
       console.log("reducer TENTIN_LISAYS alussa uusidata=", uusidata)
@@ -83,7 +83,7 @@ function reducer(state, action) {
       uusidata.data[indeksi].kysymykset.push(action.uusikysymys)
       console.log("reducer KYSYMYS_LISAYS datan palautus uusidata=", uusidata)
       return uusidata
-    }
+      }
     case "VAIHTOEHTO_LISAYS":{
       console.log("reducer VAIHTOEHTO_LISAYS action=", action)
       const tentinindeksi=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.tentille } )
@@ -95,7 +95,7 @@ function reducer(state, action) {
       uusidata.data[tentinindeksi].kysymykset[kysymyksenindeksi].vaihtoehdot.push(action.uusivaihtoehto)
       console.log("reducer VAIHTOEHTO_LISAYS datan palautus uusidata=", uusidata)
       return uusidata
-    }
+      }
     case "VAIHTOEHTO_MUUTOS":{
       console.log("reducer VAIHTOEHTO_MUUTOS action=", action)
       const tentinindeksi=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.tentille } )
@@ -107,7 +107,7 @@ function reducer(state, action) {
       uusidata.data[tentinindeksi].kysymykset[kysymyksenindeksi].vaihtoehdot[vaihtoehtoindeksi]=action.uusivaihtoehto
       console.log("reducer VAIHTOEHTO_MUUTOS datan palautus uusidata=", uusidata)
       return uusidata
-    }
+      }
     case "VAIHTOEHTO_POISTO":{
       // , tentille: idtentti, kysymykselle: idkysymys, idvaihtoehto: vaihtoehto.id})
       console.log("reducer VAIHTOEHTO_POISTO action=", action)
@@ -121,7 +121,7 @@ function reducer(state, action) {
       uusidata.data[tentinindeksi].kysymykset[kysymyksenindeksi]
         .vaihtoehdot.splice(vaihtoehtoindeksi, 1)
       return uusidata
-    }
+      }
     case "VALINNAN_TEKSTI_MUUTTUI":
       return null
     default:
@@ -167,7 +167,7 @@ function TenttiUI() {
         teealustus=false
         if(state.naytto==="kirjaudu"){
           console.log("NYT haetaan tentit")
-          HaeTentit(dispatch)
+          haeTentit(dispatch)
         }
       }
     }
@@ -181,7 +181,7 @@ function TenttiUI() {
     console.log("use effect state muuttui")
     if(state){
       if(state.token && state.naytto==="kirjaudu"){
-        HaeTentit(dispatch)
+        haeTentit(dispatch)
       }
     }
 
