@@ -1,7 +1,8 @@
-import { useEffect, useState, useReducer } from 'react';
+import { useEffect, useState, useReducer } from 'react'
 import alustusdata from './testi/testidata'
 import {haeTentit} from './models/kanta'
-import { Button, Toolbar, Paper } from '@material-ui/core';
+import { Button, Toolbar, Paper, Select, FormControl, MenuItem,
+  FormHelperText, InputLabel } from '@material-ui/core'
 import useStyles from './views/tyyli'
 import './TenttiUI.css';
 import TenttiLista from './views/Tenttilista'
@@ -221,12 +222,30 @@ function TenttiUI() {
     <Paper component="header" className={classes.root} elevation={0}>
       <Toolbar className={classes.tyokalubaari} >
         <Button variant="contained" color="inherit" style={{backgroundColor: "blue"}}>
-        <FormattedMessage id="id_kirjaudu_painike" defaultMessage="{p_kirjaudu_teksti}"
-        values={{p_kirjaudu_teksti: 'Logga in'}}/>
+        <FormattedMessage id="id_kirjaudu_painike" defaultMessage="Kirjaudu" />
           </Button>
         <Button color="inherit" onClick={()=>dispatch({type: "REKISTEROIDY"})}>Rekisteröidy</Button>
         <Button color="inherit" onClick={()=>setDemoTila(!demoTila)}>Chart demo</Button>
-        <Button className={classes.painike} variant="contained"
+        <FormControl className={classes.formControl}>
+        <InputLabel shrink id="demo-simple-select-placeholder-label-label">
+          Kieli
+        </InputLabel>
+        <Select
+          labelId="demo-simple-select-placeholder-label-label"
+          id="demo-simple-select-placeholder-label"
+          displayEmpty
+          className={classes.selectEmpty}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
+        </Select>
+        <FormHelperText>Label + placeholder</FormHelperText>
+      </FormControl>
+      <Button className={classes.painike} variant="contained"
         color="inherit">Tietoa sovelluksesta</Button>
       </Toolbar>
     </Paper>
