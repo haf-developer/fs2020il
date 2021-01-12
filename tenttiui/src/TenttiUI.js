@@ -9,6 +9,7 @@ import TenttiMuokkaus from './views/hallinto/Tenttimuokkaus'
 import ChartDemo from './views/chartdemo'
 import Kirjaudu from './views/Kirjaudu'
 import Rekisterointi from './views/Rekisterointi'
+import {FormattedMessage, FormattedHTMLMessage} from 'react-intl'
 
 function reducer(state, action) {
   let uusidata = state? 
@@ -219,7 +220,10 @@ function TenttiUI() {
     <title style={{backgroundColor: "red"}}>Tenttisovellus</title>
     <Paper component="header" className={classes.root} elevation={0}>
       <Toolbar className={classes.tyokalubaari} >
-        <Button variant="contained" color="inherit" style={{backgroundColor: "blue"}}>Kirjaudu</Button>
+        <Button variant="contained" color="inherit" style={{backgroundColor: "blue"}}>
+        <FormattedMessage id="id_kirjaudu_painike" defaultMessage="{p_kirjaudu_teksti}"
+        values={{p_kirjaudu_teksti: 'Logga in'}}/>
+          </Button>
         <Button color="inherit" onClick={()=>dispatch({type: "REKISTEROIDY"})}>Rekisteröidy</Button>
         <Button color="inherit" onClick={()=>setDemoTila(!demoTila)}>Chart demo</Button>
         <Button className={classes.painike} variant="contained"

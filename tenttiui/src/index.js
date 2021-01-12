@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import {IntlProvider} from 'react-intl'
 import TenttiUI from './TenttiUI';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
+    <IntlProvider locale='fi'>
     <TenttiUI />
+    </IntlProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
