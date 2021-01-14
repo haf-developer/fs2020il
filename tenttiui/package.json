@@ -27,7 +27,8 @@
     "eject": "react-scripts eject",
     "server": "json-server -p3001 --watch db.json",
     "extract": "formatjs extract",
-    "compile": "formatjs compile"
+    "compile": "formatjs compile",
+    "compile-folder": "formatjs compile-folder lang src/compiled-lang"
   },
   "eslintConfig": {
     "extends": [

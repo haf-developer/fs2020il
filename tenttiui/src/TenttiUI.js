@@ -10,7 +10,9 @@ import TenttiMuokkaus from './views/hallinto/Tenttimuokkaus'
 import ChartDemo from './views/chartdemo'
 import Kirjaudu from './views/Kirjaudu'
 import Rekisterointi from './views/Rekisterointi'
-import {FormattedMessage, FormattedHTMLMessage} from 'react-intl'
+import {FormattedMessage, FormattedHTMLMessage, defineMessages } from 'react-intl'
+// React-dropzone
+// superagent
 
 function reducer(state, action) {
   let uusidata = state? 
@@ -137,6 +139,12 @@ function TenttiUI() {
   const [dataAlustettu, setDataAlustettu]=useState(false)
   const [hallinnointiTila, setHallinnointi]=useState(true)
   const [demoTila, setDemoTila]=useState(false)
+  // const {intl} = this.props
+  const [kieliValinnat, setKieliValinnat]=useState(defineMessages({
+    en: { defaultMessage: "Englanti" },
+    fi: { defaultMessage: "Suomi" },
+    se: { defaultMessage: "Ruotsi" },
+  }))
 
   const haestoragesta=()=>{
     const storage=window.localStorage
@@ -222,7 +230,7 @@ function TenttiUI() {
     <Paper component="header" className={classes.root} elevation={0}>
       <Toolbar className={classes.tyokalubaari} >
         <Button variant="contained" color="inherit" style={{backgroundColor: "blue"}}>
-        <FormattedMessage id="id_kirjaudu_painike" defaultMessage="Kirjaudu" />
+        <FormattedMessage defaultMessage="Kirjaudu" />
           </Button>
         <Button color="inherit" onClick={()=>dispatch({type: "REKISTEROIDY"})}>Rekisteröidy</Button>
         <Button color="inherit" onClick={()=>setDemoTila(!demoTila)}>Chart demo</Button>

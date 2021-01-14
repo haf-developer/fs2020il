@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import {IntlProvider} from 'react-intl'
@@ -6,29 +6,23 @@ import TenttiUI from './TenttiUI';
 import reportWebVitals from './reportWebVitals';
 
 // npm run extract -- 'src/**/*.js*' --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
-
+// npm run extract -- 'src/**/*.js*' --ignore 'src/compiled-lang/*' --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
+// npm run extract -- 'src/**/*.js*' --ignore 'src/compiled-lang/*' --additional-function-names ['defineMessages'] --out-file lang/fi.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
 // npm run compile -- lang/en.json --ast --out-file compiled-lang/en.json
-const localeProp='fi'
+
+// npm run compile-folder
+// formatjs compile-folder [options] <folder> <outFolder>
+const varmistusLokaali="fi"
+const localeProp="fi"
 
 function loadLocaleData(locale) {
-  console.log("TenttiUI kielipaketin lataus")
-  switch (locale) {
-    case 'fi':
-      return import('./compiled-lang/fi.json')
-    default:
-      return import('./compiled-lang/en.json')
+  console.log("TenttiUI kielipaketin lataus kielelle ", locale)
+  if (locale) {
+      return import(`./compiled-lang/${locale}.json`)
   }
+      return import(`./compiled-lang/${varmistusLokaali}.json`)
 }
 
-function MyComponent() {
-  return (
-    <div>
-      <Suspense fallback={<div>Loading...</div>}>
-        <TenttiApp locale={localeProp}/>
-      </Suspense>
-    </div>
-  );
-}
 
 const TenttiApp = (props) => {
   console.log("TenttiApp alkukieli")
@@ -46,21 +40,33 @@ const TenttiApp = (props) => {
     }
   },[])
 
+  const hoidaKieliMuutos=(kielitunnus)=>{
+
+  }
 
   return (
+    <div>
+    { lauseet && 
     <IntlProvider
       locale={props.locale}
-      defaultLocale="en"
+      defaultLocale={varmistusLokaali}
       messages={lauseet}   
     >
       <TenttiUI />
     </IntlProvider>
+    }
+    { (lauseet == null) &&
+    <div>
+    Alustetaan
+    </div>
+  }
+  </div>
   )
 }
 
 ReactDOM.render(
   <React.StrictMode>
-    <MyComponent />
+    <TenttiApp locale={localeProp}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
