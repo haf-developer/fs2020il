@@ -37,8 +37,8 @@ const TenttiApp = (props) => {
   const [lauseet, setLauseet] = useState(null)
   const [lokaali, setLokaali] = useState(props.locale)
 
-  useEffect(async ()=>{
-    await kieliLataus(props.locale)
+  useEffect( ()=>{
+    kieliLataus(props.locale)
   },[])
 
   const kieliLataus=async (lokaalitunnus)=>{

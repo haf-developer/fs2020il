@@ -19,7 +19,6 @@ function reducer(state, action) {
   let uusidata = state? 
     (
       state.data ? {data:JSON.parse(JSON.stringify(state.data))
-        ,paluufunktio:state.paluufunktio
         ,naytto:state.naytto}
       :[]
     )
@@ -50,8 +49,8 @@ function reducer(state, action) {
       }
     case 'TENTIN_NIMEN_MUUTOS':{
       console.log("reducer TENTIN_NIMEN_MUUTOS muutettutentti=", action.muutettutentti)
-      if( uusidata.data !== undefined){
-        const muutaindex=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.muutettutentti.id } )
+      const muutaindex=uusidata.data.findIndex( (tentti) =>{return tentti.id===action.muutettutentti.id } )
+      if(muutaindex){
         uusidata.data[muutaindex]=action.muutettutentti
       }
       console.log("reducer TENTIN_NIMEN_MUUTOS datan palautus uusidata.data=", uusidata.data)
@@ -135,12 +134,10 @@ function reducer(state, action) {
 }
 
 function TenttiUI({intl, hoidaKieliMuutos}) {
-  const [state, dispatch] = useReducer(reducer, undefined);
-  // const [data, setData]=useState()
+  const [state, dispatch] = useReducer(reducer, {data:null, naytto:null});
   const [dataAlustettu, setDataAlustettu]=useState(false)
   const [hallinnointiTila, setHallinnointi]=useState(true)
   const [demoTila, setDemoTila]=useState(false)
-  // const {intl} = this.props
   const [kieliValinnat, setKieliValinnat]=useState(defineMessages({
     en: { id: "valinta_en", defaultMessage: "Englanti" },
     fi: { id: "valinta_fi", defaultMessage: "Suomi" },
@@ -163,23 +160,15 @@ function TenttiUI({intl, hoidaKieliMuutos}) {
     return alkudata
   }
 
-  const reducerpaluufunktio=(uusidatatilaan)=>{
-    console.log("reducerpaluufunktio state=", state)
-    console.log("reducerpaluufunktio uusidatatilaan=", uusidatatilaan)
-    dispatch({ type: "INIT_DATA", data: uusidatatilaan })
-    console.log("reducerpaluufunktio loppu state=", state)
-  }
-
   useEffect(()=>{
+    console.log("useEffect 1 state=", state)
     let teealustus=true
-    if(state){
-      if(state.naytto){
-        console.log("kohta haetaan tentit")
-        teealustus=false
-        if(state.naytto==="kirjaudu"){
-          console.log("NYT haetaan tentit")
-          haeTentit(dispatch)
-        }
+    if(state.naytto){
+      console.log("kohta haetaan tentit")
+      teealustus=false
+      if(state.naytto==="kirjaudu"){
+        console.log("NYT haetaan tentit")
+        haeTentit(dispatch)
       }
     }
     if(teealustus){
@@ -189,11 +178,9 @@ function TenttiUI({intl, hoidaKieliMuutos}) {
   },[])
 
   useEffect(()=>{
-    console.log("use effect state muuttui")
-    if(state){
-      if(state.token && state.naytto==="kirjaudu"){
-        haeTentit(dispatch)
-      }
+    console.log("use effect state muuttui state=", state)
+    if(state.token && state.naytto==="kirjaudu"){
+      haeTentit(dispatch)
     }
 
     if(dataAlustettu){
@@ -210,26 +197,16 @@ function TenttiUI({intl, hoidaKieliMuutos}) {
     // setData(uusidata)
   }
 
-  const classes=useStyles()
-
-  console.log("state=", state)
-  console.log("rendaus hallinnointitila=", hallinnointiTila)
-  let nayttotila=false
-  if(state){
-    if(state.naytto){
-      if(state.naytto==="kirjaudu"){
-        nayttotila=true
-      }
-    }
-  }
-
   const hoidaValinta = (event) => {
     const arvo=event.target.value
     console.log("valinta arvo=",arvo)
     hoidaKieliMuutos(arvo)
   }
 
-  console.log("NÄYTETÄÄN nayttotila=", nayttotila)
+  const classes=useStyles()
+
+  console.log("state=", state)
+  console.log("rendaus hallinnointitila=", hallinnointiTila)
 
   return (
     <div >
@@ -270,10 +247,6 @@ function TenttiUI({intl, hoidaKieliMuutos}) {
         color="inherit">Tietoa sovelluksesta</Button>
       </Toolbar>
     </Paper>
-    { state &&
-    <>
-    { state.naytto &&
-    <>
     {
       state.naytto==="kirjaudu" &&
       <div>
@@ -293,10 +266,6 @@ function TenttiUI({intl, hoidaKieliMuutos}) {
       <TenttiMuokkaus tentit={state}
       dispatch={dispatch}></TenttiMuokkaus>
       </div>          
-    }
-    </>
-    }
-    </>
     }
     { !hallinnointiTila && 
     <div>
