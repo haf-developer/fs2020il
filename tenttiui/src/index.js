@@ -12,47 +12,60 @@ import reportWebVitals from './reportWebVitals';
 
 // npm run compile-folder
 // formatjs compile-folder [options] <folder> <outFolder>
+
+/*
+Autoid issue
+https://github.com/formatjs/formatjs/issues/1901
+*/
+
 const varmistusLokaali="fi"
-const localeProp="fi"
+const localeProp="se"
 
 function loadLocaleData(locale) {
   console.log("TenttiUI kielipaketin lataus kielelle ", locale)
   if (locale) {
+    if(locale.length > 1){
       return import(`./compiled-lang/${locale}.json`)
+    }
   }
-      return import(`./compiled-lang/${varmistusLokaali}.json`)
+  return import(`./compiled-lang/${varmistusLokaali}.json`)
 }
 
 
 const TenttiApp = (props) => {
   console.log("TenttiApp alkukieli")
-  const [lauseet, setLauseet] = useState( null )
+  const [lauseet, setLauseet] = useState(null)
+  const [lokaali, setLokaali] = useState(props.locale)
 
   useEffect(async ()=>{
-    let uudetlauseet=lauseet
+    await kieliLataus(props.locale)
+  },[])
 
+  const kieliLataus=async (lokaalitunnus)=>{
+    let uudetlauseet=lauseet
     try{
-      uudetlauseet=await loadLocaleData(props.locale)
+      uudetlauseet=await loadLocaleData(lokaalitunnus)
       console.log("Lauseet=", uudetlauseet)
       setLauseet(uudetlauseet)
+      setLokaali(lokaalitunnus)
     }catch(error){
       console.error(error)
     }
-  },[])
+  }
 
-  const hoidaKieliMuutos=(kielitunnus)=>{
-
+  const hoidaKielenvaihto=(kielitunnus)=>{
+    kieliLataus(kielitunnus)
   }
 
   return (
     <div>
     { lauseet && 
     <IntlProvider
-      locale={props.locale}
+      locale={lokaali}
       defaultLocale={varmistusLokaali}
       messages={lauseet}   
     >
-      <TenttiUI />
+      <TenttiUI hoidaKieliMuutos={hoidaKielenvaihto} />
     </IntlProvider>
     }
     { (lauseet == null) &&

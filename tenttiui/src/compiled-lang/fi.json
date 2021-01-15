@@ -1,6 +1,26 @@
 {
-  "BX209a": "Suomi",
-  "C3NbY0": "Kirjaudu",
-  "p+5k1b": "Englanti",
-  "zManSy": "Ruotsi"
+  "painike_kirjaudu": [
+    {
+      "type": 0,
+      "value": "Kirjaudu"
+    }
+  ],
+  "valinta_en": [
+    {
+      "type": 0,
+      "value": "Englanti"
+    }
+  ],
+  "valinta_fi": [
+    {
+      "type": 0,
+      "value": "Suomi"
+    }
+  ],
+  "valinta_se": [
+    {
+      "type": 0,
+      "value": "Ruotsi"
+    }
+  ]
 }

@@ -1,14 +1,14 @@
 {
-  "BX209a": {
-    "defaultMessage": "Suomi"
-  },
-  "C3NbY0": {
+  "painike_kirjaudu": {
     "defaultMessage": "Kirjaudu"
   },
-  "p+5k1b": {
+  "valinta_en": {
     "defaultMessage": "Englanti"
   },
-  "zManSy": {
+  "valinta_fi": {
+    "defaultMessage": "Suomi"
+  },
+  "valinta_se": {
     "defaultMessage": "Ruotsi"
   }
 }

@@ -1,6 +1,26 @@
 {
-  "BX209a": "Finnlad",
-  "C3NbY0": "Login",
-  "p+5k1b": "English",
-  "zManSy": "Sweden"
+  "painike_kirjaudu": [
+    {
+      "type": 0,
+      "value": "Login"
+    }
+  ],
+  "valinta_en": [
+    {
+      "type": 0,
+      "value": "English"
+    }
+  ],
+  "valinta_fi": [
+    {
+      "type": 0,
+      "value": "Finnish"
+    }
+  ],
+  "valinta_se": [
+    {
+      "type": 0,
+      "value": "Swedish"
+    }
+  ]
 }

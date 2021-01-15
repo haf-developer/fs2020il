@@ -2,7 +2,7 @@ import { useEffect, useState, useReducer } from 'react'
 import alustusdata from './testi/testidata'
 import {haeTentit} from './models/kanta'
 import { Button, Toolbar, Paper, Select, FormControl, MenuItem,
-  FormHelperText, InputLabel } from '@material-ui/core'
+  InputLabel } from '@material-ui/core'
 import useStyles from './views/tyyli'
 import './TenttiUI.css';
 import TenttiLista from './views/Tenttilista'
@@ -10,7 +10,8 @@ import TenttiMuokkaus from './views/hallinto/Tenttimuokkaus'
 import ChartDemo from './views/chartdemo'
 import Kirjaudu from './views/Kirjaudu'
 import Rekisterointi from './views/Rekisterointi'
-import {FormattedMessage, FormattedHTMLMessage, defineMessages } from 'react-intl'
+import {FormattedMessage, FormattedHTMLMessage,
+  injectIntl, defineMessages } from 'react-intl'
 // React-dropzone
 // superagent
 
@@ -133,7 +134,7 @@ function reducer(state, action) {
   }
 }
 
-function TenttiUI() {
+function TenttiUI({intl, hoidaKieliMuutos}) {
   const [state, dispatch] = useReducer(reducer, undefined);
   // const [data, setData]=useState()
   const [dataAlustettu, setDataAlustettu]=useState(false)
@@ -141,9 +142,9 @@ function TenttiUI() {
   const [demoTila, setDemoTila]=useState(false)
   // const {intl} = this.props
   const [kieliValinnat, setKieliValinnat]=useState(defineMessages({
-    en: { defaultMessage: "Englanti" },
-    fi: { defaultMessage: "Suomi" },
-    se: { defaultMessage: "Ruotsi" },
+    en: { id: "valinta_en", defaultMessage: "Englanti" },
+    fi: { id: "valinta_fi", defaultMessage: "Suomi" },
+    se: { id: "valinta_se", defaultMessage: "Ruotsi" },
   }))
 
   const haestoragesta=()=>{
@@ -222,6 +223,12 @@ function TenttiUI() {
     }
   }
 
+  const hoidaValinta = (event) => {
+    const arvo=event.target.value
+    console.log("valinta arvo=",arvo)
+    hoidaKieliMuutos(arvo)
+  }
+
   console.log("NÄYTETÄÄN nayttotila=", nayttotila)
 
   return (
@@ -230,7 +237,7 @@ function TenttiUI() {
     <Paper component="header" className={classes.root} elevation={0}>
       <Toolbar className={classes.tyokalubaari} >
         <Button variant="contained" color="inherit" style={{backgroundColor: "blue"}}>
-        <FormattedMessage defaultMessage="Kirjaudu" />
+        <FormattedMessage id="painike_kirjaudu" defaultMessage="Kirjaudu" />
           </Button>
         <Button color="inherit" onClick={()=>dispatch({type: "REKISTEROIDY"})}>Rekisteröidy</Button>
         <Button color="inherit" onClick={()=>setDemoTila(!demoTila)}>Chart demo</Button>
@@ -241,17 +248,23 @@ function TenttiUI() {
         <Select
           labelId="demo-simple-select-placeholder-label-label"
           id="demo-simple-select-placeholder-label"
+          value={intl.locale}
+          onChange={hoidaValinta}
           displayEmpty
           className={classes.selectEmpty}
         >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          {Object.keys(kieliValinnat).map((tunnus, index) => {
+            return(
+              <MenuItem key={index +"_kielivalinta"} value={tunnus}>
+                <FormattedMessage {...kieliValinnat[tunnus]} />
+              </MenuItem>
+            )
+          })
+          }
         </Select>
-        <FormHelperText>Label + placeholder</FormHelperText>
       </FormControl>
       <Button className={classes.painike} variant="contained"
         color="inherit">Tietoa sovelluksesta</Button>
@@ -309,4 +322,4 @@ function TenttiUI() {
   );
 }
 
-export default TenttiUI;
+export default injectIntl(TenttiUI);

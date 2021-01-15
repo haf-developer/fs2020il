@@ -1,14 +1,14 @@
 {
-  "BX209a": {
-    "defaultMessage": "Finnlad"
-  },
-  "C3NbY0": {
+  "painike_kirjaudu": {
     "defaultMessage": "Login"
   },
-  "p+5k1b": {
+  "valinta_en": {
     "defaultMessage": "English"
   },
-  "zManSy": {
-    "defaultMessage": "Sweden"
+  "valinta_fi": {
+    "defaultMessage": "Finnish"
+  },
+  "valinta_se": {
+    "defaultMessage": "Swedish"
   }
 }

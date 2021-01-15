@@ -1,6 +1,26 @@
 {
-  "BX209a": "Finnland",
-  "C3NbY0": "Logga in",
-  "p+5k1b": "England",
-  "zManSy": "Sveland"
+  "painike_kirjaudu": [
+    {
+      "type": 0,
+      "value": "Logga in"
+    }
+  ],
+  "valinta_en": [
+    {
+      "type": 0,
+      "value": "England"
+    }
+  ],
+  "valinta_fi": [
+    {
+      "type": 0,
+      "value": "Finnland"
+    }
+  ],
+  "valinta_se": [
+    {
+      "type": 0,
+      "value": "Sverige"
+    }
+  ]
 }

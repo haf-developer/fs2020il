@@ -1,14 +1,14 @@
 {
-  "BX209a": {
-    "defaultMessage": "Finnland"
-  },
-  "C3NbY0": {
+  "painike_kirjaudu": {
     "defaultMessage": "Logga in"
   },
-  "p+5k1b": {
+  "valinta_en": {
     "defaultMessage": "England"
   },
-  "zManSy": {
-    "defaultMessage": "Sveland"
+  "valinta_fi": {
+    "defaultMessage": "Finnland"
+  },
+  "valinta_se": {
+    "defaultMessage": "Sverige"
   }
 }
