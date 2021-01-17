@@ -216,6 +216,24 @@ const rekisteroityminen=((dispatch, kayttaja)=>{
   })
 })
 
+const tiedostonSiirto=((dispatch, tiedostot)=>{
+  const config = basicconfig.concat({ headers: { 'Content-Type': 'multipart/form-data' } })
+  let lomaketiedot = new FormData()
+
+  tiedostot.map((tiedosto) =>{
+    lomaketiedot.append('File[]',tiedosto)
+  })
+
+  axios.post(`http://localhost:${port}/api/tiedostosiirto`, lomaketiedot, config)
+    .then((response) => {
+      console.log("KANTA tiedostonSiirto vastaus=", response)
+      dispatch({type: "TIEDOSTOT_SIIRRETTY"})
+    })
+    .catch(err => {
+        // errorResponse(error)
+    })
+})
+
 export { haeTentit, lisaaTentti, poistaTentti, muutaTentti,
   lisaaKysymys,
   lisaaVaihtoehto, muutaVaihtoehto, poistaVaihtoehto,
