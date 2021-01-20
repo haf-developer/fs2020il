@@ -86,7 +86,7 @@ tentitRouter.delete('/tentit/:id', (req, res, next ) => {
       res.status(404).end()
       // next(err)
     }
-    res.json( result.rows )
+    res.json( result )
   })
 })
 
@@ -203,7 +203,7 @@ tentitRouter.put('/kysykset/:id/', (req, res, next ) => {
       next(err)
     }
     const arvot=JSON.stringify(result.rows)
-    console.log("kannasta palautui=", result.rows)
+    // console.log("kannasta palautui=", result.rows)
     res.send( arvot )
   })
 })

@@ -1,8 +1,60 @@
 import axios from 'axios'
+import mqtt from 'mqtt'
 
 const port=3003
 let token=undefined
 let basicconfig=undefined
+
+const wsport=3005
+const mqttport=3009
+
+let client
+
+const mqttYhdista=(dispatch)=>{
+  client=mqtt.connect(`http://localhost:${mqttport}/api/mqtt/yhdista`,
+    {basicconfig} )
+
+}
+
+/*
+const mqtt = require('mqtt')
+const client =
+mqtt.connect('mqtt://broker.hivemq.com’)
+// const client =
+// mqtt.connect('ws://localhost:8083/mqtt', {
+// username: $USERNAME, password: $PASSWORD });
+var temperature = 0
+client.on('connect', () => {
+client.publish(‘sensors/house/temperature’, 22)
+})
+client.on('connect', () => {
+client.subscribe(’sensors/house/temperature')
+})
+client.on('message', (topic, message) => {
+if(topic === ’sensors/house/temperature') {
+temperature = message.toInt());
+}
+})
+
+*/
+/*
+https://github.com/websockets/ws
+HTTP header Upgrade
+ws://host:port/path
+protocoll extension HTTP header SOAP or WAMP or ...
+let socket=new WebSocket("wss://palvelin.info",["SOAP"])
+socket.onopen()=(event)=>{
+
+}
+
+socket.onmessage()=(event)=>{
+  consolo.log("dataa",event.data)
+}
+
+socket.onclose...
+socket.onerror...
+
+*/
 
 const vaihtoehtohaku=(dbdata, kysymysdatat, dispatch)=>{
   console.log("KANTA vaihtoehtohaku")

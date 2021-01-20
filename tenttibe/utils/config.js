@@ -1,6 +1,8 @@
 require('dotenv').config()
 
 let PORT = process.env.PORT || 3001
+let WSPORT = process.env.WSPORT || 3002
+let QMTTPORT = process.env.QMTTPORT || 3004
 let PGPORT = process.env.PGPORT
 let PGPASSWORD = process.env.PGPASSWORD
 let PGUSER = process.env.PGUSER
@@ -19,5 +21,7 @@ module.exports = {
   PGUSER,
   PGDB,
   PGHOST,
-  PORT
+  PORT,
+  WSPORT,
+  QMTTPORT
 }

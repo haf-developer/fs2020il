@@ -17,16 +17,15 @@ import {FormattedMessage, FormattedHTMLMessage,
 
 function reducer(state, action) {
   let uusidata = state? 
-    (
-      state.data ? {data:JSON.parse(JSON.stringify(state.data))
-        ,naytto:state.naytto}
-      :[]
-    )
-    :[]
+      JSON.parse(JSON.stringify(state))
+    :{}
   switch (action.type){
     case "INIT":{
       console.log("reducer INIT action=", action)
-      return { naytto: action.naytto }
+      console.log("reducer INIT uusidata=", uusidata)
+      uusidata.naytto=action.naytto
+      console.log("reducer INIT palauta uusidata=", uusidata)
+      return uusidata
       }
     case "REKISTEROIDY":{
       console.log("reducer REKISTEROIDY")
@@ -34,7 +33,7 @@ function reducer(state, action) {
       }
     case "REKISTEROITY":{
       console.log("reducer REKISTEROITY Voiko tehdä uudestaan?")
-      return { naytto: "kirjaudu" }      
+      return {uusidata:{ naytto: "kirjaudu" }}
       }
     case "TALLENNA_TOKEN":{
       //"TALLENNA_TOKEN", uusitoken: saatutoken} )
@@ -134,7 +133,7 @@ function reducer(state, action) {
 }
 
 function TenttiUI({intl, hoidaKieliMuutos}) {
-  const [state, dispatch] = useReducer(reducer, {data:null, naytto:null});
+  const [state, dispatch] = useReducer(reducer, {data:null, naytto:null, pingi: "PingPong"});
   const [dataAlustettu, setDataAlustettu]=useState(false)
   const [hallinnointiTila, setHallinnointi]=useState(true)
   const [demoTila, setDemoTila]=useState(false)
@@ -243,6 +242,7 @@ function TenttiUI({intl, hoidaKieliMuutos}) {
           }
         </Select>
       </FormControl>
+        <Button color="inherit">Testi {state.pingi} nappula</Button>
       <Button className={classes.painike} variant="contained"
         color="inherit">Tietoa sovelluksesta</Button>
       </Toolbar>
