@@ -156,7 +156,7 @@ function muutaTentti(dispatch, id, tentinnimi, muuttuvatentti){
   console.log("Kanta MuutaTentti id ja tentinnimi=", {id,tentinnimi})
   const muuttunuttentti={...muuttuvatentti, tentti: tentinnimi }
 
-  axios.put(`http://localhost:3001/tentit/${id}`, muuttunuttentti, basicconfig)
+  axios.put(`http://localhost:${port}/api/tentit/${id}`, muuttunuttentti, basicconfig)
   .then(response => {
     console.log("Kanta MuutaTentti response=", response)
     dispatch({type: "TENTIN_NIMEN_MUUTOS", muutettutentti: muuttunuttentti} )

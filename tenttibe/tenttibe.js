@@ -22,23 +22,19 @@ tenttibe.use('/api', henkilotRouter)
 const db = require('./db/kyselyt')
 // const client=db.getClient()
 db.getListeningClient( (err, client, release)=>{
-  console.log("Starting LISTEN query ")
-
   client.query('LISTEN tentin_lisays').then(queryresult => {
     // release(err)
-    console.log("LISTEN query err=", err)
-    console.log("LISTEN queryresult=", queryresult)
     const tulos=client.on('notification', msg => {
-      console.log("msg channel=",msg.channel) // foo
-      console.log("msg.payload=",msg.payload) // bar!
+      console.log("tentin_lisays msg channel=",msg.channel)
+      console.log("tentin_lisays msg payload=",msg.payload)
     })
   
-    console.log("LISTEN on tulos=", tulos)
+    console.log("LISTEN on tentin_lisays tulos=", tulos)
     // return queryresult
   })
   .catch(e => {
     console.error(e.stack)
-    console.log( "LISTEN Virhe e=", e)
+    console.log( "LISTEN tentin_lisays Virhe e=", e)
     // next(e)
     })
     /*
@@ -47,6 +43,22 @@ db.getListeningClient( (err, client, release)=>{
       // client.end()
     })
     */
+  client.query('LISTEN muutetut_tentit').then(queryresult => {
+    // release(err)
+    const tulos=client.on('notification', msg => {
+      console.log("muutetut_tentit msg channel=",msg.channel)
+      console.log("muutetut_tentit msg payload=",msg.payload)
+    })
+  
+    console.log("LISTEN on muutetut_tentit tulos=", tulos)
+    // return queryresult
+  })
+  .catch(e => {
+    console.error(e.stack)
+    console.log( "LISTEN muutetut_tentit Virhe e=", e)
+    // next(e)
+    })
+
   })
 
 module.exports = tenttibe

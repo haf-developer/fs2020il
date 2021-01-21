@@ -79,6 +79,18 @@ tentitRouter.post('/tentit/', (req, res, next ) => {
   })
 })
 
+tentitRouter.put('/tentit/:tenttiid', (req, res, next ) => {
+  console.log("Muutetaan req.params.tenttiid=", req.params.tenttiid)
+  console.log("Tentti req.body.tentti=", req.body.tentti)
+  db.query(`UPDATE tentit SET nimi=$1 WHERE id=$2 RETURNING *`,
+    [req.body.tentti, req.params.tenttiid],(err, result)=>{
+    if(err){
+      next(err)
+    }
+    res.json( result.rows )
+  })
+})
+
 tentitRouter.delete('/tentit/:id', (req, res, next ) => {
   console.log("kannasta pois tentti req.params.id=", req.params.id)
   db.query(`DELETE FROM tentit WHERE id=$1`, [req.params.id],(err, result)=>{
